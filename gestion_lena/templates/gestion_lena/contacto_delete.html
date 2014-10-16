@@ -1,0 +1,18 @@
+{% extends 'gestion_lena/contacto_list.html'%}
+
+
+{% block object_detail %}
+    <div class="page-header">
+        <h1 class="text-error"> Eliminar Contacto  <small> {{ contacto }} </small> <a href="{% url 'contacto_detail' contacto.id %}" class="btn btn-link">  Volver  </a>  </h1>
+    </div>
+
+    <div class="well">
+
+<form action="" method="post">{% csrf_token %}
+    <p class="alert alert-danger">Estás seguro que deseas elminar el contacto <strong> "{{ object }}"? </strong></p>
+    <input class="btn btn-primary" type="submit" value="Confirmar" />
+</form>
+    </div>
+
+{% endblock %}
+

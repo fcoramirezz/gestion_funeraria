@@ -1,0 +1,12 @@
+{% extends 'gestion_lena/contacto_list.html' %}
+
+{% block title_page %}
+{{ contacto }}
+{% endblock %}
+
+{% block object_detail %}
+<div class="page-header">
+<h1> {{ contacto }} <small> <a href="{% url 'contacto_update' contacto.id %}" class="btn btn-default"> Actualizar </a>  <a href="{% url 'contacto_delete' contacto.id %}" class="btn btn-danger"> Eliminar </a> </small> </h1>
+</div>
+
+{% endblock %}
