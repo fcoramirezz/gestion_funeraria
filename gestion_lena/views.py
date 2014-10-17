@@ -1,68 +1,105 @@
-from django.shortcuts import render
+# coding: utf-8
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
 
 from gestion_lena.models import Contacto, Pedido
 from gestion_lena.mixins import LoginRequired, SearchableListMixin
 from gestion_lena.forms import ContactoForm, PedidoForm
 
+@login_required
 def home(request):
 	return render(request, 'gestion_lena/base.html')
 
 ##########CONTACTO###################################
-class ContactoListView(SearchableListMixin, ListView):
+class ContactoListView(LoginRequired, SearchableListMixin, ListView):
     model = Contacto
     template_name = 'gestion_lena/contacto_list.html'
     search_fields = [('nombre','icontains',), ('apellido','icontains',)]
     
-class ContactoDetailView(SearchableListMixin, DetailView):
+class ContactoDetailView(LoginRequired, SearchableListMixin, DetailView):
     model = Contacto
     template_name = 'gestion_lena/contacto_detail.html'
     search_fields = [('nombre','icontains',), ('apellido','icontains',)]
 
-class ContactoCreateView(SearchableListMixin, CreateView):
+class ContactoCreateView(LoginRequired, SearchableListMixin, CreateView):
     model = Contacto
     form_class = ContactoForm
     template_name = 'gestion_lena/contacto_create.html'
     search_fields = [('nombre','icontains',), ('apellido','icontains',)]
 
-class ContactoUpdateView(SearchableListMixin, UpdateView):
+class ContactoUpdateView(LoginRequired, SearchableListMixin, UpdateView):
     model = Contacto
     form_class = ContactoForm
     template_name = 'gestion_lena/contacto_update.html'
     search_fields = [('nombre','icontains',), ('apellido','icontains',)]
 
-class ContactoDeleteView(SearchableListMixin, DeleteView):
+class ContactoDeleteView(LoginRequired, SearchableListMixin, DeleteView):
     model = Contacto
     success_url = reverse_lazy('contacto_list')
     template_name = 'gestion_lena/contacto_delete.html'
     search_fields = [('nombre','icontains',), ('apellido','icontains',)]
 
 ###########PEDIDO###################################################
-class PedidoListView(SearchableListMixin, ListView):
+class PedidoListView(LoginRequired, SearchableListMixin, ListView):
     model = Pedido
     template_name = 'gestion_lena/pedido_list.html'
     search_fields = [('contacto__nombre','icontains',), ('contacto__apellido','icontains',)]
     
-class PedidoDetailView(SearchableListMixin, DetailView):
+class PedidoDetailView(LoginRequired, SearchableListMixin, DetailView):
     model = Pedido
     template_name = 'gestion_lena/pedido_detail.html'
     search_fields = [('contacto__nombre','icontains',), ('contacto__apellido','icontains',)]
 
-class PedidoCreateView(SearchableListMixin, CreateView):
+class PedidoCreateView(LoginRequired, SearchableListMixin, CreateView):
     model = Pedido
     form_class = PedidoForm
     template_name = 'gestion_lena/pedido_create.html'
     search_fields = [('contacto__nombre','icontains',), ('contacto__apellido','icontains',)]
 
-class PedidoUpdateView(SearchableListMixin, UpdateView):
+class PedidoUpdateView(LoginRequired, SearchableListMixin, UpdateView):
     model = Pedido
     form_class = PedidoForm
     template_name = 'gestion_lena/pedido_update.html'
     search_fields = [('contacto__nombre','icontains',), ('contacto__apellido','icontains',)]
 
-class PedidoDeleteView(SearchableListMixin, DeleteView):
+class PedidoDeleteView(LoginRequired, SearchableListMixin, DeleteView):
     model = Pedido
     success_url = reverse_lazy('pedido_list')
     template_name = 'gestion_lena/pedido_delete.html'
     search_fields = [('contacto__nombre','icontains',), ('contacto__apellido','icontains',)]
+
+
+################################################################################
+def iniciar_sesion(request):
+    context = {}
+    if request.method == "POST":
+        formulario = AuthenticationForm(request.POST)
+        if formulario.is_valid:
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('gestion_lena.views.home')
+                else:
+                    messages.add_message(request, messages.ERROR, u"Su cuenta se encuentra inactiva, revise su correo para activar su cuenta o escribanos a <correo>.")
+            else:
+                messages.add_message(request, messages.ERROR, u"Error en su contraseña o nombre de usuario. Vuelva a intentarlo.")
+    else:
+        messages.add_message(request, messages.INFO, u"Ingrese con su usuario")
+        formulario = AuthenticationForm()
+    context['formulario'] = formulario
+    return render(request, 'registration/login.html', context)
+
+@login_required
+def cerrar_sesion(request):
+    logout(request)
+    return redirect('gestion_lena.views.home')
+
+#######################################################################################
