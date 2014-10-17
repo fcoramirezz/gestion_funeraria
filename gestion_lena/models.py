@@ -29,6 +29,7 @@ class Contacto(models.Model):
 	def get_absolute_url(self):
 		return reverse('contacto_detail', kwargs={'pk': self.pk})
 
+	@property
 	def obtener_tipo_telefono(self):
 		return TIPO_TELEFONO[self.tipo_telefono][1]
 
@@ -56,6 +57,9 @@ class Pedido(models.Model):
 	def get_absolute_url(self):
 		return reverse('pedido_detail', kwargs={'pk': self.pk})
 
+	@property
+	def obtener_estado_pedido(self):
+		return [ ESTADO_PEDIDO[0][0] , ESTADO_PEDIDO[1][0]]
 
 class Ingreso(models.Model):
 	pedido = models.OneToOneField("Pedido")

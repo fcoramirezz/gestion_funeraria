@@ -15,4 +15,6 @@ urlpatterns = patterns('gestion_lena.views',
     url(r'^pedido/nuevo/$', PedidoCreateView.as_view(), name='pedido_create'),
     url(r'^pedido/(?P<pk>\d+)/actualizar/$', PedidoUpdateView.as_view(), name='pedido_update'),
     url(r'^pedido/(?P<pk>\d+)/eliminar/$', PedidoDeleteView.as_view(), name='pedido_delete'),
+    ##########################################################################################
+    url(r'^pedido/(?P<id_pedido>\d+)/entregado/$', 'pedido_cambiar_estado', name='pedido_cambiar_estado'),
 )

@@ -11,6 +11,8 @@ from gestion_lena.models import Contacto, Pedido
 from gestion_lena.mixins import LoginRequired, SearchableListMixin
 from gestion_lena.forms import ContactoForm, PedidoForm
 
+import datetime
+
 @login_required
 def home(request):
 	return render(request, 'gestion_lena/base.html')
@@ -75,6 +77,20 @@ class PedidoDeleteView(LoginRequired, SearchableListMixin, DeleteView):
 
 
 ################################################################################
+
+@login_required
+def pedido_cambiar_estado(request, id_pedido):
+    pedido = get_object_or_404(Pedido, id=id_pedido)
+    if pedido.estado == "Entregado":
+        return redirect('contacto_detail', pedido.contacto.id)
+    pedido.estado = "Entregado"
+    pedido.fecha_entrega = datetime.datetime.now()
+    pedido.save()
+    return redirect('contacto_detail', pedido.contacto.id)
+
+
+#############################################################################
+
 def iniciar_sesion(request):
     context = {}
     if request.method == "POST":

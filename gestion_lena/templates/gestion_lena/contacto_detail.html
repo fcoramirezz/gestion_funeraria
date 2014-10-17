@@ -6,7 +6,93 @@
 
 {% block object_detail %}
 <div class="page-header">
-<h1> {{ contacto }} <small> <a href="{% url 'contacto_update' contacto.id %}" class="btn btn-default"> Actualizar </a>  <a href="{% url 'contacto_delete' contacto.id %}" class="btn btn-danger"> Eliminar </a> </small> </h1>
+	<h1> {{ contacto }} <small> <a href="{% url 'contacto_update' contacto.id %}" class="btn btn-default"> Actualizar </a>  <a href="{% url 'contacto_delete' contacto.id %}" class="btn btn-danger"> Eliminar </a> </small> </h1>
+</div>
+
+<div class="row">
+	<div class="col-xs-4 col-md-4 col-lg-4">
+		<table class="table table-striped table-bordered">
+			<caption> Información de  <strong> {{contacto}} </strong> </caption>
+			<thead>
+				<tr>
+					<th> Atributo </th>
+					<th> Dato </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td> <b> Nombre </b>  </td>
+					<td> {{contacto.nombre}} </td>
+				</tr>
+				<tr>
+					<td> <b> Apellido </b>  </td>
+					<td> {{contacto.apellido}} </td>
+				</tr>
+				<tr>
+					<td> <b> Teléfono </b>  </td>
+					<td> {{contacto.obtener_tipo_telefono }},  {{contacto.telefono}} </td>
+				</tr>
+				<tr>
+					<td> <b> Dirección </b>  </td>
+					<td> {{contacto.direccion}} </td>
+				</tr>
+				<tr>
+					<td> <b> E-mail </b>  </td>
+					<td> {{contacto.correo|default:"No menciona"}} </td>
+				</tr>
+			</tbody>	
+
+		</table>		
+	</div>
+	<div class="col-xs-8 col-md-8 col-lg-8">
+		
+		<div class="panel panel-info">
+			<div class="panel panel-heading">  
+				<h1 class="panel-title"> Pedidos de <strong> {{contacto}} </strong> </h1>
+			</div>
+			<div class="panel-body">
+				<table class="table">
+					<thead>
+						<tr>
+							<th> # Nº Solicitud  </th>
+							<th> Cantidad </th>
+							<th> Dirección Despacho </th>
+							<th> Estado </th>
+							<th> Fecha Entrega </th>
+							<th> Fecha Solicitud </th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for x in contacto.pedido_set.all %}
+						<tr {% if x.estado == 'Entregado' %} class="success" {% else %} class="warning" {% endif %} >
+							<td> {{ forloop.counter }} </td>
+							<td> {{ x.cantidad }} metros </td>
+							<td> {{ x.direccion_destino }}</td>
+							<td>
+
+									    {% if not x.estado == "Entregado" %}
+									    <a href="{% url 'pedido_cambiar_estado' x.id %}"> Cambiar</a> 
+										{% endif%}
+										<select {% if x.estado == 'Entregado' %} disabled {% endif %}>
+										{% for e in x.obtener_estado_pedido %}
+										<option value="{{e}}" {% if x.estado == e %} selected {% endif%}> {{e}} </option>
+										{% endfor %}
+									</select>
+									
+							</td>
+							<td> {{ x.fecha_entrega|default:"" }} </td>
+							<td> {{ x.creado_en }} </td>
+						</tr>
+						{% empty %}
+						<div class="alert alert-warning"> No existen pedidos realizados por <strong> {{contacto}} </strong> </div>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+
+	</div>
 </div>
 
 {% endblock %}
