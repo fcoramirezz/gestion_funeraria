@@ -1,6 +1,8 @@
 Django==1.7
 argparse==1.2.1
 django-activelink==0.4
+django-bootstrap-pagination==1.5.0
 django-bootstrap3==4.11.0
+django-tables2==0.15.0
 six==1.8.0
 wsgiref==0.1.2
