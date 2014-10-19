@@ -1,17 +1,25 @@
 # coding: utf-8
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 
-from gestion_lena.models import Contacto, Pedido
+from gestion_lena.models import Contacto, Pedido, Configuracion
 from gestion_lena.mixins import LoginRequired, SearchableListMixin
-from gestion_lena.forms import ContactoForm, PedidoForm
+from gestion_lena.forms import ContactoForm, PedidoForm, PedidoContactoForm
 
 import datetime
+
+CONF, created = Configuracion.objects.get_or_create(id=1)
+if created:
+    CONF.titulo_pagina = "Gestión de Distribución de Leña"
+    CONF.footer = "Diego Ramirez Cerda &copy; Todos los derechos reservados"
+    CONF.precio_lena = 17000
+    CONF.carga_maxima_dia = 24
+    CONF.save()
 
 @login_required
 def home(request):
@@ -69,6 +77,12 @@ class PedidoUpdateView(LoginRequired, SearchableListMixin, UpdateView):
     template_name = 'gestion_lena/pedido_update.html'
     search_fields = [('contacto__nombre','icontains',), ('contacto__apellido','icontains',)]
 
+    def get_success_url(self):
+        n =  self.request.GET.get('next', None)
+        if n:
+            return reverse(n, kwargs={'pk': self.object.contacto.id})
+        return self.object.get_absolute_url()
+
 class PedidoDeleteView(LoginRequired, SearchableListMixin, DeleteView):
     model = Pedido
     success_url = reverse_lazy('pedido_list')
@@ -87,6 +101,48 @@ def pedido_cambiar_estado(request, id_pedido):
     pedido.fecha_entrega = datetime.datetime.now()
     pedido.save()
     return redirect('contacto_detail', pedido.contacto.id)
+
+@login_required
+def contacto_nuevo_pedido(request, id_contacto):
+    contacto = get_object_or_404(Contacto, id=id_contacto)
+    if request.method == "POST":
+        form = PedidoContactoForm(request.POST)
+        print form
+        if form.is_valid():
+            print "hola"
+            cantidad = form.cleaned_data.get('cantidad', None)
+            direccion_destino = form.cleaned_data.get('direccion_destino', None)
+            estado = form.cleaned_data.get('estado', None)
+            valor_unitario = form.cleaned_data.get('valor_unitario', None)
+            Pedido.objects.create(contacto=contacto, cantidad=cantidad, direccion_destino=direccion_destino, estado=estado,
+                valor_unitario=valor_unitario)
+    return redirect('contacto_detail', contacto.id)
+
+@login_required
+def contacto_pedido_delete(request, id_pedido):
+    pedido = get_object_or_404(Pedido, id=id_pedido)
+    contacto = pedido.contacto
+    pedido.delete()
+    return redirect('contacto_detail', contacto.id)
+
+#############################################################################
+
+@login_required
+def calcular_entrega_pedidos(request):
+    context = {}
+    pedidos = Pedido.objects.filter(estado="En Proceso").order_by('-creado_en')
+    maximo = CONF.carga_maxima_dia
+    metros = 0
+    indice = 0
+    for x in pedidos:
+        if metros >= maximo:
+            breaks
+        metros+=x.cantidad
+        indice+=1
+    pedidos = pedidos[:indice]
+    context['pedidos'] = pedidos
+    return render(request, 'gestion_lena/calcular_entrega_pedidos.html', context)
+
 
 
 #############################################################################

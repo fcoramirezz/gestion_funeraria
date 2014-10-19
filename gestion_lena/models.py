@@ -2,6 +2,18 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 
+
+
+class Configuracion(models.Model):
+	titulo_sistema = models.CharField(max_length=255, null=True, blank=True)
+	footer = models.CharField(max_length=255, null=True, blank=True)
+	precio_lena = models.PositiveIntegerField(null=True, blank=True)
+	carga_maxima_dia = models.PositiveIntegerField(null=True, blank=True)
+	creado_en = models.DateTimeField(auto_now_add=True)
+
+	def __unicode__(self):
+		return self.titulo_sistema
+
 TIPO_TELEFONO = (
 		(0, 'Movil'),
 		(1, 'Fijo'),
@@ -24,7 +36,7 @@ class Contacto(models.Model):
 	ultima_modificacion = models.DateTimeField(auto_now=True)
 
 	def __unicode__(self):
-		return u"%s, %s" % (self.nombre, self.apellido)
+		return u"%s %s" % (self.nombre, self.apellido)
 
 	def get_absolute_url(self):
 		return reverse('contacto_detail', kwargs={'pk': self.pk})
@@ -32,6 +44,14 @@ class Contacto(models.Model):
 	@property
 	def obtener_tipo_telefono(self):
 		return TIPO_TELEFONO[self.tipo_telefono][1]
+
+	@property
+	def lista_pedidos(self):
+		return self.pedido_set.order_by('-creado_en')
+
+	@property
+	def total(self):
+		return  sum(map(lambda x: x.total, self.pedido_set.all()))
 
 ESTADO_PEDIDO = (
 	('En Proceso', 'En Proceso'),
@@ -48,11 +68,13 @@ class Pedido(models.Model):
 	cantidad = models.PositiveIntegerField()
 	direccion_destino = models.CharField(max_length=255) ## Cuidado
 	estado = models.CharField(max_length=100, choices=ESTADO_PEDIDO, default="En Proceso")
+	valor_unitario = models.PositiveIntegerField()
 	fecha_entrega = models.DateTimeField(null=True, blank=True)
 	creado_en = models.DateTimeField(auto_now_add=True)
+	fecha_modificacion = models.DateTimeField(auto_now=True)
 
 	def __unicode__(self):
-		return u"%s, %s" % (self.contacto, self.estado)
+		return u"%s @ %s" % (self.pk, self.contacto)
 
 	def get_absolute_url(self):
 		return reverse('pedido_detail', kwargs={'pk': self.pk})
@@ -61,11 +83,15 @@ class Pedido(models.Model):
 	def obtener_estado_pedido(self):
 		return [ ESTADO_PEDIDO[0][0] , ESTADO_PEDIDO[1][0]]
 
-class Ingreso(models.Model):
-	pedido = models.OneToOneField("Pedido")
-	valor = models.IntegerField()
-	creado_en = models.DateTimeField(auto_now_add=True)
+	@property
+	def total(self):
+		return self.cantidad * self.valor_unitario
 
+	@property
+	def obtener_color_fila(self):
+		if self.estado == "Entregado":
+			return 'success'
+		return 'warning'
 
 class TipoGasto(models.Model):
 	nombre = models.CharField(max_length=255)

@@ -1,5 +1,6 @@
 {% extends 'gestion_lena/base.html' %}
 {% load activelink %}
+{% load bootstrap_pagination %}
 
 {% block content %}
 
@@ -27,21 +28,23 @@
                     {% endif %}
 
                     <hr>
-
-                    <ul class="list-group">
+                    {% bootstrap_paginate object_list %}
+                    <ul class="list-group"  style="height: 300px; overflow-y: auto;">
                         {% for x in object_list %}
                             <a href="{{  x.get_absolute_url }}" {% ifactive x.get_absolute_url %} class="list-group-item active" {% else %} class="list-group-item" {% endifactive %}> {{ x }} </a>
                         {% empty %}
                             <div class="alert alert-warning"> {% block alert_empty_message %} {% endblock %} </div>
                         {% endfor %}
                     </ul>
+
+
                 </div>
             </div>
         </div>
         <div class="col-md-9">
             <!-- Detalle de objeto -->
             {% block object_detail %}
-                <div class="alert alert-info"> Seleccione un item de la lista izquierda.</div>
+                <div class="alert alert-info"> Seleccione un item de la lista.</div>
             {% endblock %}
         </div>
     </div>

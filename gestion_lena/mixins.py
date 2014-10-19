@@ -9,6 +9,7 @@ from django.utils.decorators import method_decorator
 
 import six
 from six.moves import reduce
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 VALID_STRING_LOOKUPS = (
@@ -31,7 +32,8 @@ class SearchableListMixin(object):
 
     def get_context_data(self, **kwargs):
         context = super(SearchableListMixin, self).get_context_data(**kwargs)
-        qs = self.model.objects.order_by('-pk')
+        qs = self.model.objects.order_by('pk')
+        total_objects = qs.count()
         query = self.get_search_query()
         is_filter = False
         if query:
@@ -47,7 +49,16 @@ class SearchableListMixin(object):
                 w_qs.append(reduce(operator.or_, filters))
             qs = qs.filter(reduce(operator.and_, w_qs))
             qs = qs.distinct()
-        context.update({'object_list': qs, 'is_filter': is_filter})
+            total_objects = qs.count()
+        paginator = Paginator(qs, 10)
+        page = self.request.GET.get('page')
+        try:
+            qs = paginator.page(page)
+        except PageNotAnInteger:
+            qs = paginator.page(1)
+        except EmptyPage:
+            qs = paginator.page(paginator.num_pages)
+        context.update({'object_list': qs, 'is_filter': is_filter, 'total_objects': total_objects})
         return context
 
     def get_words(self, query):

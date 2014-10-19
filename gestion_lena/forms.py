@@ -13,3 +13,9 @@ class ContactoForm(forms.ModelForm):
 class PedidoForm(forms.ModelForm):
 	class Meta:
 		model = Pedido
+		exclude = ['fecha_entrega']
+
+class PedidoContactoForm(forms.ModelForm):
+	class Meta:
+		model = Pedido
+		exclude = ['fecha_entrega', 'contacto']

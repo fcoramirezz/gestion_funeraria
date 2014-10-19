@@ -17,4 +17,8 @@ urlpatterns = patterns('gestion_lena.views',
     url(r'^pedido/(?P<pk>\d+)/eliminar/$', PedidoDeleteView.as_view(), name='pedido_delete'),
     ##########################################################################################
     url(r'^pedido/(?P<id_pedido>\d+)/entregado/$', 'pedido_cambiar_estado', name='pedido_cambiar_estado'),
+    url(r'^contacto/(?P<id_contacto>\d+)/nuevo/pedido/$', 'contacto_nuevo_pedido', name='contacto_nuevo_pedido'),
+    url(r'^contacto/(?P<id_pedido>\d+)/pedido/delete/$', 'contacto_pedido_delete', name='contacto_pedido_delete'),
+    ###############################################################################################################
+    url(r'^pedidos/entregas/$', 'calcular_entrega_pedidos', name='calcular_entrega_pedidos'),
 )

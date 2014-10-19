@@ -1,0 +1,15 @@
+{% extends 'gestion_lena/base.html' %}
+
+{% block content %}
+
+<div class="page-header">
+	<h1> Entregas Pendientes </h1>
+</div>
+
+<ul class="list-group">
+{% for x in pedidos %}
+ 	<li class="list-group-item">  Entregar a  <strong> {{x.contacto}} </strong>  {{x.cantidad}} metro{{x.cantidad|pluralize}} de leña en  <span class="label label-info"> {{x.direccion_destino}} </span>. <strong> Fecha de Solicitud: </strong> {{x.creado_en}}  </li>
+{% endfor %}
+</ul>
+
+{% endblock %}
