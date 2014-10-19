@@ -11,8 +11,6 @@ class Configuracion(models.Model):
 	carga_maxima_dia = models.PositiveIntegerField(null=True, blank=True)
 	creado_en = models.DateTimeField(auto_now_add=True)
 
-	def __unicode__(self):
-		return self.titulo_sistema
 
 TIPO_TELEFONO = (
 		(0, 'Movil'),
