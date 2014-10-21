@@ -1,7 +1,3 @@
-/**
- * Created by javier on 20-10-14.
- */
-
 var url_api = "http://localhost:8000/api/v1/";
 var URL_API_PRODUCCTION = "http://dieramce.pythonanywhere.com/api/v1/";
 
@@ -15,7 +11,7 @@ function regionCambio(value){
         provinciaSelector.empty(); // borrar opciones provincias
 
         //configurar provincias
-        $.getJSON( url_api+"provincia/?format=json&region="+value, function (data) {
+        $.getJSON( URL_API_PRODUCCTION+"provincia/?format=json&region="+value, function (data) {
             $.each(data.objects , function( key, val ) {
                 var option = "<option></option>";
                 if (key == 0){ // primer elemento
@@ -31,7 +27,7 @@ function regionCambio(value){
 function provinciaCambio(value){
     var comunaSelector = $('#selector_comuna');
     comunaSelector.empty(); // borrar opciones provincias
-    $.getJSON( url_api+"comuna/?format=json&provincia="+value, function (data) {
+    $.getJSON( URL_API_PRODUCCTION+"comuna/?format=json&provincia="+value, function (data) {
         $.each(data.objects , function( key, val ) {
             var option = "<option></option>";
             if (key == 0){
@@ -52,14 +48,14 @@ function direccionActualizacion(){
             //regionCambio(id_region);
             $('#selector_region').val(id_region);
             $('#selector_provincia').empty();
-            $.getJSON(url_api+"provincia/?format=json&region="+id_region, function (data) {
+            $.getJSON(URL_API_PRODUCCTION+"provincia/?format=json&region="+id_region, function (data) {
                 $.each(data.objects , function( key, val ) {
                     $('#selector_provincia').append($("<option></option>").attr("value", val.id).text(val.nombre));
                 });
             }).done(function(){
                 $('#selector_provincia').val(id_provincia);
                 $('#selector_comuna').empty();
-                $.getJSON(url_api+"comuna/?format=json&provincia="+id_provincia, function (data) {
+                $.getJSON(URL_API_PRODUCCTION+"comuna/?format=json&provincia="+id_provincia, function (data) {
                     $.each(data.objects , function( key, val ) {
                         $('#selector_comuna').append($("<option></option>").attr("value", val.id).text(val.nombre));
                     });
@@ -92,7 +88,7 @@ function pedidoLlenarDireccion(value){
         var id_provincia;
         var id_comuna;
         var direccion;
-        $.getJSON( url_api+"contacto/"+ value +"/?format=json", function (data) {
+        $.getJSON( URL_API_PRODUCCTION+"contacto/"+ value +"/?format=json", function (data) {
             id_region = data.region.id;
             id_provincia = data.provincia.id;
             id_comuna = data.comuna.id;
@@ -100,14 +96,14 @@ function pedidoLlenarDireccion(value){
             //regionCambio(id_region);
             $('#selector_region').val(id_region);
             $('#selector_provincia').empty();
-            $.getJSON(url_api+"provincia/?format=json&region="+id_region, function (data) {
+            $.getJSON(URL_API_PRODUCCTION+"provincia/?format=json&region="+id_region, function (data) {
                 $.each(data.objects , function( key, val ) {
                     $('#selector_provincia').append($("<option></option>").attr("value", val.id).text(val.nombre));
                 });
             }).done(function(){
                 $('#selector_provincia').val(id_provincia);
                 $('#selector_comuna').empty();
-                $.getJSON(url_api+"comuna/?format=json&provincia="+id_provincia, function (data) {
+                $.getJSON(URL_API_PRODUCCTION+"comuna/?format=json&provincia="+id_provincia, function (data) {
                     $.each(data.objects , function( key, val ) {
                         $('#selector_comuna').append($("<option></option>").attr("value", val.id).text(val.nombre));
                     });
