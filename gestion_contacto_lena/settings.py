@@ -40,6 +40,8 @@ INSTALLED_APPS = (
     'bootstrap3',
     'django_tables2',
     'bootstrap_pagination',
+    'import_export',
+    'tastypie',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (

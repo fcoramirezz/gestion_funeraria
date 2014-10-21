@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 
-from gestion_lena.models import Contacto, Pedido, Configuracion
+from gestion_lena.models import Contacto, Pedido, Configuracion, Region, Provincia, Comuna
 from gestion_lena.mixins import LoginRequired, SearchableListMixin
 from gestion_lena.forms import ContactoForm, PedidoForm, PedidoContactoForm
 
@@ -35,6 +35,13 @@ class ContactoDetailView(LoginRequired, SearchableListMixin, DetailView):
     model = Contacto
     template_name = 'gestion_lena/contacto_detail.html'
     search_fields = [('nombre','icontains',), ('apellido','icontains',)]
+
+    def get_context_data(self, **kwargs):
+        context = super(ContactoDetailView, self).get_context_data(**kwargs)
+        context['regiones'] = Region.objects.all()
+        context['provincias'] = Provincia.objects.all()
+        context['comunas'] = Comuna.objects.all()
+        return context
 
 class ContactoCreateView(LoginRequired, SearchableListMixin, CreateView):
     model = Contacto
@@ -109,13 +116,17 @@ def contacto_nuevo_pedido(request, id_contacto):
         form = PedidoContactoForm(request.POST)
         print form
         if form.is_valid():
-            print "hola"
             cantidad = form.cleaned_data.get('cantidad', None)
             direccion_destino = form.cleaned_data.get('direccion_destino', None)
             estado = form.cleaned_data.get('estado', None)
+            region = form.cleaned_data.get('region', None)
+            provincia = form.cleaned_data.get('provincia', None)
+            comuna = form.cleaned_data.get('comuna', None)
             valor_unitario = form.cleaned_data.get('valor_unitario', None)
-            Pedido.objects.create(contacto=contacto, cantidad=cantidad, direccion_destino=direccion_destino, estado=estado,
-                valor_unitario=valor_unitario)
+            Pedido.objects.create(contacto=contacto, cantidad=cantidad,
+                direccion_destino=direccion_destino, estado=estado,
+                valor_unitario=valor_unitario, region=region, provincia=provincia,
+                comuna=comuna)
     return redirect('contacto_detail', contacto.id)
 
 @login_required
@@ -130,16 +141,16 @@ def contacto_pedido_delete(request, id_pedido):
 @login_required
 def calcular_entrega_pedidos(request):
     context = {}
-    pedidos = Pedido.objects.filter(estado="En Proceso").order_by('-creado_en')
-    maximo = CONF.carga_maxima_dia
-    metros = 0
-    indice = 0
-    for x in pedidos:
-        if metros >= maximo:
-            breaks
-        metros+=x.cantidad
-        indice+=1
-    pedidos = pedidos[:indice]
+    pedidos = Pedido.objects.filter(estado="En Proceso").order_by('creado_en')
+    # maximo = CONF.carga_maxima_dia
+    # metros = 0
+    # indice = 0
+    # for x in pedidos:
+    #     if metros >= maximo:
+    #         break
+    #     metros+=x.cantidad
+    #     indice+=1
+    # pedidos = pedidos[:indice]
     context['pedidos'] = pedidos
     return render(request, 'gestion_lena/calcular_entrega_pedidos.html', context)
 

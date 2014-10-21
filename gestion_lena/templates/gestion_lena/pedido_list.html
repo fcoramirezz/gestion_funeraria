@@ -2,7 +2,7 @@
 
 {% block title_panel %}
  <strong> Pedidos </strong> <span class="badge"> {{ total_objects }} </span>
-<a href="{% url 'pedido_create' %}" class="btn btn-danger btn-sm">   Añadir</a>
+<a href="{% url 'pedido_create' %}" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-plus"></span>  Añadir</a>
 {% endblock %}
 
 {% block alert_empty_message %}

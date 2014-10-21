@@ -1,8 +1,16 @@
 Django==1.7
 argparse==1.2.1
+chardet==2.3.0
+diff-match-patch==20110725.1
 django-activelink==0.4
+django-appconf==0.6
 django-bootstrap-pagination==1.5.0
 django-bootstrap3==4.11.0
+django-import-export==0.2.6
 django-tables2==0.15.0
+django-tastypie==0.12.0
+python-dateutil==2.2
+python-mimeparse==0.1.4
 six==1.8.0
+tablib==0.10.0
 wsgiref==0.1.2
