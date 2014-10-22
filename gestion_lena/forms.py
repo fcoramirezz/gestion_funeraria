@@ -1,6 +1,6 @@
 # coding: utf-8
 from django import forms
-from gestion_lena.models import Contacto, Pedido
+from gestion_lena.models import Contacto, Pedido, Gasto, TipoGasto
 
 class ContactoForm(forms.ModelForm):
     class Meta:
@@ -34,3 +34,15 @@ class PedidoContactoForm(forms.ModelForm):
 	class Meta:
 		model = Pedido
 		exclude = ['fecha_entrega', 'contacto']
+
+class GastoForm(forms.ModelForm):
+    class Meta:
+        model = Gasto
+
+    def __init__(self, *args, **kwargs):
+        super(GastoForm, self).__init__(*args, **kwargs)
+        self.fields['fecha'].widget.attrs.update({'class': 'dateinput'})
+
+class TipoGastoForm(forms.ModelForm):
+    class Meta:
+        model = TipoGasto

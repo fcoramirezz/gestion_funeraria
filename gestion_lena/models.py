@@ -1,4 +1,5 @@
 # coding: utf-8
+from django.contrib.humanize.templatetags.humanize import intcomma
 from django.db import models
 from django.core.urlresolvers import reverse
 
@@ -144,9 +145,14 @@ class TipoGasto(models.Model):
     nombre = models.CharField(max_length=255)
     creado_en = models.DateTimeField(auto_now_add=True)
 
+
+    def get_absolute_url(self):
+        return reverse('tipo_gasto_detail', kwargs={'pk': self.pk})
+
     class Meta:
         verbose_name = u"Tipo de Gasto"
         verbose_name_plural = u"Tipos de Gastos"
+
 
     def __unicode__(self):
         return self.nombre
@@ -154,7 +160,15 @@ class TipoGasto(models.Model):
 class Gasto(models.Model):
     tipo_gasto = models.ForeignKey("TipoGasto")
     valor = models.IntegerField()
+    comentario = models.TextField(null=True, blank=True)
+    fecha = models.DateField()
     creado_en = models.DateTimeField(auto_now_add=True)
+
+    def get_absolute_url(self):
+        return reverse('gasto_detail', kwargs={'pk': self.pk})
+
+    def __unicode__(self):
+        return u"%s - $%s" % (self.tipo_gasto.nombre, intcomma(self.valor))
 
     class Meta:
         verbose_name = u"Gasto"

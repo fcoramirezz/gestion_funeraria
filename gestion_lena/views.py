@@ -7,9 +7,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 
-from gestion_lena.models import Contacto, Pedido, Configuracion, Region, Provincia, Comuna
+from gestion_lena.models import Contacto, Pedido, Configuracion, Region, Provincia, Comuna, Gasto, TipoGasto
 from gestion_lena.mixins import LoginRequired, SearchableListMixin
-from gestion_lena.forms import ContactoForm, PedidoForm, PedidoContactoForm
+from gestion_lena.forms import ContactoForm, PedidoForm, PedidoContactoForm, GastoForm, TipoGastoForm
 
 import datetime
 
@@ -96,6 +96,70 @@ class PedidoDeleteView(LoginRequired, SearchableListMixin, DeleteView):
     template_name = 'gestion_lena/pedido_delete.html'
     search_fields = [('contacto__nombre','icontains',), ('contacto__apellido','icontains',)]
 
+
+################################################################################
+
+
+###########Gasto###################################################
+class GastoListView(LoginRequired, SearchableListMixin, ListView):
+    model = Gasto
+    template_name = 'gestion_lena/gasto_list.html'
+    search_fields = [('tipo_gasto__nombre','icontains',)]
+
+class GastoDetailView(LoginRequired, SearchableListMixin, DetailView):
+    model = Gasto
+    template_name = 'gestion_lena/gasto_detail.html'
+    search_fields = [('tipo_gasto__nombre','icontains',)]
+
+class GastoCreateView(LoginRequired, SearchableListMixin, CreateView):
+    model = Gasto
+    form_class = GastoForm
+    template_name = 'gestion_lena/gasto_create.html'
+    search_fields = [('tipo_gasto__nombre','icontains',)]
+
+class GastoUpdateView(LoginRequired, SearchableListMixin, UpdateView):
+    model = Gasto
+    form_class = GastoForm
+    template_name = 'gestion_lena/gasto_update.html'
+    search_fields = [('tipo_gasto__nombre','icontains',)]
+
+class GastoDeleteView(LoginRequired, SearchableListMixin, DeleteView):
+    model = Gasto
+    success_url = reverse_lazy('gasto_list')
+    template_name = 'gestion_lena/gasto_delete.html'
+    search_fields = [('tipo_gasto__nombre','icontains',)]
+
+
+################################################################################
+
+###########Tipo Gasto###################################################
+class TipoGastoListView(LoginRequired, SearchableListMixin, ListView):
+    model = TipoGasto
+    template_name = 'gestion_lena/tipo_gasto_list.html'
+    search_fields = [('nombre','icontains',)]
+
+class TipoGastoDetailView(LoginRequired, SearchableListMixin, DetailView):
+    model = TipoGasto
+    template_name = 'gestion_lena/tipo_gasto_detail.html'
+    search_fields = [('nombre','icontains',)]
+
+class TipoGastoCreateView(LoginRequired, SearchableListMixin, CreateView):
+    model = TipoGasto
+    form_class = TipoGastoForm
+    template_name = 'gestion_lena/tipo_gasto_create.html'
+    search_fields = [('nombre','icontains',)]
+
+class TipoGastoUpdateView(LoginRequired, SearchableListMixin, UpdateView):
+    model = TipoGasto
+    form_class = TipoGastoForm
+    template_name = 'gestion_lena/tipo_gasto_update.html'
+    search_fields = [('nombre','icontains',)]
+
+class TipoGastoDeleteView(LoginRequired, SearchableListMixin, DeleteView):
+    model = TipoGasto
+    success_url = reverse_lazy('tipo_gasto_list')
+    template_name = 'gestion_lena/tipo_gasto_delete.html'
+    search_fields = [('nombre','icontains',)]
 
 ################################################################################
 

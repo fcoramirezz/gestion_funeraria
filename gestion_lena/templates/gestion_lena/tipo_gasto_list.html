@@ -1,0 +1,14 @@
+{% extends 'gestion_lena/object_list.html' %}
+
+{% block title_panel %}
+ <strong> Tipos de Gastos </strong> <span class="badge"> {{ total_objects }} </span>
+<a href="{% url 'tipo_gasto_create' %}" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-plus"></span>   Añadir</a>
+{% endblock %}
+
+{% block alert_empty_message %}
+No se encontraron tipos de gastos registrados..
+{% endblock %}
+
+{% block  placeholder_buscar %}
+Buscar Tipo de Gasto...
+{% endblock %}

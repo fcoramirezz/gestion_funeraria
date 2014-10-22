@@ -1,5 +1,6 @@
 var url_api = "http://localhost:8000/api/v1/";
-var URL_API_PRODUCCTION = "http://dieramce.pythonanywhere.com/api/v1/";
+var url = "http://dieramce.pythonanywhere.com/api/v1/";
+var URL_API_PRODUCCTION = url;
 
 function regionCambio(value){
     if (isNaN(parseInt(value))){ // No es Numero
@@ -132,5 +133,10 @@ $(function() {
         var cantidad = $('input:checked').length;
         $('#cantidad_seleccionados').text(cantidad+" pedido seleccionados de " + largo);
     });
-
+     $.datepicker.setDefaults($.datepicker.regional['es']);
+        $('.dateinput').datepicker({ format: "yyyy/mm/dd",
+            changeYear: true,
+            changeMonth: true,
+            numberOfMonths: 2,
+            yearRange: "-1:+2"});
 });

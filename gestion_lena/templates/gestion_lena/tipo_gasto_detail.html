@@ -1,0 +1,37 @@
+{% extends 'gestion_lena/tipo_gasto_list.html' %}
+{% load humanize %}
+
+{% block title_page %}
+    {{ tipogasto }}
+{% endblock %}
+
+{% block object_detail %}
+    <div class="page-header">
+        <h1> {{ tipogasto }}  <small> <a href="{% url 'tipo_gasto_update' tipogasto.id %}" class="btn btn-default"> <span class="glyphicon glyphicon-edit"></span> Actualizar </a>  <a href="{% url 'tipo_gasto_delete' tipogasto.id %}" class="btn btn-danger"> <span class="glyphicon glyphicon-remove-circle"></span> Eliminar </a> </small> </h1>
+    </div>
+
+    <table class="table table-bordered">
+        <caption> Gastos Asociados a  <strong> {{ tipogasto }}</strong></caption>
+        <thead>
+        <tr>
+            <th> Id </th>
+            <th> Monto </th>
+            <th> Fecha </th>
+            <th> Comentario </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for x in tipogasto.gasto_set.all %}
+            <tr>
+                <td> {{ x.id }} </td>
+                <td> $ {{ x.valor|intcomma }} </td>
+                <td> {{ x.fecha }} </td>
+                <td> {{ x.comentario }} </td>
+            </tr>
+        {% empty %}
+            <div class="alert alert-warning"> No existen gastos asociados a este tipo de gasto.</div>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

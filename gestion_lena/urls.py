@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
-from gestion_lena.views import ContactoListView, ContactoDetailView, ContactoCreateView, ContactoUpdateView, ContactoDeleteView
+from gestion_lena.views import ContactoListView, ContactoDetailView, ContactoCreateView, ContactoUpdateView, ContactoDeleteView, \
+    GastoListView, GastoDetailView, GastoCreateView, GastoUpdateView, GastoDeleteView, TipoGastoListView, TipoGastoCreateView, TipoGastoDeleteView, TipoGastoDetailView, TipoGastoUpdateView
 from gestion_lena.views import PedidoListView, PedidoDetailView, PedidoCreateView, PedidoUpdateView, PedidoDeleteView
 
 
@@ -15,6 +16,16 @@ urlpatterns = patterns('gestion_lena.views',
     url(r'^pedido/nuevo/$', PedidoCreateView.as_view(), name='pedido_create'),
     url(r'^pedido/(?P<pk>\d+)/actualizar/$', PedidoUpdateView.as_view(), name='pedido_update'),
     url(r'^pedido/(?P<pk>\d+)/eliminar/$', PedidoDeleteView.as_view(), name='pedido_delete'),
+    url(r'^gastos/$', GastoListView.as_view(), name='gasto_list'),
+    url(r'^gasto/(?P<pk>\d+)/$', GastoDetailView.as_view(), name='gasto_detail'),
+    url(r'^gasto/nuevo/$', GastoCreateView.as_view(), name='gasto_create'),
+    url(r'^gasto/(?P<pk>\d+)/actualizar/$', GastoUpdateView.as_view(), name='gasto_update'),
+    url(r'^gasto/(?P<pk>\d+)/eliminar/$', GastoDeleteView.as_view(), name='gasto_delete'),
+    url(r'^tipo_gastos/$', TipoGastoListView.as_view(), name='tipo_gasto_list'),
+    url(r'^tipo_gasto/(?P<pk>\d+)/$', TipoGastoDetailView.as_view(), name='tipo_gasto_detail'),
+    url(r'^tipo_gasto/nuevo/$', TipoGastoCreateView.as_view(), name='tipo_gasto_create'),
+    url(r'^tipo_gasto/(?P<pk>\d+)/actualizar/$', TipoGastoUpdateView.as_view(), name='tipo_gasto_update'),
+    url(r'^tipo_gasto/(?P<pk>\d+)/eliminar/$', TipoGastoDeleteView.as_view(), name='tipo_gasto_delete'),
     ##########################################################################################
     url(r'^pedido/(?P<id_pedido>\d+)/entregado/$', 'pedido_cambiar_estado', name='pedido_cambiar_estado'),
     url(r'^contacto/(?P<id_contacto>\d+)/nuevo/pedido/$', 'contacto_nuevo_pedido', name='contacto_nuevo_pedido'),
