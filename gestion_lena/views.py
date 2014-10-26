@@ -25,7 +25,8 @@ if created:
 
 @login_required
 def home(request):
-	return render(request, 'gestion_lena/base.html')
+    pedidos = Pedido.objects.exclude(estado="Entregado").order_by('creado_en')[:4]
+    return render(request, 'gestion_lena/base.html', {'pedidos': pedidos})
 
 ##########CONTACTO###################################
 class ContactoListView(LoginRequired, SearchableListMixin, ListView):
