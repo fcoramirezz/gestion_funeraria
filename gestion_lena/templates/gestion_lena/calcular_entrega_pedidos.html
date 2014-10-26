@@ -104,7 +104,7 @@
                 <td> <span class="label label-info">  {{ x.cantidad }}  metro{{ x.cantidad|pluralize }} </span></td>
                 <td> {{ x.region }} {{ x.provincia }} {{ x.comuna }},  {{ x.direccion_destino }}</td>
                 <td> {{ x.creado_en }} </td>
-                <td> <a href="" class="btn btn-warning"> <span class="glyphicon glyphicon-ok-sign"> Marcar </span> </a>     </td>
+                <td> <a href="{% url 'pedido_cambiar_estado' x.id %}?next={{ request.path }}" class="btn btn-warning"> <span class="glyphicon glyphicon-ok-sign"> Marcar </span> </a>     </td>
             </tr>
         {% endfor %}
         </tbody>

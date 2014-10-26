@@ -1,0 +1,40 @@
+{% extends 'gestion_lena/base.html' %}
+{% load humanize %}
+
+ {% block content %}
+
+ <div class="page-header">
+ 	<h1> Cuenta, <small> {{ fecha_inicial|date:"D d M Y" }} al {{ fecha_final|date:"D d M Y" }} </small> </h1> 
+ 	<a href="{% url 'form_cuenta_t' %}" class="btn btn-warning"> Volver</a>
+ </div>
+
+ <table class="table table-bordered table-striped">
+ 	<thead>	
+ 		<tr>
+ 			<th> Fecha Transacción </th>
+ 			<th> Descripción </th>
+ 			<th> Cargo </th>
+ 			<th> Abono </th>
+ 			<th> Saldo </th>
+ 		</tr>
+ 	</thead>
+ 	<tbody>
+ 		{% for c in cuentas %}
+ 		<tr>
+ 			<td> {{ c.fecha }} </td>
+ 			<td>  {% if c.pedido %} Venta de Leña a  <strong> {{ c.pedido.contacto }} </strong> {% elif c.gasto %} Gasto en {{c.gasto.tipo_gasto}} <small> << {{c.gasto.comentario}} >> </small>. {% else %}  {{c.descripcion}}  {% endif %} </td>
+ 			<td> $ {{ c.cargo|intcomma }} </td>
+ 			<td> $ {{ c.abono|intcomma }} </td>
+ 			<td> $ {{ c.saldo|intcomma }} </td>
+ 		</tr>
+ 		{% empty %}
+ 		<div class="alert alert-warning"> No se encontraron registros de ventas o gastos en este rango de fechas. </div>
+ 		{% endfor %}	
+ 	</tbody>
+ </table>
+
+ <div class="text-center">
+ 	<h2> Total: $ {{ total|intcomma }} </h2>
+ </div>
+
+ {% endblock %}

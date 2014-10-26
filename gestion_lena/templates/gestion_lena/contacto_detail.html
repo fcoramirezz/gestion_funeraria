@@ -199,26 +199,23 @@
                         <td>  <strong> {{ x.cantidad }} metro{{x.cantidad|pluralize}} </strong>  </td>
                         <td> {{ x.direccion_destino }}</td>
                         <td>
-
-                            {% if not x.estado == "Entregado" %}
-                                <a href="{% url 'pedido_cambiar_estado' x.id %}"> Cambiar</a>
-                            {% endif%}
-                            <select  {% if x.estado == 'Entregado' %} disabled {% endif %}>
+                            <select  disabled>
                                 {% for e in x.obtener_estado_pedido %}
                                     <option value="{{e}}" {% if x.estado == e %} selected {% endif%}> {{e}} </option>
                                 {% endfor %}
                             </select>
-
+                             {% if not x.estado == "Entregado" %}
+                                <a href="{% url 'pedido_cambiar_estado' x.id %}?next={{request.path}}"> <span class="glyphicon glyphicon-check"></span> Entregar </a>
+                            {% endif%}
                         </td>
                         <td> {{ x.fecha_entrega|default:"" }} </td>
                         <td> {{ x.creado_en }} </td>
                         <td>
-                            <input id="valor_unitario_{{x.id}}" class="valor_unitario form-control" type="number" value="{{ x.valor_unitario|default:"" }}" name="valor_unitario_{{x.id}}" disabled>
-
+                            <input id="valor_unitario_{{x.id}}" class="valor_unitario form-control" type="number" value="{{ x.valor_unitario|intcomma|default:"" }}" name="valor_unitario_{{x.id}}" disabled>
                         </td>
                         <td>
                             <div class="btn-group" style="width:100px;">
-                                <a type="button" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top" title="Editar el pedido número {{forloop.counter}}"> <span class="glyphicon glyphicon-edit"></span> Editar</a>
+                                <a type="button" href="{% url 'pedido_update' x.id %}" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top" title="Editar el pedido número {{forloop.counter}}"> <span class="glyphicon glyphicon-edit"></span> Editar</a>
                                 <a type="button" class="btn btn-primary btn-sm" data-toggle="modal"  data-target="#modal_eliminar"> x </a>
                             </div>
 

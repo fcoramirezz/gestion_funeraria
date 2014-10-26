@@ -9,7 +9,9 @@ from django.contrib.auth.decorators import login_required
 
 from gestion_lena.models import Contacto, Pedido, Configuracion, Region, Provincia, Comuna, Gasto, TipoGasto
 from gestion_lena.mixins import LoginRequired, SearchableListMixin
-from gestion_lena.forms import ContactoForm, PedidoForm, PedidoContactoForm, GastoForm, TipoGastoForm
+from gestion_lena.forms import ContactoForm, PedidoForm, PedidoContactoForm, GastoForm, TipoGastoForm, RangoFechaForm
+
+from gestion_lena.models import Cuenta
 
 import datetime
 
@@ -165,13 +167,16 @@ class TipoGastoDeleteView(LoginRequired, SearchableListMixin, DeleteView):
 
 @login_required
 def pedido_cambiar_estado(request, id_pedido):
+    next = request.GET.get('next', None)
+    if not next:
+        next = "/gestion/home/"
     pedido = get_object_or_404(Pedido, id=id_pedido)
     if pedido.estado == "Entregado":
-        return redirect('contacto_detail', pedido.contacto.id)
+        return redirect(next)
     pedido.estado = "Entregado"
     pedido.fecha_entrega = datetime.datetime.now()
     pedido.save()
-    return redirect('contacto_detail', pedido.contacto.id)
+    return redirect(next)
 
 @login_required
 def contacto_nuevo_pedido(request, id_contacto):
@@ -218,9 +223,44 @@ def calcular_entrega_pedidos(request):
     context['pedidos'] = pedidos
     return render(request, 'gestion_lena/calcular_entrega_pedidos.html', context)
 
-
-
 #############################################################################
+
+@login_required
+def reporte_cuenta(request):
+    context = {}
+    cuentas = Cuenta.objects.order_by('fecha')
+    context['cuentas'] = cuentas
+    total = 0
+    if cuentas.count() > 0:
+        total = cuentas.last().saldo
+    context['total'] = total
+    return render(request, 'gestion_lena/reporte_cuenta.html', context)
+
+@login_required
+def form_cuenta_t(request):
+    context = {}
+    if request.method == "POST":
+        form = RangoFechaForm(request.POST)
+        if form.is_valid():
+            d_i = form.cleaned_data['fecha_inicial']
+            d_f = form.cleaned_data['fecha_final']
+            return redirect('cuenta_t', d_i, d_f)
+    else:
+        form = RangoFechaForm()
+    context['form'] = form
+    return render(request, 'gestion_lena/form_cuenta_t.html', context)
+
+@login_required
+def cuenta_t(request, fecha_inicial, fecha_final):
+    f_i = datetime.datetime.strptime(fecha_inicial, "%Y-%m-%d").date()
+    f_f = datetime.datetime.strptime(fecha_final, "%Y-%m-%d").date()
+    cuentas = Cuenta.objects.filter(fecha__gte=f_i, fecha__lte=f_f).order_by('fecha')   
+    total = 0
+    if cuentas.count() > 0:
+        total = cuentas.last().saldo
+    return render(request, 'gestion_lena/cuenta_t.html', {'cuentas':cuentas, 'fecha_inicial': f_i, 'fecha_final': f_f, 'total': total})
+
+############################################################################
 
 def iniciar_sesion(request):
     context = {}

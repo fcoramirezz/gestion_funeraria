@@ -32,4 +32,7 @@ urlpatterns = patterns('gestion_lena.views',
     url(r'^contacto/(?P<id_pedido>\d+)/pedido/delete/$', 'contacto_pedido_delete', name='contacto_pedido_delete'),
     ###############################################################################################################
     url(r'^pedidos/entregas/$', 'calcular_entrega_pedidos', name='calcular_entrega_pedidos'),
+    url(r'^reporte/cuenta/(?P<fecha_inicial>[-\d]+)/(?P<fecha_final>[-\d]+)/$', 'cuenta_t', name='cuenta_t'),
+    url(r'^reporte/filtrar/$', 'form_cuenta_t', name='form_cuenta_t'),
+    url(r'^reporte/cuenta/$', 'reporte_cuenta', name='reporte_cuenta'),
 )

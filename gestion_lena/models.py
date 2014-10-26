@@ -2,6 +2,9 @@
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.dispatch import receiver
+from django.db.models.signals import post_save, post_delete
+from django.utils import timezone
 
 
 class Configuracion(models.Model):
@@ -141,6 +144,25 @@ class Pedido(models.Model):
             return 'success'
         return 'warning'
 
+    def save(self, *args, **kwargs):
+        #check if the row with this hash already exists.
+        if self.estado == "Entregado" and not self.fecha_entrega:
+            self.fecha_entrega = timezone.now()
+        super(Pedido, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        try:
+            if self.cuenta:
+                cuenta = self.cuenta
+                cuenta.pedido = None
+                cuenta.descripcion = "Venta ( %s ) ingresada." % self
+                cuenta.save()
+                lc = Cuenta.objects.all().last()
+                Cuenta.objects.create(cargo=self.total, abono=0, saldo=lc.saldo-self.total,  fecha=timezone.now(), descripcion="Venta (%s) eliminada." % self)
+        except:
+            pass
+        return super(self.__class__, self).delete(*args, **kwargs)
+
 class TipoGasto(models.Model):
     nombre = models.CharField(max_length=255)
     creado_en = models.DateTimeField(auto_now_add=True)
@@ -170,7 +192,91 @@ class Gasto(models.Model):
     def __unicode__(self):
         return u"%s - $%s" % (self.tipo_gasto.nombre, intcomma(self.valor))
 
+
+    def delete(self, *args, **kwargs):
+        try:
+            if self.cuenta:
+                cuenta = self.cuenta
+                cuenta.gasto = None
+                cuenta.descripcion = "Gasto ( %s ) ingresado." % self
+                cuenta.save()
+                lc = Cuenta.objects.all().last()
+                Cuenta.objects.create(cargo=0, abono=self.valor, saldo=lc.saldo+self.valor,  fecha=timezone.now(), descripcion="Gasto (%s) eliminado." % self)                
+        except:
+            pass
+        return super(self.__class__, self).delete(*args, **kwargs)
+
     class Meta:
         verbose_name = u"Gasto"
         verbose_name_plural = u"Gastos"
+
+class Cuenta(models.Model):
+    fecha = models.DateTimeField()
+    cargo = models.IntegerField()
+    abono = models.IntegerField()
+    saldo = models.IntegerField(null=True, blank=True)
+    pedido = models.OneToOneField("Pedido", null=True, blank=True)
+    gasto = models.OneToOneField("Gasto", null=True, blank=True)
+    descripcion = models.TextField(null=True, blank=True)
+
+    def __unicode__(self):
+        return u"%s" % self.fecha
+
+@receiver(post_save, sender=Pedido)
+def guardar_entrega_cuenta_t(sender, **kwargs):
+    instance = kwargs.get('instance')
+    cuentas = Cuenta.objects.all()
+    saldo_total = 0
+    if cuentas.count() > 0:
+        uc = cuentas.last()
+        saldo_total = uc.saldo
+    if kwargs.get('created', False): # creado
+        if instance.estado == "Entregado" and instance.fecha_entrega:    
+            Cuenta.objects.create(pedido=instance, abono=instance.total, cargo=0, fecha=timezone.now(), saldo=saldo_total + instance.total)
+    else: # Actualizacion
+        pedido = instance
+        cuenta = None
+        try:
+            cuenta = pedido.cuenta
+        except:
+            pass
+        if cuenta: # Existe la cuenta
+            if pedido.estado == "Entregado" and pedido.fecha_entrega: ##
+                if cuenta.abono != pedido.total:
+                    cuenta.pedido = None
+                    cuenta.descripcion = "Venta ( %s ) Ingresada." % pedido
+                    cuenta.save()
+                    last_obj = Cuenta.objects.create(cargo=cuenta.abono, abono=0, descripcion="Modificación de la Venta (%s)." % pedido, fecha=timezone.now(), saldo=saldo_total-cuenta.abono)
+                    Cuenta.objects.create(abono=pedido.total, cargo=0, pedido=pedido, fecha=timezone.now(), saldo=last_obj.saldo+pedido.total)
+            else:
+                cuenta.pedido = None
+                cuenta.descripcion = "Venta ( %s ) Ingresada." % pedido
+                cuenta.save() 
+                Cuenta.objects.create(cargo=pedido.total, abono=0, descripcion="Venta ( %s ) desmarcada (cambio de estado a 'En Proceso')" % pedido, fecha=timezone.now(), saldo=saldo_total-pedido.total)
+        else: # No existe cuenta y se actualiza
+            if pedido.estado == "Entregado" and pedido.fecha_entrega: ##
+                Cuenta.objects.create(pedido=pedido, abono=pedido.total, cargo=0, fecha=timezone.now(), saldo=saldo_total + pedido.total)
+
+@receiver(post_save, sender=Gasto)
+def guardar_gasto_cuenta_t(sender, **kwargs):
+    cuentas = Cuenta.objects.all()
+    saldo_total = 0
+    if cuentas.count() > 0:
+        uc = cuentas.last()
+        saldo_total = uc.saldo
+    if kwargs.get('created', False): # Creado
+        instance = kwargs.get('instance')
+        obj, created = Cuenta.objects.get_or_create(gasto=instance, abono=0, cargo=instance.valor, fecha=timezone.now())
+        obj.saldo = saldo_total - obj.cargo
+        obj.save()
+    else: # Actualizacion
+        instance = kwargs.get('instance')
+        gasto = instance
+        cuenta = gasto.cuenta
+        if cuenta.cargo != gasto.valor:
+            cuenta.gasto = None
+            cuenta.descripcion = "Gasto ( %s ) ingresado." % gasto
+            cuenta.save()
+            last_obj = Cuenta.objects.create(abono=cuenta.cargo, cargo=0, descripcion="Modificación del Gasto (%s)." % gasto, fecha=timezone.now(), saldo=saldo_total+cuenta.cargo)
+            Cuenta.objects.create(abono=0, cargo=gasto.valor, gasto=gasto, fecha=timezone.now(), saldo=last_obj.saldo-gasto.valor)
 
