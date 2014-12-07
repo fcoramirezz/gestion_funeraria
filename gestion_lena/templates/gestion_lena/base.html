@@ -19,6 +19,7 @@
   <!-- Custom styles for this template -->
   <link href="{% static 'gestion_lena/css/sticky-footer-navbar.css' %}" rel="stylesheet">
   <link href="{% static 'gestion_lena/css/custom.css' %}" rel="stylesheet">
+  <link href="{% static 'gestion_lena/css/dataTables.bootstrap.css' %}" rel="stylesheet">
   <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
   <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
   <script src="{% static 'gestion_lena/js/ie-emulation-modes-warning.js' %}"></script>
@@ -63,7 +64,9 @@
                     <li class="divider"></li>
                     <li class="dropdown-header">Reportes</li>
                     <li class="divider"></li>
+                    {% comment %}
                     <li><a href="{% url 'reporte_cuenta' %}"> <i class=""></i> Gastos y Ventas <small> Resumen Cuenta</small> </a></li>
+                    {% endcomment %}
                     <li><a href="{% url 'form_cuenta_t' %}"> <i class=""></i> Gastos y Ventas <small> (Rango Fecha) </small> </a></li>
                 </ul>
               </li>
@@ -121,6 +124,8 @@
     <script src="{% static 'gestion_lena/js/jquery-ui.min.js' %}"></script>
     <script src="{% static 'gestion_lena/js/jquery-ui-i18n.min.js' %}"></script>
     <script src="{% static 'gestion_lena/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'gestion_lena/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'gestion_lena/js/dataTables.bootstrap.js' %}"></script>
     <script src="{% static 'gestion_lena/js/custom.js' %}"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{% static 'gestion_lena/js/ie10-viewport-bug-workaround.js' %}"></script>

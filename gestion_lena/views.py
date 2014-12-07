@@ -280,7 +280,7 @@ def iniciar_sesion(request):
             else:
                 messages.add_message(request, messages.ERROR, u"Error en su contraseña o nombre de usuario. Vuelva a intentarlo.")
     else:
-        messages.add_message(request, messages.INFO, u"Ingrese con su usuario")
+        #messages.add_message(request, messages.INFO, u"Ingrese con su usuario")
         formulario = AuthenticationForm()
     context['formulario'] = formulario
     return render(request, 'registration/login.html', context)

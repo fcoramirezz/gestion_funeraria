@@ -139,4 +139,10 @@ $(function() {
             changeMonth: true,
             numberOfMonths: 2,
             yearRange: "-1:+2"});
+     $('#tabla_adapted').dataTable({
+                "sPaginationType": "full_numbers",
+                "oLanguage": {
+                    "sUrl": "/static/gestion_lena/translate/spanish.txt"
+                }
+     });
 });

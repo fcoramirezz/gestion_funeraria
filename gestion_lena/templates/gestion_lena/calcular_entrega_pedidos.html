@@ -28,7 +28,7 @@
             var end = 0;
             for (index = 0; index < selections.length; ++index) {
                 if (selections[index].checked){
-                        waypts.push({location: selections[index].value, stopover:true})
+                    waypts.push({location: selections[index].value, stopover:true})
                 }
             }
             //
@@ -47,6 +47,7 @@
 
                 directionsService.route(request, function(response, status) {
                     if (status == google.maps.DirectionsStatus.OK) {
+                        console.log(calTotalDistance(response));
                         directionsDisplay.setDirections(response);
                     }
                 });
@@ -58,6 +59,7 @@
                 };
                 directionsService.route(request, function(response, status) {
                     if (status == google.maps.DirectionsStatus.OK) {
+                        console.log(calTotalDistance(response));
                         directionsDisplay.setDirections(response);
                     }
                 });
@@ -67,6 +69,16 @@
             }
 
         }
+
+        function calTotalDistance(response){
+            var totalDistance = 0;
+            var legs = response.routes[0].legs;
+            for(var i=0; i<legs.length; ++i) {
+                totalDistance += legs[i].distance.value;
+            }
+            return totalDistance/1000;
+        }
+
         google.maps.event.addDomListener(window, 'load', initialize);
 
     </script>
@@ -82,7 +94,7 @@
         <p class="alert alert-warning"> Seleccione los pedidos que desea entregar para luego generar la ruta.</p>
     </blockquote>
 
-    <table class="table table-bordered table-striped">
+    <table id="tabla_adapted" class="table table-bordered table-striped">
         <caption> <p id="cantidad_seleccionados" class="label label-danger"> 0 pedidos seleccionados de {{ pedidos|length }}  </p> </caption>
         <thead>
         <tr>

@@ -20,7 +20,7 @@
 	<tbody>
 		<tr>
 			<td> <b> Contacto </b>  </td>
-			<td> {{ pedido.contacto }} </td>
+			<td> <a href="{% url 'contacto_detail' pedido.contacto.id %}">  {{ pedido.contacto }} </a> </td>
 		</tr>
 		<tr>
 			<td> <b> Cantidad de leña Pedida </b>  </td>

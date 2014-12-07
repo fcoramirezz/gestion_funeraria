@@ -5,7 +5,10 @@ from gestion_lena.models import Contacto, Pedido, Gasto, TipoGasto
 class ContactoForm(forms.ModelForm):
     class Meta:
         model = Contacto
-
+        labels = {
+            'nombre': ('Nombres'),
+            'apellido': ('Apellidos'),
+        }
 
     def __init__(self, *args, **kwargs):
         super(ContactoForm, self).__init__(*args, **kwargs)
@@ -15,6 +18,37 @@ class ContactoForm(forms.ModelForm):
         self.fields['region'].empty_label = "Seleccione una Region"
         self.fields['provincia'].empty_label = None
         self.fields['comuna'].empty_label = None
+        self.es_actualizacion = kwargs.get('instance', None)
+
+    def clean(self):
+        cleaned_data = super(ContactoForm, self).clean()
+        nombres = cleaned_data.get("nombre")
+        apellidos = cleaned_data.get("apellido")
+        nombres = nombres.title()
+        apellidos = apellidos.title()
+        cleaned_data['nombre'] = nombres
+        cleaned_data['apellido'] = apellidos
+        n = 0
+
+        if self.es_actualizacion: ##actualizacion
+            n = 1
+        print n
+        print nombres
+        print apellidos
+        print Contacto.objects.filter(nombre__iexact=nombres, apellido__iexact=apellidos).count()
+        if Contacto.objects.filter(nombre__iexact=nombres, apellido__iexact=apellidos).count() > n:
+
+            self._errors["nombre"] = self.error_class([""])
+            self._errors["apellido"] = self.error_class([""])
+
+            # These fields are no longer valid. Remove them from the
+            # cleaned data.
+            del cleaned_data["nombre"]
+            del cleaned_data["apellido"]
+
+            raise forms.ValidationError("El contacto %s %s ya existe." % (nombres, apellidos))
+
+        return cleaned_data
 
 class PedidoForm(forms.ModelForm):
     class Meta:
@@ -37,7 +71,7 @@ class PedidoForm(forms.ModelForm):
         self.fields['comuna'].empty_label = None
 
 class PedidoContactoForm(forms.ModelForm):
-	class Meta:
+    class Meta:
 		model = Pedido
 		exclude = ['fecha_entrega', 'contacto']
 
