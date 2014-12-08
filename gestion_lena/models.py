@@ -103,6 +103,7 @@ class Contacto(models.Model):
     class Meta:
         verbose_name = u"Contacto"
         verbose_name_plural = u"Contactos"
+        ordering =  ['apellido']
 
     def __unicode__(self):
         return u"%s %s" % (self.nombre, self.apellido)
@@ -148,6 +149,7 @@ class Pedido(models.Model):
     class Meta:
         verbose_name = u"Pedido"
         verbose_name_plural = u"Pedidos"
+        ordering = ['-creado_en']
 
     def __unicode__(self):
         return u"%s @ %s" % (self.pk, self.contacto)

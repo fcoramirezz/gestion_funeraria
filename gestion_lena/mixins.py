@@ -32,7 +32,7 @@ class SearchableListMixin(object):
 
     def get_context_data(self, **kwargs):
         context = super(SearchableListMixin, self).get_context_data(**kwargs)
-        qs = self.model.objects.order_by('pk')
+        qs = self.model.objects.all()
         total_objects = qs.count()
         query = self.get_search_query()
         is_filter = False
