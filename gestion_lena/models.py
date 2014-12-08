@@ -7,6 +7,31 @@ from django.db.models.signals import post_save, post_delete
 from django.utils import timezone
 
 
+class HuellaCarbono(models.Model):
+    kilometro = models.DecimalField(max_digits=8, decimal_places=2)
+    km_litro = models.PositiveIntegerField()
+    kilowatt = models.DecimalField(max_digits=8, decimal_places=2)
+    creado_en = models.DateTimeField(auto_now_add=True)
+    modificado_en = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return u"%s - %s/%s/%s" % (self.pk, self.creado_en.day, self.creado_en.month, self.creado_en.year)
+
+    def get_absolute_url(self):
+        return reverse('huella_carbono_detail', kwargs={'pk': self.pk})
+
+    @property
+    def calcular_km(self):
+        return ( float(self.kilometro) / float(self.km_litro)) * 2.61
+
+    @property
+    def calcular_energia(self):
+        return float(self.kilowatt) * 0.65
+
+    @property
+    def total(self):
+        return self.calcular_energia + self.calcular_km
+
 class Configuracion(models.Model):
     titulo_sistema = models.CharField(max_length=255, null=True, blank=True)
     footer = models.CharField(max_length=255, null=True, blank=True)

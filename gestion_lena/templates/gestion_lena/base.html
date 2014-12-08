@@ -54,6 +54,7 @@
               <li {% ifactive 'calcular_entrega_pedidos' %} class="active" {% else %} {% endifactive %}><a href="{% url 'calcular_entrega_pedidos' %}"> <span class="glyphicon glyphicon-bookmark"></span> Entregas Pendientes </a></li>
               <li {% ifactive 'contacto_list' %} class="active" {% else %} {% endifactive %}><a href="{% url 'contacto_list' %}"> <span class="glyphicon glyphicon-book"></span> Contactos</a></li>
               <li {% ifactive 'pedido_list' %} class="active" {% else %} {% endifactive %}><a href="{% url 'pedido_list' %}"> <span class="glyphicon glyphicon-list"></span> Pedidos</a></li>
+              <li {% ifactive 'huella_carbono_list' %} class="active" {% else %} {% endifactive %}><a href="{% url 'huella_carbono_list' %}"> <span class="glyphicon glyphicon-globe"></span> Huella de Carbono</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-tags"></i> Gastos <b class="caret"></b></a>
                   <ul class="dropdown-menu">

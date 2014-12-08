@@ -7,9 +7,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 
-from gestion_lena.models import Contacto, Pedido, Configuracion, Region, Provincia, Comuna, Gasto, TipoGasto
+from gestion_lena.models import Contacto, Pedido, Configuracion, Region, Provincia, Comuna, Gasto, TipoGasto, \
+    HuellaCarbono
 from gestion_lena.mixins import LoginRequired, SearchableListMixin
-from gestion_lena.forms import ContactoForm, PedidoForm, PedidoContactoForm, GastoForm, TipoGastoForm, RangoFechaForm
+from gestion_lena.forms import ContactoForm, PedidoForm, PedidoContactoForm, GastoForm, TipoGastoForm, RangoFechaForm, \
+    HuellaCarbonoForm
 
 from gestion_lena.models import Cuenta
 
@@ -166,6 +168,27 @@ class TipoGastoDeleteView(LoginRequired, SearchableListMixin, DeleteView):
 
 ################################################################################
 
+
+###########Huellas de Carbono###################################################
+class HuellaCarbonoListView(LoginRequired, SearchableListMixin, ListView):
+    model = HuellaCarbono
+    template_name = 'gestion_lena/huella_carbono_list.html'
+    search_fields = [('id','icontains',)]
+
+class HuellaCarbonoDetailView(LoginRequired, SearchableListMixin, DetailView):
+    model = HuellaCarbono
+    template_name = 'gestion_lena/huella_carbono_detail.html'
+    search_fields = [('id','icontains',)]
+
+class HuellaCarbonoDeleteView(LoginRequired, SearchableListMixin, DeleteView):
+    model = HuellaCarbono
+    success_url = reverse_lazy('huella_carbono_list')
+    template_name = 'gestion_lena/huella_carbono_delete.html'
+    search_fields = [('id','icontains',)]
+
+################################################################################
+
+
 @login_required
 def pedido_cambiar_estado(request, id_pedido):
     next = request.GET.get('next', None)
@@ -212,15 +235,14 @@ def contacto_pedido_delete(request, id_pedido):
 def calcular_entrega_pedidos(request):
     context = {}
     pedidos = Pedido.objects.filter(estado="En Proceso").order_by('creado_en')
-    # maximo = CONF.carga_maxima_dia
-    # metros = 0
-    # indice = 0
-    # for x in pedidos:
-    #     if metros >= maximo:
-    #         break
-    #     metros+=x.cantidad
-    #     indice+=1
-    # pedidos = pedidos[:indice]
+    if request.method == 'POST':
+        form = HuellaCarbonoForm(request.POST)
+        if form.is_valid():
+            obj = form.save()
+            return redirect('huella_carbono_detail', obj.id)
+    else:
+        form = HuellaCarbonoForm()
+    context['form'] = form
     context['pedidos'] = pedidos
     return render(request, 'gestion_lena/calcular_entrega_pedidos.html', context)
 

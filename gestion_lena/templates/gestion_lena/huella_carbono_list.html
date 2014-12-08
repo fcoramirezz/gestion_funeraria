@@ -1,0 +1,13 @@
+{% extends 'gestion_lena/object_list.html' %}
+
+{% block title_panel %}
+ <strong> Registros Huellas de Carbono </strong> <span class="badge"> {{ total_objects }} </span>
+{% endblock %}
+
+{% block alert_empty_message %}
+No se encontraron registros de huella de carbono..
+{% endblock %}
+
+{% block  placeholder_buscar %}
+Buscar Huella de Carbono...
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'gestion_lena/huella_carbono_list.html'%}
+
+
+{% block object_detail %}
+    <div class="page-header">
+        <h1 class="text-error"> Eliminar Registro de Huella de Carbono  <small> {{ object }} </small> <a href="{% url 'huella_carbono_detail' object.id %}" class="btn btn-link">  Volver  </a>  </h1>
+    </div>
+
+    <div class="well">
+
+<form action="" method="post">{% csrf_token %}
+    <p class="alert alert-danger">Estás seguro que deseas elminar la huella de carbono <strong> "{{ object }}"? </strong></p>
+    <input class="btn btn-primary" type="submit" value="Confirmar" />
+</form>
+    </div>
+
+{% endblock %}
+

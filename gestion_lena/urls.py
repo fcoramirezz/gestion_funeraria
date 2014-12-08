@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from gestion_lena.views import ContactoListView, ContactoDetailView, ContactoCreateView, ContactoUpdateView, ContactoDeleteView, \
-    GastoListView, GastoDetailView, GastoCreateView, GastoUpdateView, GastoDeleteView, TipoGastoListView, TipoGastoCreateView, TipoGastoDeleteView, TipoGastoDetailView, TipoGastoUpdateView
+    GastoListView, GastoDetailView, GastoCreateView, GastoUpdateView, GastoDeleteView, TipoGastoListView, TipoGastoCreateView, TipoGastoDeleteView, TipoGastoDetailView, TipoGastoUpdateView, \
+    HuellaCarbonoListView, HuellaCarbonoDetailView, HuellaCarbonoDeleteView
 from gestion_lena.views import PedidoListView, PedidoDetailView, PedidoCreateView, PedidoUpdateView, PedidoDeleteView
 
 
@@ -26,6 +27,10 @@ urlpatterns = patterns('gestion_lena.views',
     url(r'^tipo_gasto/nuevo/$', TipoGastoCreateView.as_view(), name='tipo_gasto_create'),
     url(r'^tipo_gasto/(?P<pk>\d+)/actualizar/$', TipoGastoUpdateView.as_view(), name='tipo_gasto_update'),
     url(r'^tipo_gasto/(?P<pk>\d+)/eliminar/$', TipoGastoDeleteView.as_view(), name='tipo_gasto_delete'),
+    #####################################################################################################
+    url(r'^huella/$', HuellaCarbonoListView.as_view(), name='huella_carbono_list'),
+    url(r'^huella/(?P<pk>\d+)/$', HuellaCarbonoDetailView.as_view(), name='huella_carbono_detail'),
+    url(r'^huella/(?P<pk>\d+)/eliminar/$', HuellaCarbonoDeleteView.as_view(), name='huella_carbono_delete'),
     ##########################################################################################
     url(r'^pedido/(?P<id_pedido>\d+)/entregado/$', 'pedido_cambiar_estado', name='pedido_cambiar_estado'),
     url(r'^contacto/(?P<id_contacto>\d+)/nuevo/pedido/$', 'contacto_nuevo_pedido', name='contacto_nuevo_pedido'),
