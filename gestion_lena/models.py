@@ -11,6 +11,7 @@ class HuellaCarbono(models.Model):
     kilometro = models.DecimalField(max_digits=8, decimal_places=2)
     km_litro = models.PositiveIntegerField()
     kilowatt = models.DecimalField(max_digits=8, decimal_places=2)
+    fecha = models.DateField()
     creado_en = models.DateTimeField(auto_now_add=True)
     modificado_en = models.DateTimeField(auto_now=True)
 

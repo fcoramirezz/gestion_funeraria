@@ -49,12 +49,8 @@ class ContactoForm(forms.ModelForm):
 
         if self.es_actualizacion: ##actualizacion
             n = 1
-        print n
-        print nombres
-        print apellidos
         print Contacto.objects.filter(nombre__iexact=nombres, apellido__iexact=apellidos).count()
         if Contacto.objects.filter(nombre__iexact=nombres, apellido__iexact=apellidos).count() > n:
-
             self._errors["nombre"] = self.error_class([""])
             self._errors["apellido"] = self.error_class([""])
 
