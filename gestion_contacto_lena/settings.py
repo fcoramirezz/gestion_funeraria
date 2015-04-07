@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'bootstrap_pagination',
     'import_export',
     'tastypie',
+    'password_reset',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
@@ -106,3 +107,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR,  'media')
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
 )
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'gestiondedistribucondelena@gmail.com'
+EMAIL_HOST_PASSWORD = '20052015'
