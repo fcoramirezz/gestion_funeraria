@@ -7,11 +7,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 
-from gestion_lena.models import Contacto, Pedido, Configuracion, Region, Provincia, Comuna, Gasto, TipoGasto, \
-    HuellaCarbono
+from gestion_lena.models import Servicio, Contacto, Pedido, Configuracion, Region, Provincia, Comuna, Gasto, TipoGasto, Servicio
+    
 from gestion_lena.mixins import LoginRequired, SearchableListMixin
-from gestion_lena.forms import ContactoForm, PedidoForm, PedidoContactoForm, GastoForm, TipoGastoForm, RangoFechaForm, \
-    HuellaCarbonoForm
+from gestion_lena.forms import ServicioForm, ContactoForm, PedidoForm, PedidoContactoForm, GastoForm, TipoGastoForm, RangoFechaForm, ServicioForm
+   
 
 from gestion_lena.models import Cuenta
 
@@ -102,8 +102,34 @@ class PedidoDeleteView(LoginRequired, SearchableListMixin, DeleteView):
     search_fields = [('contacto__nombre','icontains',), ('contacto__apellido','icontains',)]
 
 
-################################################################################
+#########################SERVICIO ########################################
+class ServicioListView(LoginRequired, SearchableListMixin, ListView):
+    model = Servicio
+    template_name = 'gestion_lena/servicio_list.html'
+    search_fields = [('nombre','icontains',)]
 
+class ServicioDetailView(LoginRequired, SearchableListMixin, DetailView):
+    model = Servicio
+    template_name = 'gestion_lena/servicio_detail.html'
+    search_fields = [('nombre','icontains',)]
+
+class ServicioCreateView(LoginRequired, SearchableListMixin, CreateView):
+    model = Servicio
+    form_class = ServicioForm
+    template_name = 'gestion_lena/servicio_create.html'
+    search_fields = [('nombre','icontains',)]
+
+class ServicioUpdateView(LoginRequired, SearchableListMixin, UpdateView):
+    model = Servicio
+    form_class = ServicioForm
+    template_name = 'gestion_lena/servicio_update.html'
+    search_fields = [('nombre','icontains',)]
+
+class ServicioDeleteView(LoginRequired, SearchableListMixin, DeleteView):
+    model = Servicio
+    success_url = reverse_lazy('servicio_list')
+    template_name = 'gestion_lena/servicio_delete.html'
+    search_fields = [('nombre','icontains',)]
 
 ###########Gasto###################################################
 class GastoListView(LoginRequired, SearchableListMixin, ListView):
@@ -170,21 +196,7 @@ class TipoGastoDeleteView(LoginRequired, SearchableListMixin, DeleteView):
 
 
 ###########Huellas de Carbono###################################################
-class HuellaCarbonoListView(LoginRequired, SearchableListMixin, ListView):
-    model = HuellaCarbono
-    template_name = 'gestion_lena/huella_carbono_list.html'
-    search_fields = [('id','icontains',)]
 
-class HuellaCarbonoDetailView(LoginRequired, SearchableListMixin, DetailView):
-    model = HuellaCarbono
-    template_name = 'gestion_lena/huella_carbono_detail.html'
-    search_fields = [('id','icontains',)]
-
-class HuellaCarbonoDeleteView(LoginRequired, SearchableListMixin, DeleteView):
-    model = HuellaCarbono
-    success_url = reverse_lazy('huella_carbono_list')
-    template_name = 'gestion_lena/huella_carbono_delete.html'
-    search_fields = [('id','icontains',)]
 
 ################################################################################
 
@@ -235,14 +247,7 @@ def contacto_pedido_delete(request, id_pedido):
 def calcular_entrega_pedidos(request):
     context = {}
     pedidos = Pedido.objects.filter(estado="En Proceso").order_by('creado_en')
-    if request.method == 'POST':
-        form = HuellaCarbonoForm(request.POST)
-        if form.is_valid():
-            obj = form.save()
-            return redirect('huella_carbono_detail', obj.id)
-    else:
-        form = HuellaCarbonoForm()
-    context['form'] = form
+    
     context['pedidos'] = pedidos
     return render(request, 'gestion_lena/calcular_entrega_pedidos.html', context)
 

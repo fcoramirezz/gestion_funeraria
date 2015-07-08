@@ -47,17 +47,17 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{% url 'home' %}">Gestión de Distribución de Leña</a>
+            <a class="navbar-brand" href="{% url 'home' %}">Gestión de Servicios Fúnebres</a>
           </div>
-          {% if request.user.is_authenticated %}
-            <div class="collapse navbar-collapse">
+          <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
 
-              <ul class="nav navbar-nav">
-
-                <li {% ifactive 'calcular_entrega_pedidos' %} class="active" {% else %} {% endifactive %}><a href="{% url 'calcular_entrega_pedidos' %}"> <span class="glyphicon glyphicon-bookmark"></span> Entregas Pendientes </a></li>
+              <li {% ifactive 'servicio_list' %} class="active" {% else %} {% endifactive %}><a href="{% url 'servicio_list' %}"> <span class="glyphicon glyphicon-book"></span> Tipos de Servicio</a></li>
+             
+              <li {% ifactive 'calcular_entrega_pedidos' %} class="active" {% else %} {% endifactive %}><a href="{% url 'calcular_entrega_pedidos' %}"> <span class="glyphicon glyphicon-bookmark"></span> Servicios Pendientes </a></li>
               <li {% ifactive 'contacto_list' %} class="active" {% else %} {% endifactive %}><a href="{% url 'contacto_list' %}"> <span class="glyphicon glyphicon-book"></span> Contactos</a></li>
-              <li {% ifactive 'pedido_list' %} class="active" {% else %} {% endifactive %}><a href="{% url 'pedido_list' %}"> <span class="glyphicon glyphicon-list"></span> Pedidos</a></li>
-              <li {% ifactive 'huella_carbono_list' %} class="active" {% else %} {% endifactive %}><a href="{% url 'huella_carbono_list' %}"> <span class="glyphicon glyphicon-globe"></span> Huella de Carbono</a></li>
+              <li {% ifactive 'pedido_list' %} class="active" {% else %} {% endifactive %}><a href="{% url 'pedido_list' %}"> <span class="glyphicon glyphicon-list"></span> Venta de Servicios</a></li>
+              
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-tags"></i> Gastos <b class="caret"></b></a>
                   <ul class="dropdown-menu">
@@ -66,7 +66,6 @@
                     <li><a href="{% url 'gasto_list' %}"> <i class="glyphicon glyphicon-tag"></i> Lista de gastos</a></li>
                     <li><a href="{% url 'tipo_gasto_list' %}"> <i class=""></i> Tipo de Gasto</a></li>
                     <li class="divider"></li>
-                    <li class="dropdown-header">Reportes</li>
                     <li class="divider"></li>
                     {% comment %}
                     <li><a href="{% url 'reporte_cuenta' %}"> <i class=""></i> Gastos y Ventas <small> Resumen Cuenta</small> </a></li>
@@ -77,7 +76,6 @@
             </ul>
             {% include 'gestion_lena/partials/user_nav.html' %}
           </div><!--/.nav-collapse -->
-        {% endif %}
         </div>
       </div>
 
@@ -86,9 +84,9 @@
         {% block content %}
         <div class="well">
           <div align="center">
-              <h1> SISTEMA DE GESTION </h1> 
-                  <h1> & </h1> 
-              <h3 class="text-info"> DISTRIBUCION DE LEÑA </h3>
+              <h1> FUNERARIA SAN FRANCISCO </h1> 
+                  
+              <h3 class="text-info"> SISTEMA DE GESTIÓN </h3>
           </div>
         </div>
 
@@ -100,12 +98,12 @@
           </blockquote>
           </div>
           <div class="col-md-6">
-            <h2> Ultimos pedidos </h2>
+            <h2> Ultimos Servicios Ingresados</h2>
             <ul class="list-group"> 
                 {% for x in pedidos %}
-                <li class="list-group-item"> {{ x.contacto }} - <strong> {{ x.cantidad }} metro{{ x.cantidad|pluralize }} </strong> - {{ x.direccion_destino }} </li>
+                <li class="list-group-item"> {{ x.contacto }} - <strong> {{ x.provincia }} </strong> - {{ x.direccion_destino }} </li>
                 {% empty %}
-                  <div class="alert alert-warning"> No tiene pedidos por entregar. </div> 
+                  <div class="alert alert-warning"> No tiene servicios a realizar. </div> 
                 {% endfor %}
             </ul>
 
@@ -118,7 +116,7 @@
 
       <div class="footer">
         <div class="container">
-          <p class="text-muted">Diego Ramirez Cerda &copy; Todos los derechos reservados  </p>
+          <p class="text-muted">Francisco Ramirez Cerda &copy; Todos los derechos reservados  </p>
         </div>
       </div>
 

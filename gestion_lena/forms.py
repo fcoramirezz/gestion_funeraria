@@ -1,22 +1,8 @@
 # coding: utf-8
 from django import forms
-from gestion_lena.models import Contacto, Pedido, Gasto, TipoGasto, HuellaCarbono
+from gestion_lena.models import Contacto, Pedido, Gasto, TipoGasto, Servicio
 
-class HuellaCarbonoForm(forms.ModelForm):
-    class Meta:
-        model = HuellaCarbono
-        labels = {
-            'kilometro': ('Kilometros'),
-            'km_litro': ('Litros Por Kilometro')
-        }
-        help_texts = {
-            'kilometro': ('Este valor se completara automaticamente cuando haya generado la ruta.'),
-            'km_litro': ('Ingrese la cantidad de litros por kilometro que gasta aproximadamente.'),
-            'kilowatt': ('Cual es el gasto aproximado en energia electrica por el uso del computador, en Kilowatts.')
-        }
 
-    def __init__(self, *args, **kwargs):
-        super(HuellaCarbonoForm, self).__init__(*args, **kwargs)
 
 
 class ContactoForm(forms.ModelForm):
@@ -33,7 +19,7 @@ class ContactoForm(forms.ModelForm):
         self.fields['provincia'].widget.attrs.update({'id': 'selector_provincia', 'onchange': 'provinciaCambio(this.value)'})
         self.fields['comuna'].widget.attrs.update({'id': 'selector_comuna'})
         self.fields['region'].empty_label = "Seleccione una Region"
-        self.fields['provincia'].empty_label = None
+        self.fields['provincia'].empty_label = "Seleccione una Provincia"
         self.fields['comuna'].empty_label = None
         self.es_actualizacion = kwargs.get('instance', None)
 
@@ -66,11 +52,11 @@ class ContactoForm(forms.ModelForm):
 class PedidoForm(forms.ModelForm):
     class Meta:
         model = Pedido
-        exclude = ['fecha_entrega']
         help_texts = {
             'contacto': 'Seleccione a alguno de sus contactos disponibles o registre un nuevo contacto.',
-            'cantidad': 'Ingrese la cantidad de leña solicitada, en metros cuadrados.',
-            'valor_unitario': 'Ingrese el precio de venta del metro de leña.',
+            'cantidad': ' Ingrese tipo de servicio.',
+            'valor_unitario': 'Ingrese el precio del servicio.',
+            'tipo_de_servicio': 'Ingrese el tipo de servicio a ingresar',
         }
 
     def __init__(self, *args, **kwargs):
@@ -82,6 +68,13 @@ class PedidoForm(forms.ModelForm):
         self.fields['region'].empty_label = "Seleccione una Región"
         self.fields['provincia'].empty_label = None
         self.fields['comuna'].empty_label = None
+        self.fields['fecha_entrega'].widget.attrs.update({'class': 'dateinput'})
+
+
+###############       SERVICIO FORM
+class ServicioForm(forms.ModelForm):
+    class Meta:
+        model = Servicio
 
 class PedidoContactoForm(forms.ModelForm):
     class Meta:

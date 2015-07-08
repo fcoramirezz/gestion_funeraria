@@ -23,16 +23,16 @@
 			<td> <a href="{% url 'contacto_detail' pedido.contacto.id %}">  {{ pedido.contacto }} </a> </td>
 		</tr>
 		<tr>
-			<td> <b> Cantidad de leña Pedida </b>  </td>
-			<td> {{ pedido.cantidad }} metro{{ pedido.cantidad|pluralize }} </td>
+			<td> <b> Tipo de Servicio Fúnebre </b>  </td>
+			<td> {{ pedido.tipo_de_servicio.nombre }} </td>
 		</tr>
 		<tr>
 			<td> <b> Dirección de Despacho </b>  </td>
 			<td> {{ pedido.direccion_destino }} </td>
 		</tr>
 		<tr>
-			<td> <b> Precio Metro/Leña </b>  </td>
-			<td> $ {{ pedido.valor_unitario|intcomma }} </td>
+			<td> <b> Precio Servicio </b>  </td>
+			<td> $ {{ pedido.tipo_de_servicio.precio_de_venta|intcomma }} </td>
 		</tr>
 		<tr class="{{pedido.obtener_color_fila}}">
 			<td> <b>  Estado </b>  </td>

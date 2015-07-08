@@ -3,13 +3,13 @@
 
 {% block object_detail %}
     <div class="page-header">
-        <h1 class="text-error"> Eliminar Pedido  <small> {{ pedido }} </small> <a href="{% url 'pedido_detail' pedido.id %}" class="btn btn-link">  Volver  </a>  </h1>
+        <h1 class="text-error"> Eliminar Servicio  <small> {{ pedido }} </small> <a href="{% url 'pedido_detail' pedido.id %}" class="btn btn-link">  Volver  </a>  </h1>
     </div>
 
     <div class="well">
 
 <form action="" method="post">{% csrf_token %}
-    <p class="alert alert-danger">Estás seguro que deseas elminar el pedido <strong> "{{ object }}"? </strong></p>
+    <p class="alert alert-danger">Estás seguro que deseas eliminar el servicio <strong> "{{ object }}"? </strong></p>
     <input class="btn btn-primary" type="submit" value="Confirmar" />
 </form>
     </div>

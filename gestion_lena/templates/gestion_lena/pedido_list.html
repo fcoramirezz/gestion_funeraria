@@ -1,14 +1,14 @@
 {% extends 'gestion_lena/object_list.html' %}
 
 {% block title_panel %}
- <strong> Pedidos </strong> <span class="badge"> {{ total_objects }} </span>
-<a href="{% url 'pedido_create' %}" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-plus"></span>  Añadir</a>
+ <strong> Servicios </strong> <span class="badge"> {{ total_objects }} </span>
+<a href="{% url 'pedido_create' %}" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-plus"></span>  Añadir Nuevo Servicio</a>
 {% endblock %}
 
 {% block alert_empty_message %}
-No se encontraron pedidos registrados..
+No se encontraron servicios registrados..
 {% endblock %}
 
 {% block  placeholder_buscar %}
-Buscar pedido...
+Buscar servicio...
 {% endblock %}

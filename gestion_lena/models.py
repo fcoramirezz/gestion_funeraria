@@ -7,31 +7,6 @@ from django.db.models.signals import post_save, post_delete
 from django.utils import timezone
 
 
-class HuellaCarbono(models.Model):
-    kilometro = models.DecimalField(max_digits=8, decimal_places=2)
-    km_litro = models.PositiveIntegerField()
-    kilowatt = models.DecimalField(max_digits=8, decimal_places=2)
-    fecha = models.DateField()
-    creado_en = models.DateTimeField(auto_now_add=True)
-    modificado_en = models.DateTimeField(auto_now=True)
-
-    def __unicode__(self):
-        return u"%s - %s/%s/%s" % (self.pk, self.creado_en.day, self.creado_en.month, self.creado_en.year)
-
-    def get_absolute_url(self):
-        return reverse('huella_carbono_detail', kwargs={'pk': self.pk})
-
-    @property
-    def calcular_km(self):
-        return ( float(self.kilometro) / float(self.km_litro)) * 2.61
-
-    @property
-    def calcular_energia(self):
-        return float(self.kilowatt) * 0.65
-
-    @property
-    def total(self):
-        return self.calcular_energia + self.calcular_km
 
 class Configuracion(models.Model):
     titulo_sistema = models.CharField(max_length=255, null=True, blank=True)
@@ -84,6 +59,12 @@ TIPO_TELEFONO = (
         (2, 'No Menciona'),
     )
 
+TIPO_CONTACTO = (
+        (0, 'Proveedor'),
+        (1, 'Cliente'),
+        (2, 'Otro'),
+    )
+
 class Contacto(models.Model):
     '''
     Representa un Cliente que realiza
@@ -91,6 +72,7 @@ class Contacto(models.Model):
     '''
     nombre = models.CharField(max_length=255)
     apellido = models.CharField(max_length=255)
+    tipo_de_contacto= models.IntegerField(choices=TIPO_CONTACTO, default=2)
     tipo_telefono = models.IntegerField(choices=TIPO_TELEFONO, default=2)
     telefono = models.IntegerField(null=True,blank=True)
     region = models.ForeignKey("Region")
@@ -130,22 +112,56 @@ ESTADO_PEDIDO = (
     )
 
 
+
+class Servicio(models.Model):
+    nombre = models.CharField(max_length=255)
+    precio_de_venta = models.PositiveIntegerField()
+    costo_de_servicio = models.PositiveIntegerField()
+
+    class Meta:
+        verbose_name = u"Servicio"
+        verbose_name_plural = u"Servicios"
+        ordering =  ['precio_de_venta']
+        
+    def __unicode__(self):
+        return u"%s %s" % (self.nombre, self.precio_de_venta)
+
+    @property
+    def obtener_ganancia_de_venta(self):
+        return self.precio_de_venta - self.costo_de_servicio
+    @property
+    def obtener_precio_de_venta(self):
+        return self.precio_de_venta
+
+    def get_absolute_url(self):
+        return reverse('servicio_detail', kwargs={'pk': self.pk})
+
+
+class Componentes(models.Model):
+    nombre_de_componente = models.CharField(max_length=255)
+    costo = models.PositiveIntegerField()
+
+
+
+
 class Pedido(models.Model):
     '''
     Representa el pedido de leña que realiza un contacto.
 
     '''
     contacto = models.ForeignKey('Contacto')
-    cantidad = models.PositiveIntegerField()
+    cantidad = 1
+    tipo_de_servicio = models.ForeignKey("Servicio")
     region = models.ForeignKey("Region")
     provincia = models.ForeignKey("Provincia")
     comuna = models.ForeignKey("Comuna")
     direccion_destino = models.CharField(max_length=255) ## Cuidado
     estado = models.CharField(max_length=100, choices=ESTADO_PEDIDO, default="En Proceso")
-    valor_unitario = models.PositiveIntegerField()
-    fecha_entrega = models.DateTimeField(null=True, blank=True)
+    valor_unitario = models.PositiveIntegerField(default=Servicio.obtener_precio_de_venta)
+    fecha_entrega = models.DateField()
     creado_en = models.DateTimeField(auto_now_add=True)
     fecha_modificacion = models.DateTimeField(auto_now=True)
+
 
     class Meta:
         verbose_name = u"Pedido"

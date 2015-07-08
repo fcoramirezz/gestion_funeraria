@@ -1,0 +1,25 @@
+{% extends 'gestion_lena/servicio_list.html' %}
+{% load humanize %}
+
+{% block title_page %}
+{{ servicio }}
+{% endblock %}
+
+{% block object_detail %}
+<div class="page-header">
+<h1> {{ servicio }}  <small> <a href="{% url 'servicio_update' servicio.id %}" class="btn btn-default"> <span class="glyphicon glyphicon-edit"></span> Actualizar </a>  <a href="{% url 'servicio_delete' servicio.id %}" class="btn btn-danger"> <span class="glyphicon glyphicon-remove-circle"></span> Eliminar </a> </small> </h1>
+</div>
+
+<div class="well text-center">
+    <h2> <span class="text text-info">Correlativo:  </span> {{ servicio.id }} </h2>
+    <h2> <span class="text text-info">Nombre de Tipo de Servicio:  </span> {{ servicio.nombre }} </h2>
+    <h2> <span class="text text-info">Costo de Servicio:  </span> {{ servicio.costo_de_servicio }} </h2>
+    <h3> <span class="text text-info"> Precio de Venta: </span> <span class="label label-info">  $ {{ servicio.precio_de_venta|intcomma }} </span></h3>
+</div>
+
+<h3> Comentario: </h3>
+<blockquote>
+    <p> 
+</blockquote>
+
+{% endblock %}

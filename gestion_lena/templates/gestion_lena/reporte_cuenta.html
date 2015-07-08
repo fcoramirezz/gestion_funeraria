@@ -14,7 +14,7 @@
  			<th> Fecha Transacción </th>
  			<th> Descripción </th>
  			<th> Cargo </th>
- 			<th> Abono </th>
+ 			<th> Abonwwo </th>
  			<th> Saldo </th>
  		</tr>
  	</thead>
@@ -22,7 +22,7 @@
  		{% for c in cuentas %}
  		<tr>
  			<td> {{ c.fecha }} </td>
- 			<td>  {% if c.pedido %} Venta de Leña a  <strong> {{ c.pedido.contacto }} </strong> {% elif c.gasto %} Gasto en {{c.gasto.tipo_gasto}} <small> << {{c.gasto.comentario}} >> </small>. {% else %}  {{c.descripcion}}  {% endif %} </td>
+ 			<td>  {% if c.pedido %} Venta de Servicio Fúnebre a  <strong> {{ c.pedido.contacto }} </strong> {% elif c.gasto %} Gasto en {{c.gasto.tipo_gasto}} <small> << {{c.gasto.comentario}} >> </small>. {% else %}  {{c.descripcion}}  {% endif %} </td>
  			<td> $ {{ c.cargo|intcomma }} </td>
  			<td> $ {{ c.abono|intcomma }} </td>
  			<td> $ {{ c.saldo|intcomma }} </td>

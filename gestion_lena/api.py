@@ -40,3 +40,4 @@ class ContactoResource(ModelResource):
         queryset = Contacto.objects.all()
         resource_name = 'contacto'
         allowed_methods = ['get']
+
