@@ -1,6 +1,6 @@
 # coding: utf-8
 from django import forms
-from gestion_lena.models import Contacto, Pedido, Gasto, TipoGasto, Servicio
+from gestion_lena.models import Contacto, Pedido, Gasto, TipoGasto, Servicio, Sueldo, Trabajador
 
 
 
@@ -49,6 +49,8 @@ class ContactoForm(forms.ModelForm):
 
         return cleaned_data
 
+
+
 class PedidoForm(forms.ModelForm):
     class Meta:
         model = Pedido
@@ -58,6 +60,14 @@ class PedidoForm(forms.ModelForm):
             'valor_unitario': 'Ingrese el precio del servicio.',
             'tipo_de_servicio': 'Ingrese el tipo de servicio a ingresar',
         }
+        labels = {
+            'direccion_destino': ('Direccion de fallecimiento'),
+            
+        }
+        if Pedido.tipo_de_servicio == 'traslado':
+            exclude = ['direccion_de_velorio']
+
+
 
     def __init__(self, *args, **kwargs):
         super(PedidoForm, self).__init__(*args, **kwargs)
@@ -81,6 +91,68 @@ class PedidoContactoForm(forms.ModelForm):
 		model = Pedido
 		exclude = ['fecha_entrega', 'contacto']
 
+###############       SUELDO FORM
+
+class SueldoForm(forms.ModelForm):
+    class Meta:
+        model = Sueldo
+        '''help_texts = {
+        if self.trabajador is None :
+            'trabajador': 'Seleccione a alguno de sus contactos disponibles o registre un nuevo contacto.',
+          
+        }'''
+
+    def __init__(self, *args, **kwargs):
+        super(SueldoForm, self).__init__(*args, **kwargs)
+        self.fields['fecha'].widget.attrs.update({'class': 'dateinput'})
+
+
+class TrabajadorForm(forms.ModelForm):
+    class Meta:
+        model = Trabajador
+        '''help_texts = {
+       if Trabajador.contacto.null=True :
+            'contacto': 'Seleccione a alguno de sus contactos disponibles o registre un nuevo contacto.',
+          
+        }'''
+        labels = {
+            'nombre': ('Nombres'),
+            'apellido': ('Apellidos'),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(TrabajadorForm, self).__init__(*args, **kwargs)
+        self.es_actualizacion = kwargs.get('instance', None)
+
+    def clean(self):
+        cleaned_data = super(TrabajadorForm, self).clean()
+        nombres = cleaned_data.get("nombre")
+        apellidos = cleaned_data.get("apellido")
+        nombres = nombres.title()
+        apellidos = apellidos.title()
+        cleaned_data['nombre'] = nombres
+        cleaned_data['apellido'] = apellidos
+        n = 0
+
+        if self.es_actualizacion: ##actualizacion
+            n = 1
+        print Trabajador.objects.filter(nombre__iexact=nombres, apellido__iexact=apellidos).count()
+        if Trabajador.objects.filter(nombre__iexact=nombres, apellido__iexact=apellidos).count() > n:
+            self._errors["nombre"] = self.error_class([""])
+            self._errors["apellido"] = self.error_class([""])
+
+            # These fields are no longer valid. Remove them from the
+            # cleaned data.
+            del cleaned_data["nombre"]
+            del cleaned_data["apellido"]
+
+            raise forms.ValidationError("El Trabajador %s %s ya existe." % (nombres, apellidos))
+
+        return cleaned_data
+
+
+########################
+
 class GastoForm(forms.ModelForm):
     class Meta:
         model = Gasto
@@ -96,6 +168,8 @@ class TipoGastoForm(forms.ModelForm):
 class RangoFechaForm(forms.Form):
     fecha_inicial = forms.DateField(required=True, label="Fecha Inicial")
     fecha_final = forms.DateField(required=True, label="Fecha Final")
+    
+
 
     def __init__(self, *args, **kwargs):
         super(RangoFechaForm, self).__init__(*args, **kwargs)

@@ -6,11 +6,13 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from datetime import datetime, date, time, timedelta
+import calendar
 
-from gestion_lena.models import Servicio, Contacto, Pedido, Configuracion, Region, Provincia, Comuna, Gasto, TipoGasto, Servicio
+from gestion_lena.models import Servicio, Contacto, Pedido, Configuracion, Region, Provincia, Comuna, Gasto, TipoGasto, Servicio, Sueldo, Trabajador
     
 from gestion_lena.mixins import LoginRequired, SearchableListMixin
-from gestion_lena.forms import ServicioForm, ContactoForm, PedidoForm, PedidoContactoForm, GastoForm, TipoGastoForm, RangoFechaForm, ServicioForm
+from gestion_lena.forms import ServicioForm, ContactoForm, PedidoForm, PedidoContactoForm, GastoForm, TipoGastoForm, RangoFechaForm, ServicioForm, SueldoForm, TrabajadorForm
    
 
 from gestion_lena.models import Cuenta
@@ -20,15 +22,28 @@ import datetime
 CONF, created = Configuracion.objects.get_or_create(id=1)
 if created:
     CONF.titulo_pagina = "Gestión de Distribución de Leña"
-    CONF.footer = "Diego Ramirez Cerda &copy; Todos los derechos reservados"
+    CONF.footer = "Francisco Ramirez Cerda &copy; Todos los derechos reservados"
     CONF.precio_lena = 17000
     CONF.carga_maxima_dia = 24
     CONF.save()
 
 @login_required
 def home(request):
-    pedidos = Pedido.objects.exclude(estado="Entregado").order_by('creado_en')[:4]
-    return render(request, 'gestion_lena/base.html', {'pedidos': pedidos})
+    pedidos = Pedido.objects.exclude(estado="Pagado").order_by('creado_en')[:4]
+    return render(request, 'gestion_lena/base.html',{'pedidos': pedidos} )
+
+
+@login_required
+def object_list_servicio(request):
+    context = {}
+    pedidos = Pedido.objects.filter(estado="No Pagado").order_by('creado_en')
+    return render(request, 'gestion_lena/object_list_servicio.html', {'pedidos': pedidos})
+
+@login_required
+def pedido_list_segundo(request):
+    context = {}
+    pedidos = Pedido.objects.filter(estado="No Pagado").order_by('creado_en')
+    return render(request, 'gestion_lena/pedido_list_segundo.html', {'pedidos': pedidos})
 
 ##########CONTACTO###################################
 class ContactoListView(LoginRequired, SearchableListMixin, ListView):
@@ -46,6 +61,7 @@ class ContactoDetailView(LoginRequired, SearchableListMixin, DetailView):
         context['regiones'] = Region.objects.all()
         context['provincias'] = Provincia.objects.all()
         context['comunas'] = Comuna.objects.all()
+        context['servicios'] = Servicio.objects.all()
         return context
 
 class ContactoCreateView(LoginRequired, SearchableListMixin, CreateView):
@@ -66,10 +82,44 @@ class ContactoDeleteView(LoginRequired, SearchableListMixin, DeleteView):
     template_name = 'gestion_lena/contacto_delete.html'
     search_fields = [('nombre','icontains',), ('apellido','icontains',)]
 
+ ########### TRABAJADOR ###################################################   
+class TrabajadorListView(LoginRequired, SearchableListMixin, ListView):
+    model = Trabajador
+    template_name = 'gestion_lena/trabajador_list.html'
+    search_fields = [('nombre','icontains',), ('apellido','icontains',)]
+    
+class TrabajadorDetailView(LoginRequired, SearchableListMixin, DetailView):
+    model = Trabajador
+    template_name = 'gestion_lena/trabajador_detail.html'
+    search_fields = [('nombre','icontains',), ('apellido','icontains',)]
+
+class TrabajadorCreateView(LoginRequired, SearchableListMixin, CreateView):
+    model = Trabajador
+    form_class = TrabajadorForm
+    template_name = 'gestion_lena/trabajador_create.html'
+    search_fields = [('nombre','icontains',), ('apellido','icontains',)]
+
+class TrabajadorUpdateView(LoginRequired, SearchableListMixin, UpdateView):
+    model = Trabajador
+    form_class = TrabajadorForm
+    template_name = 'gestion_lena/trabajador_update.html'
+    search_fields = [('nombre','icontains',), ('apellido','icontains',)]
+
+class TrabajadorDeleteView(LoginRequired, SearchableListMixin, DeleteView):
+    model = Trabajador
+    success_url = reverse_lazy('trabajador_list')
+    template_name = 'gestion_lena/trabajador_delete.html'
+    search_fields = [('nombre','icontains',), ('apellido','icontains',)]
 ###########PEDIDO###################################################
+
 class PedidoListView(LoginRequired, SearchableListMixin, ListView):
     model = Pedido
     template_name = 'gestion_lena/pedido_list.html'
+    search_fields = [('contacto__nombre','icontains',), ('contacto__apellido','icontains',)]
+
+class PedidoListView(LoginRequired, SearchableListMixin, ListView):
+    model = Pedido
+    template_name = 'gestion_lena/pedido_list_segundo.html'
     search_fields = [('contacto__nombre','icontains',), ('contacto__apellido','icontains',)]
     
 class PedidoDetailView(LoginRequired, SearchableListMixin, DetailView):
@@ -163,6 +213,39 @@ class GastoDeleteView(LoginRequired, SearchableListMixin, DeleteView):
 
 ################################################################################
 
+
+
+
+###########   SUELDO   ###################################################
+
+class SueldoListView(LoginRequired, SearchableListMixin, ListView):
+   model = Sueldo
+   template_name = 'gestion_lena/sueldo_list.html'
+   search_fields = [('trabajador__nombre','icontains',)]
+
+class SueldoDetailView(LoginRequired, SearchableListMixin, DetailView):
+    model = Sueldo
+    template_name = 'gestion_lena/sueldo_detail.html'
+    search_fields = [('trabajador__nombre','icontains',)]
+
+class SueldoCreateView(LoginRequired, SearchableListMixin, CreateView):
+    model = Sueldo
+    form_class = SueldoForm
+    template_name = 'gestion_lena/sueldo_create.html'
+    search_fields = [('trabajador__nombre','icontains',)]
+
+class SueldoUpdateView(LoginRequired, SearchableListMixin, UpdateView):
+    model = Sueldo
+    form_class = SueldoForm
+    template_name = 'gestion_lena/sueldo_update.html'
+    search_fields = [('trabajador__nombre','icontains',)]
+
+class SueldoDeleteView(LoginRequired, SearchableListMixin, DeleteView):
+    model = Sueldo
+    success_url = reverse_lazy('sueldo_list')
+    template_name = 'gestion_lena/sueldo_delete.html'
+    search_fields = [('trabajador__nombre','icontains',)]
+
 ###########Tipo Gasto###################################################
 class TipoGastoListView(LoginRequired, SearchableListMixin, ListView):
     model = TipoGasto
@@ -207,9 +290,9 @@ def pedido_cambiar_estado(request, id_pedido):
     if not next:
         next = "/gestion/home/"
     pedido = get_object_or_404(Pedido, id=id_pedido)
-    if pedido.estado == "Entregado":
+    if pedido.estado == "Pagado":
         return redirect(next)
-    pedido.estado = "Entregado"
+    pedido.estado = "Pagado"
     pedido.fecha_entrega = datetime.datetime.now()
     pedido.save()
     return redirect(next)
@@ -246,12 +329,24 @@ def contacto_pedido_delete(request, id_pedido):
 @login_required
 def calcular_entrega_pedidos(request):
     context = {}
-    pedidos = Pedido.objects.filter(estado="En Proceso").order_by('creado_en')
+    pedidos = Pedido.objects.filter(estado="No Pagado").order_by('creado_en')
     
     context['pedidos'] = pedidos
     return render(request, 'gestion_lena/calcular_entrega_pedidos.html', context)
 
 #############################################################################
+
+
+@login_required
+def ruta_servicio(request):
+    context = {}
+    pedidos = Pedido.objects.order_by('creado_en')
+    
+    context['pedidos'] = pedidos
+    return render(request, 'gestion_lena/ruta_servicio.html', context)
+
+
+    
 
 @login_required
 def reporte_cuenta(request):
@@ -266,13 +361,17 @@ def reporte_cuenta(request):
 
 @login_required
 def form_cuenta_t(request):
+    hoy = date.today()
     context = {}
     if request.method == "POST":
         form = RangoFechaForm(request.POST)
         if form.is_valid():
             d_i = form.cleaned_data['fecha_inicial']
             d_f = form.cleaned_data['fecha_final']
-            return redirect('cuenta_t', d_i, d_f)
+            if d_i < d_f and d_i <= hoy :
+                return redirect('cuenta_t', d_i, d_f)
+            else:
+                messages.add_message(request, messages.ERROR, u"Fecha Inicial debe ser menor a hoy y menor a la Fecha Final")
     else:
         form = RangoFechaForm()
     context['form'] = form

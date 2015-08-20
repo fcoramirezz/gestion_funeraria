@@ -1,6 +1,10 @@
 {% extends 'gestion_lena/base.html' %}
 {% load bootstrap3 %}
 
+
+
+
+
 {% block google_maps %}
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
 
@@ -89,10 +93,10 @@
 {% block content %}
 
     <div class="page-header">
-        <h1> Servicios Funerarios Pendientes <small> {% now "D d M Y" %} </small>  </h1>
+        <h1> Servicios Funerarios Pendientes de Pago <small> {% now "D d M Y" %} </small>  </h1>
     </div>
     <blockquote>
-        <p class="alert alert-warning"> Seleccione los servicios que desea marcar como entregado.</p>
+        <p class="alert alert-warning"> Seleccione los servicios que desea marcar como pagado.</p>
     </blockquote>
 
     <table id="tabla_adapted" class="table table-bordered table-striped">
@@ -105,16 +109,16 @@
             <th> Tipo de Servicio </th>
             <th> Dirección Involucrada </th>
             <th> Fecha de Solicitud </th>
-            <th> Entregado </th>
+            <th> Pagado </th>
         </tr>
         </thead>
         <tbody>
         {% for x in pedidos %}
             <tr>
                 <td>  <input type="checkbox" class="checkbox" value="{{ x.region }} {{ x.provincia }} {{ x.comuna }},  {{ x.direccion_destino }}"> </td>
-                <td> {{ x.id }} </td>
+                <td> <span class="label label-info"> {{ forloop.revcounter }} </span> </td>
                 <td> {{ x.contacto }} </td>
-                <td> <span class="label label-info">  {{ x.creado_en}} </span></td>
+                <td> <span class="label label-info">  {{ x.tipo_de_servicio}} </span></td>
                 <td> {{ x.region }} {{ x.provincia }} {{ x.comuna }},  {{ x.direccion_destino }}</td>
                 <td> {{ x.creado_en }} </td>
                 <td> <a href="{% url 'pedido_cambiar_estado' x.id %}?next={{ request.path }}" class="btn btn-warning"> <span class="glyphicon glyphicon-ok-sign"> Marcar </span> </a>     </td>
@@ -123,8 +127,29 @@
         </tbody>
     </table>
 
-    <div class="page-header">
+  
+
+    <br>
+
+
+    <div class="container">
+  <h2>Large Modal</h2>
+  <!-- Trigger the modal with a button -->
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Large Modal</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+            <div class="page-header">
+            
         <h1> Ruta </h1> <button onclick="calcRoute()"> Generar Ruta </button>
+
     </div>
 
     <div class="row" style="margin-bottom: 2em;">
@@ -135,8 +160,14 @@
             <div id="directions_panel" style="width: 100%; margin-left: 1em; height: 400px;"></div>
         </div>
     </div>
-
-    <br>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
    
 

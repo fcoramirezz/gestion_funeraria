@@ -1,0 +1,101 @@
+{% extends 'gestion_lena/base.html' %}
+{% load activelink %}
+{% load bootstrap_pagination %}
+
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-3">
+            <!--  Lista de objetos  -->
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h1 class="panel-title"> {% block title_panel %} {% endblock %}  </h1>
+                </div>
+                <div class="panel-body">
+
+                    <form role="form" method="GET">
+                        <div class="input-group custom-search-form">
+                            <input type="text" class="form-control" name="q" placeholder="{% block placeholder_buscar %} {% endblock %}">
+                            <span class="input-group-btn">
+                            <button class="btn btn-info" type="submit">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                            </span>
+                        </div><!-- /input-group -->
+                    </form>
+                    {% if is_filter %}
+                    <a href="{{ request.path }}"> Quitar Filtro</a>
+                    {% endif %}
+
+                    <hr>
+                    {% bootstrap_paginate object_list %}
+                    <ul class="list-group"  style="height: 300px; overflow-y: auto;">
+                        {% for x in object_list %}
+                            <a href="{{  x.get_absolute_url }}" {% ifactive x.get_absolute_url %} class="list-group-item active" {% else %} class="list-group-item" {% endifactive %}> {{ x }} </a>
+                        {% empty %}
+                            <div class="alert alert-warning"> {% block alert_empty_message %} {% endblock %} </div>
+                        {% endfor %}
+                    </ul>
+
+
+                </div>
+            </div>
+        </div>
+
+    
+          <div class="col-md-9">
+            <!-- Detalle de objeto -->
+            {% block object_detail %}
+                <div class="alert alert-info"> Seleccione un item de la lista PRUEBAAAAAA</div>
+            {% endblock %}
+       
+
+                    
+    <!--<div class="page-header">
+        <h1> Servicios Funerarios Pendientesss <small> {% now "D d M Y" %} </small>  </h1>
+    </div>
+    <blockquote>
+        <p class="alert alert-warning"> Seleccione los servicios que desea marcar como Pagado.</p>
+    </blockquote> -->
+
+   <!--  <table id="tabla_adapted" class="table table-bordered table-striped">
+        <caption> <p id="cantidad_seleccionados" class="label label-danger"> 0 servicios seleccionados de {{ pedidos|length }}  </p> </caption>
+        <thead>
+        <tr>
+            <th> # </th>
+            <th> Número  Pedido </th>
+            <th> Contacto </th>
+            <th> Tipo de Servicio </th>
+            <th> Dirección Involucrada </th>
+            <th> Fecha de Solicitud </th>
+            <th> Pagado </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for x in pedidos %}
+            <tr>
+                <td>  <input type="checkbox" class="checkbox" value="{{ x.region }} {{ x.provincia }} {{ x.comuna }},  {{ x.direccion_destino }}"> </td>
+                <td> {{ x.id }} </td>
+                <td> {{ x.contacto }} </td>
+                <td> <span class="label label-info">  {{ x.creado_en}} </span></td>
+                <td> {{ x.region }} {{ x.provincia }} {{ x.comuna }},  {{ x.direccion_destino }}</td>
+                <td> {{ x.creado_en }} </td>
+                <td> <a href="{% url 'pedido_cambiar_estado' x.id %}?next={{ request.path }}" class="btn btn-warning"> <span class="glyphicon glyphicon-ok-sign"> Marcar </span> </a>     </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>  -->
+   
+
+   
+
+
+
+
+
+        </div>
+      
+    </div>
+
+{% endblock %}

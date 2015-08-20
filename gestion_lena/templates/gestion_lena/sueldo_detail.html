@@ -1,0 +1,28 @@
+{% extends 'gestion_lena/sueldo_list.html' %}
+{% load humanize %}
+
+{% block title_page %}
+{{ sueldo }}
+{% endblock %}
+
+{% block object_detail %}
+<div class="page-header">
+<h1> {{ sueldo }}  <small> <a href="{% url 'sueldo_update' sueldo.id %}" class="btn btn-default"> <span class="glyphicon glyphicon-edit"></span> Actualizar </a>  <a href="{% url 'sueldo_delete' sueldo.id %}" class="btn btn-danger"> <span class="glyphicon glyphicon-remove-circle"></span> Eliminar </a> </small> </h1>
+</div>
+
+<div class="well text-center">
+    
+    <h2> <span class="text text-info">Trabajador:  </span> <a href="{% url 'trabajador_detail' sueldo.trabajador.id %}">  {{ sueldo.trabajador }} </a> </h2>
+
+
+
+    <h2> <span class="text text-info">Fecha:  </span> {{ sueldo.fecha }} </h2>
+    <h3> <span class="text text-info"> Total sueldo: </span> <span class="label label-info">  $ {{ sueldo.cantidad|intcomma }} </span></h3>
+</div>
+
+<h3> Comentario: </h3>
+<blockquote>
+    <p> {{ gasto.comentario|default:"Sin comentarios" }} </p>
+</blockquote>
+
+{% endblock %}

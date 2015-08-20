@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources
-from gestion_lena.models import Contacto, Pedido, TipoGasto, Gasto, Configuracion, Cuenta, Servicio
+from gestion_lena.models import Contacto, Pedido, TipoGasto, Gasto, Configuracion, Cuenta, Servicio, Imagen, Sueldo, Trabajador, Imagen
 from gestion_lena.models import Region, Provincia, Comuna
 
 
@@ -34,6 +34,11 @@ admin.site.register(Gasto)
 admin.site.register(Configuracion)
 admin.site.register(Cuenta)
 admin.site.register(Servicio)
+admin.site.register(Imagen)
+admin.site.register(Sueldo)
+admin.site.register(Trabajador)
+
+
 
 
 admin.site.register(Region, RegionAdmin)

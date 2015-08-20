@@ -1,0 +1,28 @@
+{% extends 'gestion_lena/object_list_servicio.html' %}
+
+
+
+<div class="col-xs-6 col-md-6 col-lg-6">
+{% block title_panel %}
+ <strong> Servicios segundo</strong> <span class="badge"> {{ total_objects }} </span>
+<a href="{% url 'pedido_create' %}" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-plus"></span>  Añadir Nuevo Servicio</a>
+{% endblock %}
+
+{% block alert_empty_message %}
+No se encontraron servicios registrados..
+{% endblock %}
+
+{% block  placeholder_buscar %}
+Buscar servicio...
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
+

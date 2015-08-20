@@ -1,5 +1,8 @@
 {% extends 'gestion_lena/object_list.html' %}
 
+
+
+<div class="col-xs-6 col-md-6 col-lg-6">
 {% block title_panel %}
  <strong> Servicios </strong> <span class="badge"> {{ total_objects }} </span>
 <a href="{% url 'pedido_create' %}" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-plus"></span>  Añadir Nuevo Servicio</a>
@@ -11,4 +14,30 @@ No se encontraron servicios registrados..
 
 {% block  placeholder_buscar %}
 Buscar servicio...
+
+
 {% endblock %}
+
+
+    <!-- <table id="tabla_adapted" class="table table-bordered table-striped">
+    <thead> 
+        <tr>
+            <th> Fecha de Pago </th>
+            <th> Cantidad </th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in pedidos %}
+        <tr>
+            <td> {{ c.contacto }} </td>
+            <td> {{ c.region}} </td>
+        </tr>
+        {% endfor %}    
+    </tbody>
+ </table> -->
+
+
+
+
+

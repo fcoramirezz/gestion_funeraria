@@ -1,0 +1,24 @@
+{% extends 'gestion_lena/trabajador_list.html' %}
+{% load bootstrap3 %}
+
+{% block object_detail %}
+    <div class="page-header">
+        <h1> Crear Trabajador  <small> </small> </h1>
+    </div>
+
+<div class="col-md-8 col-md-offset-2">
+<div class="well">
+   <form method="post" class="form">
+    {% csrf_token %}
+    {% bootstrap_form form  %}
+    {% buttons %}
+        <button type="submit" class="btn btn-primary">
+            {% bootstrap_icon "star" %} Guardar
+        </button>
+    {% endbuttons %}
+</form>
+</div>
+</div>
+
+
+{% endblock %}

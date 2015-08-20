@@ -33,6 +33,19 @@
                     <td> <b> Teléfono </b>  </td>
                     <td> {{contacto.obtener_tipo_telefono }},  {{contacto.telefono}} </td>
                 </tr>
+                 <tr>
+                    <td> <b> Región </b>  </td>
+                    <td> {{contacto.region }} </td>
+                </tr>
+                  <tr>
+                    <td> <b> Provincia </b>  </td>
+                    <td> {{contacto.provincia }} </td>
+                </tr>
+                  <tr>
+                    <td> <b> Comuna </b>  </td>
+                    <td> {{contacto.comuna }} </td>
+                </tr>
+
                 <tr>
                     <td> <b> Dirección </b>  </td>
                     <td> {{contacto.direccion}} </td>
@@ -47,13 +60,13 @@
         </div>
         <div class="col-xs-6 col-md-6 col-lg-6">
             <div class="page-header">
-                <h4> Resumen Pedidos de <small> ( {{contacto}} )</small>  </h4>
+                <h4> Resumen Servicios de <small> ( {{contacto}} )</small>  </h4>
             </div>
             <div>
-                <h1 class="text text-info"> Pedidos: <span class="label label-info"> {{contacto.lista_pedidos|length}} </span>  </h1>
+                <h1 class="text text-info"> Servicios Realizados: <span class="label label-info"> {{contacto.lista_pedidos|length}} </span>  </h1>
             </div>
             <div>
-                <h1 class="text text-info"> Total: <span class="label label-warning"> $ {{contacto.total|intcomma}} </span>  </h1>
+                <h1 class="text text-info"> Total de Ingresos: <span class="label label-warning"> $ {{contacto.total|intcomma}} </span>  </h1>
             </div>
 
         </div>
@@ -61,7 +74,7 @@
 
     <div class="panel panel-info">
     <div class="panel panel-heading">
-    <h1 class="panel-title"> <a href="#" class="btn btn-success" data-toggle="modal" data-target="#modalNuevoPedido"> <span class="glyphicon glyphicon-plus"></span> Nuevo </a>  * Pedidos de <span class="label label-danger"> {{contacto}} </span>
+    <h1 class="panel-title"> <a href="#" class="btn btn-success" data-toggle="modal" data-target="#modalNuevoPedido"> <span class="glyphicon glyphicon-plus"></span> Nuevo </a>  * Servicio de <span class="label label-danger"> {{contacto}} </span>
     </h1>
     <!-- Modal -->
     <div class="modal fade" id="modalNuevoPedido" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -69,20 +82,29 @@
     <div class="modal-content">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title">Nuevo Pedido <small> ( {{contacto}} ) </small> </h4>
+        <h4 class="modal-title">Nuevo Servicio <small> ( {{contacto}} ) </small> </h4>
     </div>
     <div class="modal-body">
     <form class="form-horizontal" method="post" action="/gestion/contacto/{{contacto.id}}/nuevo/pedido/">
     {% csrf_token %}
 
     <!-- Text input-->
-    <div class="form-group">
-        <label class="col-md-4 control-label text-info" for="cantidad">  Cantidad  </label>
+
+
+  <div class="form-group">
+        <label class="col-md-4 control-label text-info" for="Servicio">Servicio</label>
         <div class="col-md-4">
-            <input id="cantidad" name="cantidad" type="number" placeholder="5" class="form-control input-md" required="">
-            <span class="help-block">Ingrese la cantidad de leña del pedido (metros).</span>
-        </div>
+        <select class="form-control" id="nombre" name="nombre" onchange="nombre" required="required" title="">
+        {% for r in servicios %}
+                <option value="{{ r.id }}" selected="selected">{{ r.nombre }}</option>
+        {% endfor %}
+    </select>
     </div>
+    </div>
+
+
+
+
     <div class="form-group">
         <label class="col-md-4 control-label text-info" for="selector_region">Region</label>
         <div class="col-md-4">
@@ -142,18 +164,34 @@
         <label class="col-md-4 control-label text-info" for="estado">Estado</label>
         <div class="col-md-4">
             <select id="estado" name="estado" class="form-control">
-                <option value="En Proceso">En Proceso</option>
-                <option value="Entregado">Entregado</option>
+                <option value="No Pagado">No Pagado</option>
+                <option value="Pagado">Pagado</option>
             </select>
+        </div>
+    </div>
+
+       <div class="form-group">
+        <label class="col-md-4 control-label text-info" for="precio_anexo">  Precio Anexo  </label>
+        <div class="col-md-4">
+            <input id="precio_anexo" name="precio_anexo" type="number" placeholder="0" class="form-control input-md" required="">
+            <span class="help-block">Ingrese Precio Anexo Considerado.</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-4 control-label text-info" for="costo_anexo">  Costo Anexo  </label>
+        <div class="col-md-4">
+            <input id="costo_anexo" name="costo_anexo" type="number" placeholder="0" class="form-control input-md" required="">
+            <span class="help-block">Ingrese Costo Anexo Considerado.</span>
         </div>
     </div>
 
     <!-- Text input-->
     <div class="form-group">
-        <label class="col-md-4 control-label text-info" for="cantidad">  Precio Unitario  </label>
+        <label class="col-md-4 control-label text-info" for="fecha_de_entrega">  Fecha de Entrega  </label>
         <div class="col-md-4">
-            <input id="valor_unitario" name="valor_unitario" type="number" class="form-control input-md" required="">
-            <span class="help-block">Ingrese el precio de venta del metro de leña.</span>
+            <input id="fecha_de_entrega" name="fecha_de_entrega" type="date" class="form-control input-md" required="">
+            <span class="help-block">Ingrese Fecha de entrega del Servicio.</span>
         </div>
     </div>
 
@@ -182,21 +220,20 @@
                 <thead>
                 <tr>
                     <th> # Nº Solicitud  </th>
-                    <th> Cantidad </th>
-                    <th> Dirección Despacho </th>
+                    <th> Tipo de Servicio Contratado</th>
+                    <th> Dirección De Fallecimiento </th>
                     <th> Estado </th>
-                    <th> Fecha Entrega </th>
-                    <th> Fecha Solicitud </th>
-                    <th> Precio Unitario
-                    </th>
+                    <th> Fecha de Entrega </th>
+                    <th> Fecha de Ingreso </th>
+                  
                     <th> Opciones </th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for x in contacto.lista_pedidos %}
-                    <tr {% if x.estado == 'Entregado' %} class="success" {% else %} class="warning" {% endif %} >
+                    <tr {% if x.estado == 'Pagado' %} class="success" {% else %} class="warning" {% endif %} >
                         <td> <span class="label label-info"> {{ forloop.revcounter }} </span> </td>
-                        <td>  <strong> {{ x.cantidad }} metro{{x.cantidad|pluralize}} </strong>  </td>
+                        <td>  <strong> {{ x.tipo_de_servicio }} </strong>  </td>
                         <td> {{ x.direccion_destino }}</td>
                         <td>
                             <select  disabled>
@@ -204,15 +241,13 @@
                                     <option value="{{e}}" {% if x.estado == e %} selected {% endif%}> {{e}} </option>
                                 {% endfor %}
                             </select>
-                             {% if not x.estado == "Entregado" %}
-                                <a href="{% url 'pedido_cambiar_estado' x.id %}?next={{request.path}}"> <span class="glyphicon glyphicon-check"></span> Entregar </a>
+                             {% if not x.estado == "Pagado" %}
+                                <a href="{% url 'pedido_cambiar_estado' x.id %}?next={{request.path}}"> <span class="glyphicon glyphicon-check"></span> Pagar </a>
                             {% endif%}
                         </td>
                         <td> {{ x.fecha_entrega|default:"" }} </td>
                         <td> {{ x.creado_en }} </td>
-                        <td>
-                            <input id="valor_unitario_{{x.id}}" class="valor_unitario form-control" type="number" value="{{ x.valor_unitario|intcomma|default:"" }}" name="valor_unitario_{{x.id}}" disabled>
-                        </td>
+                     
                         <td>
                             <div class="btn-group" style="width:100px;">
                                 <a type="button" href="{% url 'pedido_update' x.id %}" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top" title="Editar el pedido número {{forloop.counter}}"> <span class="glyphicon glyphicon-edit"></span> Editar</a>
@@ -225,10 +260,10 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                            <h4 class="modal-title" id="modal_eliminar">Eliminar Pedido <span class="label label-info"> {{x}} </span> </h4>
+                                            <h4 class="modal-title" id="modal_eliminar">Eliminar Servicio</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <div class="alert alert-warning"> Está seguro que desea eliminar el pedido <strong> {{x}} </strong>? </div>
+                                            <div class="alert alert-warning"> ¿Está seguro que desea eliminar el servicio <strong> {{x}} </strong>? </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -241,7 +276,7 @@
                         </td>
                     </tr>
                 {% empty %}
-                    <div class="alert alert-warning"> No existen pedidos realizados por <strong> {{contacto}} </strong> </div>
+                    <div class="alert alert-warning"> No existen servicios realizados por <strong> {{contacto}} </strong> </div>
                 {% endfor %}
                 </tbody>
             </table>

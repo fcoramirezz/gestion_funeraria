@@ -3,7 +3,7 @@
 
 {% block content %}
     <div class="page-header">
-        <h1> Filtrar por Fecha el estado de cuenta  <small> (Gastos y Ventas) </small> </h1>
+        <h1> Estado de cuenta <small> Ingresar rango de fechas a consultar: </small> </h1>
     </div>
 
 <div class="col-md-6 col-md-offset-2">
@@ -17,6 +17,15 @@
         </button>
     {% endbuttons %}
 </form>
+   <br>
+        <div class="col-md-6 col-md-offset-3">
+        {% if messages %}
+                {% for message in messages %}
+                 <div {% if message.tags == "error" %} class="alert alert-danger volatile" {% else %} class="alert alert-{{ message.tags }} volatile" {% endif %}> {{ message }} </div>
+                {% endfor %}
+        {% endif %}
+    </div>
+    </div>
 </div>
 </div>
 

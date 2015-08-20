@@ -1,14 +1,14 @@
 {% extends 'gestion_lena/object_list.html' %}
 
 {% block title_panel %}
- <strong> Contactos </strong> <span class="badge"> {{ total_objects }} </span>
+ <strong> CLientes </strong> <span class="badge"> {{ total_objects }} </span>
 <a href="{% url 'contacto_create' %}" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-plus"></span>   Añadir</a>
 {% endblock %}
 
 {% block alert_empty_message %}
-No se encontraron contactos registrados..
+No se encontraron clientes registrados..
 {% endblock %}
 
 {% block  placeholder_buscar %}
-Buscar contacto...
+Buscar cliente...
 {% endblock %}
