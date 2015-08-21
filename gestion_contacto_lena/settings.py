@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'import_export',
     'tastypie',
     'password_reset',
-    'gunicorn'
+    'gunicorn',
    
 )
 
