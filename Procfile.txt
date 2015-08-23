@@ -1,2 +1,0 @@
-web: gunicorn gestion_contacto_lena.wsgi -b 0.0.0.0:$PORT
-
