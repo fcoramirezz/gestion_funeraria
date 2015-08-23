@@ -1,5 +1,5 @@
 var url_api = "http://localhost:8000/api/v1/";
-var url = "http://dieramce.pythonanywhere.com/api/v1/";
+var url = "http://fcoramirezz.pythonanywhere.com/api/v1/";
 var URL_API_PRODUCCTION = url;
 
 function regionCambio(value){
