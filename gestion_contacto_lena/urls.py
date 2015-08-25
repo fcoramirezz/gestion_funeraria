@@ -16,11 +16,11 @@ urlpatterns = patterns('',
     url(r'^gestion/', include('gestion_lena.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include(v1_api.urls)),
-    url(r'^pagina/$', 'gestion_lena.views.pagina', name='pagina'),
+    url(r'^$', 'gestion_lena.views.pagina', name='pagina'),
     url(r'^password_reset/', include('password_reset.urls')),
-    url(r'^$', lambda x: HttpResponseRedirect('/gestion/home/')),
-	url(r'^accounts/login/', 'gestion_lena.views.iniciar_sesion', name='login'),
-	url(r'^logout/', 'gestion_lena.views.cerrar_sesion', name='logout'),
+    url(r'^nosepo/$', lambda x: HttpResponseRedirect('/gestion/home/')),
+	url(r'^accounts/login/$', 'gestion_lena.views.iniciar_sesion', name='login'),
+	url(r'^logout/$', 'gestion_lena.views.cerrar_sesion', name='logout'),
 
 )
 
