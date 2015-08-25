@@ -19,8 +19,8 @@ urlpatterns = patterns('',
     url(r'^$', 'gestion_lena.views.pagina', name='pagina'),
     url(r'^password_reset/', include('password_reset.urls')),
     url(r'^$', lambda x: HttpResponseRedirect('/gestion/home/')),
-	url(r'^accounts/login/$', 'gestion_lena.views.iniciar_sesion', name='login'),
-	url(r'^logout/$', 'gestion_lena.views.cerrar_sesion', name='logout'),
+	url(r'^accounts/login/', 'gestion_lena.views.iniciar_sesion', name='login'),
+	url(r'^logout/', 'gestion_lena.views.cerrar_sesion', name='logout'),
 
 )
 
