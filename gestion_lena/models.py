@@ -70,7 +70,7 @@ TIPO_CONTACTO = (
 class Contacto(models.Model):
     '''
     Representa un Cliente que realiza
-    un pedido de leña.
+   
     '''
     nombre = models.CharField(max_length=255)
     apellido = models.CharField(max_length=255)
@@ -120,6 +120,8 @@ class Servicio(models.Model):
     precio_de_venta = models.PositiveIntegerField()
     costo_de_servicio = models.PositiveIntegerField()
     detalles_del_servicio = models.TextField(null=True, blank=True)
+    creado_en = models.DateTimeField(auto_now_add=True,null=True)
+
    
    
 

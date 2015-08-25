@@ -37,13 +37,16 @@ def home(request):
 def object_list_servicio(request):
     context = {}
     pedidos = Pedido.objects.filter(estado="No Pagado").order_by('creado_en')
-    return render(request, 'gestion_lena/object_list_servicio.html', {'pedidos': pedidos})
+    context['pedidos'] = pedidos
+    return render(request, 'gestion_lena/object_list_servicio.html', context)
 
 @login_required
 def pedido_list_segundo(request):
     context = {}
     pedidos = Pedido.objects.filter(estado="No Pagado").order_by('creado_en')
-    return render(request, 'gestion_lena/pedido_list_segundo.html', {'pedidos': pedidos})
+    context['pedidos'] = pedidos
+    return render(request, 'gestion_lena/pedido_list_segundo.html', context)
+   
 
 ##########CONTACTO###################################
 class ContactoListView(LoginRequired, SearchableListMixin, ListView):
@@ -339,11 +342,15 @@ def calcular_entrega_pedidos(request):
 
 @login_required
 def ruta_servicio(request):
-    context = {}
-    pedidos = Pedido.objects.order_by('creado_en')
-    
-    context['pedidos'] = pedidos
     return render(request, 'gestion_lena/ruta_servicio.html', context)
+
+
+def pagina(request):
+    context = {}
+    tipo_de_servicio = Servicio.objects.order_by('creado_en')
+    context['servicios'] = tipo_de_servicio
+    return render(request, 'gestion_lena/pagina.html', context)
+
 
 
     
@@ -414,6 +421,6 @@ def iniciar_sesion(request):
 @login_required
 def cerrar_sesion(request):
     logout(request)
-    return redirect('gestion_lena.views.home')
+    return redirect('gestion_lena.views.pagina')
 
 #######################################################################################
