@@ -209,7 +209,7 @@ fieldset[disabled] .btn-xl.active {
     font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: 400;
     letter-spacing: 1px;
-    color: #fed136;
+    color: #808080;
 }
 
 .navbar-default .nav li a:hover,
@@ -253,7 +253,7 @@ fieldset[disabled] .btn-xl.active {
 
     .navbar-default.navbar-shrink {
         padding: 10px 0;
-        background-color: #222;
+        background-color: rgba(255, 255, 255, 0.9);
     }
 
     .navbar-default.navbar-shrink .navbar-brand {
