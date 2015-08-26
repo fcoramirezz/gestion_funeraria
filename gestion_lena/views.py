@@ -347,7 +347,7 @@ def ruta_servicio(request):
 
 def pagina(request):
     context = {}
-    tipo_de_servicio = Servicio.objects.order_by('creado_en')
+    tipo_de_servicio = Servicio.objects.filter(publicar="Si").order_by('creado_en')
     context['servicios'] = tipo_de_servicio
     return render(request, 'gestion_lena/pagina.html', context)
 

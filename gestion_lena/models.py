@@ -113,6 +113,11 @@ ESTADO_PEDIDO = (
     ('Pagado', 'Pagado'),
     )
 
+PUBLICAR = (
+    ('Si', 'Si'),
+    ('No', 'No'),
+    )
+
 
 
 class Servicio(models.Model):
@@ -120,6 +125,7 @@ class Servicio(models.Model):
     precio_de_venta = models.PositiveIntegerField()
     costo_de_servicio = models.PositiveIntegerField()
     detalles_del_servicio = models.TextField(null=True, blank=True)
+    publicar = models.CharField(max_length=100, choices=PUBLICAR, default="Si")
     creado_en = models.DateTimeField(auto_now_add=True,null=True)
 
    
