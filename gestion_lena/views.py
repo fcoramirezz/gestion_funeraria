@@ -434,16 +434,15 @@ def form_cuenta_t(request):
 
 @login_required
 def cuenta_t(request, fecha_inicial, fecha_final):
-    context = {}
+    
     f_i = datetime.datetime.strptime(fecha_inicial, "%Y-%m-%d").date()
     f_f = datetime.datetime.strptime(fecha_final, "%Y-%m-%d").date()
     cuentas = Cuenta.objects.filter(fecha__gte=f_i, fecha__lte=f_f).order_by('fecha')
     egresos = Cuenta.objects.filter(fecha__gte=f_i, fecha__lte=f_f).order_by('fecha') and Gasto.objects.filter(creado_en__gte=f_i, creado_en__lte=f_f).order_by('creado_en')
     sueldos = Sueldo.objects.filter(fecha__gte=f_i, fecha__lte=f_f).order_by('fecha')
     gastos = Gasto.objects.filter(fecha__gte=f_i, fecha__lte=f_f).order_by('fecha')
-    pedidos = Pedido.objects.filter(fecha_entrega__gte=f_i, fecha_entrega__lte=f_f).order_by('fecha_entrega')
-    context['sueldos'] = sueldos
-    context['gastos'] = gastos
+    pedidos = Pedido.objects.filter(fecha_entrega__gte=f_i, fecha_entrega__lte=f_f, estado= 'Pagado').order_by('fecha_entrega')
+  
     total_sueldos = 0
     total_gastos = 0
     total_ingresos = 0

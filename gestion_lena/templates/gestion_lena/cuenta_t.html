@@ -52,14 +52,23 @@
  		{% for c in pedidos %}
  		<tr>
  			<td> {{ c.fecha_entrega }} </td>
- 			<td> {{ c.contacto }} </td>
+ 			<td> <a href="{% url 'pedido_detail' c.id %}"> {{ c.contacto }} </a> </td>
  			<td> {{ c.tipo_de_servicio }} </td>
- 			<td> $ {{ c.total}} </td>
+ 			<td> $ {{ c.total|intcomma}} </td>
  		</tr>
  		{% empty %}
  		<div class="alert alert-warning"> No se encontraron registros de sueldos en este rango de fechas. </div>
  		{% endfor %}	
- 	</tbody>
+</tbody>
+
+
+ 		<!--<tbody>
+ 		<th> 
+<td>Atributo</td>
+ 		<td>Atributo</td>
+ 		 </th>
+
+ 	</tbody> -->
  </table>
  <div class="text-center">
  	<h2> Total Ingresos del Periodo: $ {{ total_ingresos|intcomma }} </h2>
@@ -82,8 +91,8 @@
  		{% for c in sueldos %}
  		<tr>
  			<td> {{ c.fecha }} </td>
- 			<td> {{ c.trabajador }} </td>
- 			<td> $ {{ c.cantidad}} </td>
+ 			<td> <a href="{% url 'sueldo_detail' c.id %}"> {{ c.trabajador }}</a> </td>
+ 			<td> $ {{ c.cantidad|intcomma}} </td>
  		</tr>
  		{% empty %}
  		<div class="alert alert-warning"> No se encontraron registros de sueldos en este rango de fechas. </div>
@@ -104,7 +113,7 @@
  	<thead>	
  		<tr>
  			<th> Fecha Transacción </th>
- 			<th> Trabajador </th>
+ 			<th> Tipo de Gasto </th>
  			<th> Egreso </th>
  		</tr>
  	</thead>
@@ -112,11 +121,11 @@
  		{% for c in gastos %}
  		<tr>
  			<td> {{ c.fecha }} </td>
- 			<td> {{ c.tipo_gasto }} </td>
- 			<td> $ {{ c.valor}} </td>
+ 		 <td> <a href="{% url 'gasto_detail' c.id %}"> {{ c.tipo_gasto }}</a> </td>
+ 			<td> $ {{ c.valor|intcomma}} </td>
  		</tr>
  		{% empty %}
- 		<div class="alert alert-warning"> No se encontraron registros de sueldos en este rango de fechas. </div>
+ 		<div class="alert alert-warning"> No se encontraron registros de gastos en este rango de fechas. </div>
  		{% endfor %}	
  	</tbody>
  </table>
