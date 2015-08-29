@@ -392,7 +392,14 @@ def pagina(request):
     context['dudas'] = dudas
     return render(request, 'gestion_lena/pagina.html', context)
 
+'''def resumen_gastos(request):
+    context = {}
+    gastos = Gasto.objects.filter(creado_en=).order_by('creado_en')
+    sueldos = Sueldo.objects.order_by('creado_en')
+    context['gastos_fil'] = gastos
+    context['sueldos_fil'] = sueldos
 
+    return render(request, 'gestion_lena/resumen_gastos.html', context)'''
 
     
 
@@ -427,13 +434,37 @@ def form_cuenta_t(request):
 
 @login_required
 def cuenta_t(request, fecha_inicial, fecha_final):
+    context = {}
     f_i = datetime.datetime.strptime(fecha_inicial, "%Y-%m-%d").date()
     f_f = datetime.datetime.strptime(fecha_final, "%Y-%m-%d").date()
-    cuentas = Cuenta.objects.filter(fecha__gte=f_i, fecha__lte=f_f).order_by('fecha')   
+    cuentas = Cuenta.objects.filter(fecha__gte=f_i, fecha__lte=f_f).order_by('fecha')
+    egresos = Cuenta.objects.filter(fecha__gte=f_i, fecha__lte=f_f).order_by('fecha') and Gasto.objects.filter(creado_en__gte=f_i, creado_en__lte=f_f).order_by('creado_en')
+    sueldos = Sueldo.objects.filter(fecha__gte=f_i, fecha__lte=f_f).order_by('fecha')
+    gastos = Gasto.objects.filter(fecha__gte=f_i, fecha__lte=f_f).order_by('fecha')
+    pedidos = Pedido.objects.filter(fecha_entrega__gte=f_i, fecha_entrega__lte=f_f).order_by('fecha_entrega')
+    context['sueldos'] = sueldos
+    context['gastos'] = gastos
+    total_sueldos = 0
+    total_gastos = 0
+    total_ingresos = 0
+
+    for n in pedidos:
+        total_ingresos= total_ingresos + n.total
+
+    for i in sueldos:
+        total_sueldos = total_sueldos + i.cantidad
+
     total = 0
+
+    for c in gastos:
+        total_gastos = total_gastos + c.valor
+
+    total_egresos= total_sueldos + total_gastos
+
+    total = total_ingresos - total_egresos
     if cuentas.count() > 0:
         total = cuentas.last().saldo
-    return render(request, 'gestion_lena/cuenta_t.html', {'cuentas':cuentas, 'fecha_inicial': f_i, 'fecha_final': f_f, 'total': total})
+    return render(request, 'gestion_lena/cuenta_t.html', {'cuentas':cuentas,'egresos':egresos,'sueldos':sueldos,'pedidos':pedidos,'gastos':gastos, 'fecha_inicial': f_i,'total_ingresos': total_ingresos, 'total_egresos': total_egresos,'fecha_final': f_f, 'total': total})
 
 ############################################################################
 
