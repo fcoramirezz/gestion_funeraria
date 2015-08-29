@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from gestion_lena.views import ContactoListView, ContactoDetailView, ContactoCreateView, ContactoUpdateView, ContactoDeleteView, GastoListView, GastoDetailView, GastoCreateView, GastoUpdateView, GastoDeleteView, TipoGastoListView, TipoGastoCreateView, TipoGastoDeleteView, TipoGastoDetailView, TipoGastoUpdateView
     
 from gestion_lena.views import ServicioListView, ServicioDetailView, ServicioCreateView, ServicioUpdateView, ServicioDeleteView, PedidoListView, PedidoDetailView, PedidoCreateView, PedidoUpdateView, PedidoDeleteView, SueldoListView, SueldoDetailView, SueldoCreateView, SueldoUpdateView, SueldoDeleteView, TrabajadorListView, TrabajadorDetailView, TrabajadorCreateView, TrabajadorUpdateView, TrabajadorDeleteView
-
+from gestion_lena.views import DudaListView, DudaDetailView, DudaCreateView, DudaUpdateView, DudaDeleteView
 
 urlpatterns = patterns('gestion_lena.views',
     url(r'^home/', 'home', name='home'),
@@ -37,6 +37,14 @@ urlpatterns = patterns('gestion_lena.views',
     url(r'^sueldo/(?P<pk>\d+)/actualizar/$', SueldoUpdateView.as_view(), name='sueldo_update'),
     url(r'^sueldo/(?P<pk>\d+)/eliminar/$', SueldoDeleteView.as_view(), name='sueldo_delete'),
 
+
+
+    url(r'^dudas/$', DudaListView.as_view(), name='duda_list'),
+    url(r'^duda/(?P<pk>\d+)/$', DudaDetailView.as_view(), name='duda_detail'),
+    url(r'^duda/nuevo/$', DudaCreateView.as_view(), name='duda_create'),
+    url(r'^duda/(?P<pk>\d+)/actualizar/$', DudaUpdateView.as_view(), name='duda_update'),
+    url(r'^duda/(?P<pk>\d+)/eliminar/$', DudaDeleteView.as_view(), name='duda_delete'),
+
     #########################
     url(r'^gastos/$', GastoListView.as_view(), name='gasto_list'),
     url(r'^gasto/(?P<pk>\d+)/$', GastoDetailView.as_view(), name='gasto_detail'),
@@ -56,6 +64,8 @@ urlpatterns = patterns('gestion_lena.views',
     url(r'^contacto/(?P<id_pedido>\d+)/pedido/delete/$', 'contacto_pedido_delete', name='contacto_pedido_delete'),
     ###############################################################################################################
     url(r'^servicios/entregas/$', 'calcular_entrega_pedidos', name='calcular_entrega_pedidos'),
+    url(r'^mantenedor/$', 'mantenedor', name='mantenedor'),
+    url(r'^servicios/ruta/$', 'ruta_servicio', name='ruta_servicio'),
     url(r'^servicios/ruta/$', 'ruta_servicio', name='ruta_servicio'),
     url(r'^serviciosss/entregas/$', 'object_list_servicio', name='object_list_servicio'),
     url(r'^reporte/cuenta/(?P<fecha_inicial>[-\d]+)/(?P<fecha_final>[-\d]+)/$', 'cuenta_t', name='cuenta_t'),

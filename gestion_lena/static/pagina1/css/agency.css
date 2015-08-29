@@ -60,6 +60,14 @@ h6 {
     margin: 0 auto;
 }
 
+.servicios{
+    background-image: url(../img/header-bg2.jpg);
+    background-position: center center;
+}
+.dudas{
+    background-image: url(../img/header-bg222.jpg);
+    background-position: center center;
+}
 .bg-light-gray {
     background-color: #f7f7f7;
 }
@@ -352,6 +360,7 @@ section h3.section-subheading {
     margin: 15px 0;
     text-transform: none;
 }
+
 
 #portfolio .portfolio-item {
     right: 0;

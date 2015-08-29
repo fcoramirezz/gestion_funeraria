@@ -1,6 +1,6 @@
 # coding: utf-8
 from django import forms
-from gestion_lena.models import Contacto, Pedido, Gasto, TipoGasto, Servicio, Sueldo, Trabajador
+from gestion_lena.models import Contacto, Pedido, Gasto, TipoGasto, Servicio, Sueldo, Trabajador, Duda
 
 
 
@@ -85,6 +85,10 @@ class PedidoForm(forms.ModelForm):
 class ServicioForm(forms.ModelForm):
     class Meta:
         model = Servicio
+
+class DudaForm(forms.ModelForm):
+    class Meta:
+        model = Duda
 
 class PedidoContactoForm(forms.ModelForm):
     class Meta:

@@ -21,6 +21,26 @@ class Configuracion(models.Model):
         verbose_name_plural = u"Configuraciones"
 
 
+class Duda(models.Model):
+    titulo = models.CharField(max_length=255,null=True)
+    pregunta = models.TextField(null=True, blank=True)
+    respuesta = models.TextField(null=True, blank=True)
+   
+    creado_en = models.DateTimeField(auto_now_add=True,null=True)
+
+    class Meta:
+        verbose_name = u"Duda"
+        verbose_name_plural = u"Dudas"
+
+    def __unicode__(self):
+        return u"%s" % self.titulo
+
+    def get_absolute_url(self):
+        return reverse('duda_detail', kwargs={'pk': self.pk})
+
+   
+
+
 class Region(models.Model):
     nombre = models.CharField(max_length=255)
     numero = models.CharField(max_length=10)

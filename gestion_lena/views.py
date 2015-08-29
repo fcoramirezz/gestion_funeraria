@@ -9,10 +9,10 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime, date, time, timedelta
 import calendar
 
-from gestion_lena.models import Servicio, Contacto, Pedido, Configuracion, Region, Provincia, Comuna, Gasto, TipoGasto, Servicio, Sueldo, Trabajador
+from gestion_lena.models import Servicio, Contacto, Pedido, Configuracion, Region, Provincia, Comuna, Gasto, TipoGasto, Servicio, Sueldo, Trabajador, Duda
     
 from gestion_lena.mixins import LoginRequired, SearchableListMixin
-from gestion_lena.forms import ServicioForm, ContactoForm, PedidoForm, PedidoContactoForm, GastoForm, TipoGastoForm, RangoFechaForm, ServicioForm, SueldoForm, TrabajadorForm
+from gestion_lena.forms import ServicioForm, ContactoForm, PedidoForm, PedidoContactoForm, GastoForm, TipoGastoForm, RangoFechaForm, ServicioForm, SueldoForm, TrabajadorForm, DudaForm
    
 
 from gestion_lena.models import Cuenta
@@ -32,6 +32,12 @@ def home(request):
     pedidos = Pedido.objects.exclude(estado="Pagado").order_by('creado_en')[:4]
     return render(request, 'gestion_lena/base.html',{'pedidos': pedidos} )
 
+@login_required
+def mantenedor(request):
+    context = {}
+    dudas = Duda.objects.order_by('creado_en')
+    context['dudas'] = dudas
+    return render(request, 'gestion_lena/mantenedor.html', context)
 
 @login_required
 def object_list_servicio(request):
@@ -183,6 +189,38 @@ class ServicioDeleteView(LoginRequired, SearchableListMixin, DeleteView):
     success_url = reverse_lazy('servicio_list')
     template_name = 'gestion_lena/servicio_delete.html'
     search_fields = [('nombre','icontains',)]
+
+
+
+
+
+class DudaListView(LoginRequired, SearchableListMixin, ListView):
+    model = Duda
+    template_name = 'gestion_lena/duda_list.html'
+    search_fields = [('titulo','icontains',)]
+
+class DudaDetailView(LoginRequired, SearchableListMixin, DetailView):
+    model = Duda
+    template_name = 'gestion_lena/duda_detail.html'
+    search_fields = [('titulo','icontains',)]
+
+class DudaCreateView(LoginRequired, SearchableListMixin, CreateView):
+    model = Duda
+    form_class = DudaForm
+    template_name = 'gestion_lena/duda_create.html'
+    search_fields = [('titulo','icontains',)]
+
+class DudaUpdateView(LoginRequired, SearchableListMixin, UpdateView):
+    model = Duda
+    form_class = DudaForm
+    template_name = 'gestion_lena/duda_update.html'
+    search_fields = [('titulo','icontains',)]
+
+class DudaDeleteView(LoginRequired, SearchableListMixin, DeleteView):
+    model = Duda
+    success_url = reverse_lazy('duda_list')
+    template_name = 'gestion_lena/duda_delete.html'
+    search_fields = [('titulo','icontains',)]
 
 ###########Gasto###################################################
 class GastoListView(LoginRequired, SearchableListMixin, ListView):
@@ -347,8 +385,11 @@ def ruta_servicio(request):
 
 def pagina(request):
     context = {}
-    tipo_de_servicio = Servicio.objects.filter(publicar="Si").order_by('creado_en')
+    tipo_de_servicio = Servicio.objects.filter(publicar="Si").order_by('precio_de_venta')
     context['servicios'] = tipo_de_servicio
+    '''context2 = {}'''
+    dudas = Duda.objects.order_by('creado_en')
+    context['dudas'] = dudas
     return render(request, 'gestion_lena/pagina.html', context)
 
 

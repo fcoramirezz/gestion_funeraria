@@ -1,0 +1,32 @@
+{% extends 'gestion_lena/duda_list.html' %}
+{% load humanize %}
+
+{% block title_page %}
+{{ duda.creado_en }}
+{% endblock %}
+
+{% block object_detail %}
+<div class="page-header">
+<h1> {{ duda }}  <small> <a href="{% url 'duda_update' duda.id %}" class="btn btn-default"> <span class="glyphicon glyphicon-edit"></span> Actualizar </a>  <a href="{% url 'duda_delete' duda.id %}" class="btn btn-danger"> <span class="glyphicon glyphicon-remove-circle"></span> Eliminar </a> </small> </h1>
+</div>
+
+<div class="well text-center">
+    <h3> Pregunta:  </span> 
+<blockquote>
+    <p> {{ duda.pregunta|default:"Sin pregunta" }} </p>
+</blockquote>
+
+   <h3> Respuesta: </span> 
+<blockquote>
+    <p> {{ duda.respuesta|default:"Sin respuesta" }} </p>
+</blockquote>
+</div>
+
+
+
+
+
+
+
+
+{% endblock %}
