@@ -172,6 +172,9 @@ class TipoGastoForm(forms.ModelForm):
 class RangoFechaForm(forms.Form):
     fecha_inicial = forms.DateField(required=True, label="Fecha Inicial")
     fecha_final = forms.DateField(required=True, label="Fecha Final")
+
+
+
     
 
 

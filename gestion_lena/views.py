@@ -423,7 +423,7 @@ def form_cuenta_t(request):
         if form.is_valid():
             d_i = form.cleaned_data['fecha_inicial']
             d_f = form.cleaned_data['fecha_final']
-            if d_i < d_f and d_i <= hoy :
+            if d_i <= d_f and d_i <= hoy :
                 return redirect('cuenta_t', d_i, d_f)
             else:
                 messages.add_message(request, messages.ERROR, u"Fecha Inicial debe ser menor a hoy y menor a la Fecha Final")
@@ -438,7 +438,6 @@ def cuenta_t(request, fecha_inicial, fecha_final):
     f_i = datetime.datetime.strptime(fecha_inicial, "%Y-%m-%d").date()
     f_f = datetime.datetime.strptime(fecha_final, "%Y-%m-%d").date()
     cuentas = Cuenta.objects.filter(fecha__gte=f_i, fecha__lte=f_f).order_by('fecha')
-    egresos = Cuenta.objects.filter(fecha__gte=f_i, fecha__lte=f_f).order_by('fecha') and Gasto.objects.filter(creado_en__gte=f_i, creado_en__lte=f_f).order_by('creado_en')
     sueldos = Sueldo.objects.filter(fecha__gte=f_i, fecha__lte=f_f).order_by('fecha')
     gastos = Gasto.objects.filter(fecha__gte=f_i, fecha__lte=f_f).order_by('fecha')
     pedidos = Pedido.objects.filter(fecha_entrega__gte=f_i, fecha_entrega__lte=f_f, estado= 'Pagado').order_by('fecha_entrega')
@@ -446,6 +445,9 @@ def cuenta_t(request, fecha_inicial, fecha_final):
     total_sueldos = 0
     total_gastos = 0
     total_ingresos = 0
+
+
+
 
     for n in pedidos:
         total_ingresos= total_ingresos + n.total
@@ -460,10 +462,172 @@ def cuenta_t(request, fecha_inicial, fecha_final):
 
     total_egresos= total_sueldos + total_gastos
 
+############################### INGRESOS #################################################################
+
+    total_ingreso_enero = 0
+    for n in pedidos:
+        if (n.fecha_entrega.month == 1) and (n.fecha_entrega.year == f_i.year):
+            total_ingreso_enero = n.total + total_ingreso_enero
+
+    total_ingreso_febrero = 0
+    for n in pedidos:
+        if (n.fecha_entrega.month == 2) and (n.fecha_entrega.year == f_i.year):
+            total_ingreso_febrero = n.total + total_ingreso_febrero
+
+    total_ingreso_marzo = 0
+    for n in pedidos:
+        if (n.fecha_entrega.month == 3) and (n.fecha_entrega.year == f_i.year):
+            total_ingreso_marzo = n.total + total_ingreso_marzo
+
+    total_ingreso_abril = 0
+    for n in pedidos:
+        if (n.fecha_entrega.month == 4) and (n.fecha_entrega.year == f_i.year):
+            total_ingreso_abril = n.total + total_ingreso_abril
+
+    total_ingreso_mayo = 0
+    for n in pedidos:
+        if (n.fecha_entrega.month == 5) and (n.fecha_entrega.year == f_i.year):
+            total_ingreso_mayo = n.total + total_ingreso_mayo
+
+    total_ingreso_junio = 0
+    for n in pedidos:
+        if (n.fecha_entrega.month == 6) and (n.fecha_entrega.year == f_i.year):
+            total_ingreso_junio = n.total + total_ingreso_junio
+
+    total_ingreso_julio = 0
+    for n in pedidos:
+        if (n.fecha_entrega.month == 7) and (n.fecha_entrega.year == f_i.year):
+            total_ingreso_julio = n.total + total_ingreso_julio
+
+    total_ingreso_agosto = 0
+    for n in pedidos:
+        if (n.fecha_entrega.month == 8) and (n.fecha_entrega.year == f_i.year):
+            total_ingreso_agosto = n.total + total_ingreso_agosto
+
+    total_ingreso_septiembre = 0
+    for n in pedidos:
+        if (n.fecha_entrega.month == 9) and (n.fecha_entrega.year == f_i.year):
+            total_ingreso_septiembre = n.total + total_ingreso_septiembre
+
+    total_ingreso_octubre = 0
+    for n in pedidos:
+        if (n.fecha_entrega.month == 10) and (n.fecha_entrega.year == f_i.year):
+            total_ingreso_octubre = n.total + total_ingreso_octubre
+
+    total_ingreso_noviembre = 0
+    for n in pedidos:
+        if (n.fecha_entrega.month == 11) and (n.fecha_entrega.year == f_i.year):
+            total_ingreso_noviembre = n.total + total_ingreso_noviembre
+
+    total_ingreso_diciembre = 0
+    for n in pedidos:
+        if (n.fecha_entrega.month == 12) and (n.fecha_entrega.year == f_i.year):
+            total_ingreso_diciembre = n.total + total_ingreso_diciembre
+############################### EGRESOS #################################################################
+    total_egresos_enero = 0
+    for n in sueldos:
+        if (n.fecha.month == 1) and (n.fecha.year == f_i.year):
+            total_egresos_enero = n.cantidad + total_egresos_enero
+    for n in gastos:
+        if (n.fecha.month == 1) and (n.fecha.year == f_i.year):
+            total_egresos_enero = n.valor + total_egresos_enero
+
+    total_egresos_febrero = 0
+    for n in sueldos:
+        if (n.fecha.month == 2) and (n.fecha.year == f_i.year):
+            total_egresos_febrero = n.cantidad + total_egresos_febrero
+    for n in gastos:
+        if (n.fecha.month == 2) and (n.fecha.year == f_i.year):
+            total_egresos_febrero = n.valor + total_egresos_febrero
+
+    total_egresos_marzo = 0
+    for n in sueldos:
+        if (n.fecha.month == 3) and (n.fecha.year == f_i.year):
+            total_egresos_marzo = n.cantidad + total_egresos_marzo
+    for n in gastos:
+        if (n.fecha.month == 3) and (n.fecha.year == f_i.year):
+            total_egresos_marzo = n.valor + total_egresos_marzo
+
+    total_egresos_abril = 0
+    for n in sueldos:
+        if (n.fecha.month == 4) and (n.fecha.year == f_i.year):
+            total_egresos_abril = n.cantidad + total_egresos_abril
+    for n in gastos:
+        if (n.fecha.month == 4) and (n.fecha.year == f_i.year):
+            total_egresos_abril = n.valor + total_egresos_abril
+
+    total_egresos_mayo = 0
+    for n in sueldos:
+        if (n.fecha.month == 5) and (n.fecha.year == f_i.year):
+            total_egresos_mayo = n.cantidad + total_egresos_mayo
+    for n in gastos:
+        if (n.fecha.month == 5) and (n.fecha.year == f_i.year):
+            total_egresos_mayo = n.valor + total_egresos_mayo
+
+    total_egresos_junio = 0
+    for n in sueldos:
+        if (n.fecha.month == 6) and (n.fecha.year == f_i.year):
+            total_egresos_junio = n.cantidad + total_egresos_junio
+    for n in gastos:
+        if (n.fecha.month == 6) and (n.fecha.year == f_i.year):
+            total_egresos_junio = n.valor + total_egresos_junio
+
+    total_egresos_julio = 0
+    for n in sueldos:
+        if (n.fecha.month == 7) and (n.fecha.year == f_i.year):
+            total_egresos_julio = n.cantidad + total_egresos_julio
+    for n in gastos:
+        if (n.fecha.month == 7) and (n.fecha.year == f_i.year):
+            total_egresos_julio = n.valor + total_egresos_julio
+
+
+    total_egresos_agosto = 0
+    for n in sueldos:
+        if (n.fecha.month == 8) and (n.fecha.year == f_i.year):
+            total_egresos_agosto = n.cantidad + total_egresos_agosto
+    for n in gastos:
+        if (n.fecha.month == 8) and (n.fecha.year == f_i.year):
+            total_egresos_agosto = n.valor + total_egresos_agosto
+
+    total_egresos_septiembre = 0
+    for n in sueldos:
+        if (n.fecha.month == 9) and (n.fecha.year == f_i.year):
+            total_egresos_septiembre = n.cantidad + total_egresos_septiembre
+    for n in gastos:
+        if (n.fecha.month == 9) and (n.fecha.year == f_i.year):
+            total_egresos_septiembre = n.valor + total_egresos_septiembre
+
+    total_egresos_octubre = 0
+    for n in sueldos:
+        if (n.fecha.month == 10) and (n.fecha.year == f_i.year):
+            total_egresos_octubre = n.cantidad + total_egresos_octubre
+    for n in gastos:
+        if (n.fecha.month == 10) and (n.fecha.year == f_i.year):
+            total_egresos_octubre = n.valor + total_egresos_octubre
+
+    total_egresos_noviembre = 0
+    for n in sueldos:
+        if (n.fecha.month == 11) and (n.fecha.year == f_i.year):
+            total_egresos_noviembre = n.cantidad + total_egresos_noviembre
+    for n in gastos:
+        if (n.fecha.month == 11) and (n.fecha.year == f_i.year):
+            total_egresos_noviembre = n.valor + total_egresos_noviembre
+
+    total_egresos_diciembre = 0
+    for n in sueldos:
+        if (n.fecha.month == 12) and (n.fecha.year == f_i.year):
+            total_egresos_diciembre = n.cantidad + total_egresos_diciembre
+    for n in gastos:
+        if (n.fecha.month == 12) and (n.fecha.year == f_i.year):
+            total_egresos_diciembre = n.valor + total_egresos_diciembre
+
+
+
+
     total = total_ingresos - total_egresos
     if cuentas.count() > 0:
         total = cuentas.last().saldo
-    return render(request, 'gestion_lena/cuenta_t.html', {'cuentas':cuentas,'egresos':egresos,'sueldos':sueldos,'pedidos':pedidos,'gastos':gastos, 'fecha_inicial': f_i,'total_ingresos': total_ingresos, 'total_egresos': total_egresos,'fecha_final': f_f, 'total': total})
+    return render(request, 'gestion_lena/cuenta_t.html', {'total_egresos_diciembre':total_egresos_diciembre,'total_egresos_noviembre':total_egresos_noviembre,'total_egresos_octubre':total_egresos_octubre,'total_egresos_septiembre':total_egresos_septiembre,'total_egresos_julio':total_egresos_julio,'total_egresos_junio':total_egresos_junio,'total_egresos_mayo':total_egresos_mayo,'total_egresos_abril':total_egresos_abril,'total_egresos_marzo':total_egresos_marzo,'total_egresos_febrero':total_egresos_febrero,'total_egresos_enero':total_egresos_enero,'total_egresos_agosto':total_egresos_agosto,'total_ingreso_diciembre':total_ingreso_diciembre,'total_ingreso_noviembre':total_ingreso_noviembre,'total_ingreso_octubre':total_ingreso_octubre,'total_ingreso_septiembre':total_ingreso_septiembre,'total_ingreso_julio':total_ingreso_julio,'total_ingreso_junio':total_ingreso_junio,'total_ingreso_mayo':total_ingreso_mayo,'total_ingreso_abril':total_ingreso_abril,'total_ingreso_marzo':total_ingreso_marzo,'total_ingreso_febrero':total_ingreso_febrero,'total_ingreso_enero':total_ingreso_enero,'total_ingreso_agosto':total_ingreso_agosto,'cuentas':cuentas,'sueldos':sueldos,'pedidos':pedidos,'gastos':gastos, 'fecha_inicial': f_i,'total_ingresos': total_ingresos, 'total_egresos': total_egresos,'fecha_final': f_f, 'total': total})
 
 ############################################################################
 
