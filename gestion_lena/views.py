@@ -446,7 +446,12 @@ def cuenta_t(request, fecha_inicial, fecha_final):
     total_gastos = 0
     total_ingresos = 0
 
+    cant_ped_chillan = 0
 
+    for n in pedidos: 
+        if n.comuna == 'Arica':
+            cant_ped_chillan = cant_ped_chillan + 1
+        
 
 
     for n in pedidos:
@@ -624,10 +629,10 @@ def cuenta_t(request, fecha_inicial, fecha_final):
 
 
 
-    total = total_ingresos - total_egresos
+    total = total_ingresos - total_egresos     
     if cuentas.count() > 0:
         total = cuentas.last().saldo
-    return render(request, 'gestion_lena/cuenta_t.html', {'total_egresos_diciembre':total_egresos_diciembre,'total_egresos_noviembre':total_egresos_noviembre,'total_egresos_octubre':total_egresos_octubre,'total_egresos_septiembre':total_egresos_septiembre,'total_egresos_julio':total_egresos_julio,'total_egresos_junio':total_egresos_junio,'total_egresos_mayo':total_egresos_mayo,'total_egresos_abril':total_egresos_abril,'total_egresos_marzo':total_egresos_marzo,'total_egresos_febrero':total_egresos_febrero,'total_egresos_enero':total_egresos_enero,'total_egresos_agosto':total_egresos_agosto,'total_ingreso_diciembre':total_ingreso_diciembre,'total_ingreso_noviembre':total_ingreso_noviembre,'total_ingreso_octubre':total_ingreso_octubre,'total_ingreso_septiembre':total_ingreso_septiembre,'total_ingreso_julio':total_ingreso_julio,'total_ingreso_junio':total_ingreso_junio,'total_ingreso_mayo':total_ingreso_mayo,'total_ingreso_abril':total_ingreso_abril,'total_ingreso_marzo':total_ingreso_marzo,'total_ingreso_febrero':total_ingreso_febrero,'total_ingreso_enero':total_ingreso_enero,'total_ingreso_agosto':total_ingreso_agosto,'cuentas':cuentas,'sueldos':sueldos,'pedidos':pedidos,'gastos':gastos, 'fecha_inicial': f_i,'total_ingresos': total_ingresos, 'total_egresos': total_egresos,'fecha_final': f_f, 'total': total})
+    return render(request, 'gestion_lena/cuenta_t.html', {'cant_ped_chillan':cant_ped_chillan, 'total_egresos_diciembre':total_egresos_diciembre,'total_egresos_noviembre':total_egresos_noviembre,'total_egresos_octubre':total_egresos_octubre,'total_egresos_septiembre':total_egresos_septiembre,'total_egresos_julio':total_egresos_julio,'total_egresos_junio':total_egresos_junio,'total_egresos_mayo':total_egresos_mayo,'total_egresos_abril':total_egresos_abril,'total_egresos_marzo':total_egresos_marzo,'total_egresos_febrero':total_egresos_febrero,'total_egresos_enero':total_egresos_enero,'total_egresos_agosto':total_egresos_agosto,'total_ingreso_diciembre':total_ingreso_diciembre,'total_ingreso_noviembre':total_ingreso_noviembre,'total_ingreso_octubre':total_ingreso_octubre,'total_ingreso_septiembre':total_ingreso_septiembre,'total_ingreso_julio':total_ingreso_julio,'total_ingreso_junio':total_ingreso_junio,'total_ingreso_mayo':total_ingreso_mayo,'total_ingreso_abril':total_ingreso_abril,'total_ingreso_marzo':total_ingreso_marzo,'total_ingreso_febrero':total_ingreso_febrero,'total_ingreso_enero':total_ingreso_enero,'total_ingreso_agosto':total_ingreso_agosto,'cuentas':cuentas,'sueldos':sueldos,'pedidos':pedidos,'gastos':gastos, 'fecha_inicial': f_i,'total_ingresos': total_ingresos, 'total_egresos': total_egresos,'fecha_final': f_f, 'total': total})
 
 ############################################################################
 

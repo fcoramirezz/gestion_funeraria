@@ -241,7 +241,6 @@ class Pedido(models.Model):
     precio_anexo = models.PositiveIntegerField(default=0)
     costo_anexo = models.PositiveIntegerField(default=0)
     fecha_entrega = models.DateField()
-    fecha_entrega2 = models.DateField(null=True)
     creado_en = models.DateTimeField(auto_now_add=True)
     fecha_modificacion = models.DateTimeField(auto_now=True)
 
@@ -265,6 +264,11 @@ class Pedido(models.Model):
     @property
     def total(self):
         return self.cantidad * self.tipo_de_servicio.obtener_ganancia_de_venta() + self.precio_anexo - self.costo_anexo
+
+    @property
+    def obtener_comuna(self):
+        return self.comuna
+
 
     @property
     def obtener_color_fila(self):
