@@ -446,11 +446,147 @@ def cuenta_t(request, fecha_inicial, fecha_final):
     total_gastos = 0
     total_ingresos = 0
 
+    
     cant_ped_chillan = 0
 
     for n in pedidos: 
-        if n.comuna == 'Arica':
+        if str(n.comuna) == 'Chillán':
             cant_ped_chillan = cant_ped_chillan + 1
+
+
+
+    cant_ped_chillan_viejo = 0
+
+    for n in pedidos: 
+        if str(n.comuna) == 'Chillán Viejo':
+            cant_ped_chillan_viejo = cant_ped_chillan_viejo+ 1
+
+
+
+    cant_ped_cobquecura = 0
+
+    for n in pedidos: 
+        if str(n.comuna) == 'Cobquecura':
+            cant_ped_cobquecura = cant_ped_cobquecura+ 1
+
+
+    cant_ped_coelemu = 0
+
+    for n in pedidos: 
+        if str(n.comuna) == 'Coelemu':
+            cant_ped_coelemu = cant_ped_coelemu+ 1
+
+
+    cant_ped_coihueco = 0
+
+    for n in pedidos: 
+        if str(n.comuna) == 'Coihueco':
+            cant_ped_coihueco = cant_ped_coihueco+ 1
+
+    cant_ped_elcarmen = 0
+
+    for n in pedidos: 
+        if str(n.comuna) == 'El Carmen':
+            cant_ped_elcarmen = cant_ped_elcarmen+ 1
+
+
+
+    cant_ped_ninhue = 0
+
+    for n in pedidos: 
+        if str(n.comuna) == 'Ninhue':
+            cant_ped_ninhue = cant_ped_ninhue+ 1
+
+
+    cant_ped_niquen = 0
+
+    for n in pedidos: 
+        if str(n.comuna) == 'Ñiquen':
+            cant_ped_niquen = cant_ped_niquen+ 1
+
+
+
+    cant_ped_pemuco = 0
+
+    for n in pedidos: 
+        if str(n.comuna) == 'Pemuco':
+            cant_ped_pemuco = cant_ped_pemuco+ 1
+
+
+    cant_ped_pinto = 0
+
+    for n in pedidos: 
+        if str(n.comuna) == 'Pinto':
+            cant_ped_pinto = cant_ped_pinto+ 1
+
+
+    cant_ped_portezuelo = 0
+
+    for n in pedidos: 
+        if str(n.comuna) == 'Portezuelo':
+            cant_ped_portezuelo = cant_ped_portezuelo+ 1
+
+
+    cant_ped_quillon = 0
+
+    for n in pedidos: 
+        if str(n.comuna) == 'Quillón':
+            cant_ped_quillon = cant_ped_quillon+ 1
+
+
+    cant_ped_quirihue = 0
+
+    for n in pedidos: 
+        if str(n.comuna) == 'Quirihue':
+            cant_ped_quirihue = cant_ped_quirihue+ 1
+
+
+    cant_ped_ranquil = 0
+
+    for n in pedidos: 
+        if str(n.comuna) == 'Ránquil':
+            cant_ped_ranquil = cant_ped_ranquil+ 1
+
+
+    cant_ped_sancarlos = 0
+
+    for n in pedidos: 
+        if str(n.comuna) == 'San Carlos':
+            cant_ped_sancarlos = cant_ped_sancarlos+ 1
+
+
+    cant_ped_sanfabian = 0
+
+    for n in pedidos: 
+        if str(n.comuna) == 'San Fabián':
+            cant_ped_sanfabian = cant_ped_sanfabian+ 1
+
+
+    cant_ped_sanignacio = 0
+
+    for n in pedidos: 
+        if str(n.comuna) == 'San Ignacio':
+            cant_ped_sanignacio = cant_ped_sanignacio+ 1
+
+
+    cant_ped_sannicolas = 0
+
+    for n in pedidos: 
+        if str(n.comuna) == 'San Nicolás':
+            cant_ped_sannicolas = cant_ped_sannicolas+ 1
+
+
+    cant_ped_treguaco = 0
+
+    for n in pedidos: 
+        if str(n.comuna) == 'Treguaco':
+            cant_ped_treguaco = cant_ped_treguaco+ 1
+
+
+
+
+
+
         
 
 
@@ -632,7 +768,7 @@ def cuenta_t(request, fecha_inicial, fecha_final):
     total = total_ingresos - total_egresos     
     if cuentas.count() > 0:
         total = cuentas.last().saldo
-    return render(request, 'gestion_lena/cuenta_t.html', {'cant_ped_chillan':cant_ped_chillan, 'total_egresos_diciembre':total_egresos_diciembre,'total_egresos_noviembre':total_egresos_noviembre,'total_egresos_octubre':total_egresos_octubre,'total_egresos_septiembre':total_egresos_septiembre,'total_egresos_julio':total_egresos_julio,'total_egresos_junio':total_egresos_junio,'total_egresos_mayo':total_egresos_mayo,'total_egresos_abril':total_egresos_abril,'total_egresos_marzo':total_egresos_marzo,'total_egresos_febrero':total_egresos_febrero,'total_egresos_enero':total_egresos_enero,'total_egresos_agosto':total_egresos_agosto,'total_ingreso_diciembre':total_ingreso_diciembre,'total_ingreso_noviembre':total_ingreso_noviembre,'total_ingreso_octubre':total_ingreso_octubre,'total_ingreso_septiembre':total_ingreso_septiembre,'total_ingreso_julio':total_ingreso_julio,'total_ingreso_junio':total_ingreso_junio,'total_ingreso_mayo':total_ingreso_mayo,'total_ingreso_abril':total_ingreso_abril,'total_ingreso_marzo':total_ingreso_marzo,'total_ingreso_febrero':total_ingreso_febrero,'total_ingreso_enero':total_ingreso_enero,'total_ingreso_agosto':total_ingreso_agosto,'cuentas':cuentas,'sueldos':sueldos,'pedidos':pedidos,'gastos':gastos, 'fecha_inicial': f_i,'total_ingresos': total_ingresos, 'total_egresos': total_egresos,'fecha_final': f_f, 'total': total})
+    return render(request, 'gestion_lena/cuenta_t.html', {'cant_ped_treguaco':cant_ped_treguaco,'cant_ped_sannicolas':cant_ped_sannicolas,'cant_ped_sanignacio':cant_ped_sanignacio,'cant_ped_sanfabian':cant_ped_sanfabian,'cant_ped_sancarlos':cant_ped_sancarlos,'cant_ped_ranquil':cant_ped_ranquil,'cant_ped_quirihue':cant_ped_quirihue,'cant_ped_quillon':cant_ped_quillon,'cant_ped_portezuelo':cant_ped_portezuelo,'cant_ped_pinto':cant_ped_pinto,'cant_ped_pemuco':cant_ped_pemuco,'cant_ped_niquen':cant_ped_niquen,'cant_ped_ninhue':cant_ped_ninhue,'cant_ped_elcarmen':cant_ped_elcarmen,'cant_ped_coihueco':cant_ped_coihueco,'cant_ped_coelemu':cant_ped_coelemu,'cant_ped_cobquecura':cant_ped_cobquecura,'cant_ped_chillan_viejo':cant_ped_chillan_viejo,'cant_ped_chillan':cant_ped_chillan, 'total_egresos_diciembre':total_egresos_diciembre,'total_egresos_noviembre':total_egresos_noviembre,'total_egresos_octubre':total_egresos_octubre,'total_egresos_septiembre':total_egresos_septiembre,'total_egresos_julio':total_egresos_julio,'total_egresos_junio':total_egresos_junio,'total_egresos_mayo':total_egresos_mayo,'total_egresos_abril':total_egresos_abril,'total_egresos_marzo':total_egresos_marzo,'total_egresos_febrero':total_egresos_febrero,'total_egresos_enero':total_egresos_enero,'total_egresos_agosto':total_egresos_agosto,'total_ingreso_diciembre':total_ingreso_diciembre,'total_ingreso_noviembre':total_ingreso_noviembre,'total_ingreso_octubre':total_ingreso_octubre,'total_ingreso_septiembre':total_ingreso_septiembre,'total_ingreso_julio':total_ingreso_julio,'total_ingreso_junio':total_ingreso_junio,'total_ingreso_mayo':total_ingreso_mayo,'total_ingreso_abril':total_ingreso_abril,'total_ingreso_marzo':total_ingreso_marzo,'total_ingreso_febrero':total_ingreso_febrero,'total_ingreso_enero':total_ingreso_enero,'total_ingreso_agosto':total_ingreso_agosto,'cuentas':cuentas,'sueldos':sueldos,'pedidos':pedidos,'gastos':gastos, 'fecha_inicial': f_i,'total_ingresos': total_ingresos, 'total_egresos': total_egresos,'fecha_final': f_f, 'total': total})
 
 ############################################################################
 

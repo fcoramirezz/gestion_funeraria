@@ -5,6 +5,9 @@
 {% block title_page %}
 {{ pedido }}
 {% endblock %}
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
 
 {% block object_detail %}
 <div class="page-header">
@@ -35,6 +38,10 @@
 			<td> <b> Tipo de Servicio Fúnebre </b>  </td>
 			<td> {{ pedido.tipo_de_servicio.nombre }} </td>
 		</tr>
+        <tr>
+            <td> <b> Comuna </b>  </td>
+            <td> {{ pedido.comuna }} </td>
+        </tr>
 		<!-- <tr>
 			<td> <b> Dirección de Fallecimiento </b>  </td>
 			<td> {{ pedido.direccion_destino }} </td>
