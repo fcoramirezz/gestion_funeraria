@@ -86,6 +86,14 @@ class ServicioForm(forms.ModelForm):
     class Meta:
         model = Servicio
 
+        labels = {
+            'imagen_pr': ('Imagen Principal'),
+            'imagen_sec1': ('Imagen Secundaria 1'),
+            'imagen_sec2': ('Imagen Secundaria 2'),
+            'imagen_sec3': ('Imagen Secundaria 3'),
+            
+        }
+
 class DudaForm(forms.ModelForm):
     class Meta:
         model = Duda

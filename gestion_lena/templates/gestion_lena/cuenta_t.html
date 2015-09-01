@@ -10,7 +10,7 @@
 
 
  <div class="page-header">
- 	<h1> Cuenta, <small> {{ fecha_inicial|date:"D d M Y" }} al {{ fecha_final|date:"D d M Y" }} </small> </h1> 
+ 	<h1> Estado de Cuenta y Análisis de:, <small> {{ fecha_inicial|date:"D d M Y" }} al {{ fecha_final|date:"D d M Y" }} </small> </h1> 
  	<a href="{% url 'form_cuenta_t' %}" class="btn btn-warning"> Volver</a>
  </div>
 
@@ -77,7 +77,7 @@
  	<tbody>
  		{% for c in pedidos %}
  		<tr>
- 			<td> {{ c.fecha_entrega }} {{ c.comuna}} </td>
+ 			<td> {{ c.fecha_entrega }} </td>
  			<td> <a href="{% url 'pedido_detail' c.id %}"> {{ c.contacto }} </a> </td>
  			<td> {{ c.tipo_de_servicio }} </td>
  			<td> $ {{ c.total|intcomma}} </td>
@@ -113,7 +113,7 @@
 
 
  <div class="text-center">
- 	<h2> Total Utilidades por Servicios del Periodo: $ {{ total_ingresos|intcomma }} </h2>
+ 	<h2> Total Utilidades por Servicios: $ {{ total_ingresos|intcomma }} </h2>
  </div>
 
 
@@ -150,7 +150,7 @@
                             <div class="panel-heading" role="tab" id="headingwTwo">
                                 <h4 class="panel-title">
                                     <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapsewTwo" aria-expanded="false" aria-controls="collapsewTwo">
-                                       <h2 class="text-center"> <span class="label label-success"> Egresos  </span>
+                                       <h2 class="text-center"> <span class="label label-success"> Gastos Considerados  </span>
                                        </h2>
                                        <h6 class="text-center"> Click para ver el detalle </h6>
                                     </a>
@@ -194,7 +194,7 @@
 
   <div class="row">
         <div class="col-xs-6 col-md-6 col-lg-6">
-<h1 class="text text-info"><span class="label label-warning"> Gastos Anexos Involucrados </span></h1>
+<h1 class="text text-info"><span class="label label-warning"> Gastos Anexos </span></h1>
 
   <table id="tabla_adapted" class="table table-bordered table-striped">
  	<thead>	
@@ -229,11 +229,11 @@
 
 <div class="page-header">
  <div class="text-center">
- 	<h2> Total Egresos del Periodo: $ {{ total_egresos|intcomma }} </h2>
+ 	<h2> Total Egresos: $ {{ total_egresos|intcomma }} </h2>
  </div>
  </div>
 <div class="text-center">
- 	<h1> Total Ganancias del Periodo: $ {{ total|intcomma }} </h1>
+ 	<h1> Total Ganancias: $ {{ total|intcomma }} </h1>
  </div>
 
 

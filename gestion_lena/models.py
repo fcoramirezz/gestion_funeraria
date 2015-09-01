@@ -146,6 +146,10 @@ class Servicio(models.Model):
     costo_de_servicio = models.PositiveIntegerField()
     detalles_del_servicio = models.TextField(null=True, blank=True)
     publicar = models.CharField(max_length=100, choices=PUBLICAR, default="Si")
+    imagen_pr = models.ImageField(upload_to='media',null=True,blank=True)
+    imagen_sec1 = models.FileField(upload_to='media',null=True,blank=True)
+    imagen_sec2 = models.ImageField(upload_to='media',null=True,blank=True)
+    imagen_sec3 = models.ImageField(upload_to='media',null=True,blank=True)
     creado_en = models.DateTimeField(auto_now_add=True,null=True)
 
    
