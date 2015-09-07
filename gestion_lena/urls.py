@@ -3,7 +3,12 @@ from gestion_lena.views import ContactoListView, ContactoDetailView, ContactoCre
     
 from gestion_lena.views import ServicioListView, ServicioDetailView, ServicioCreateView, ServicioUpdateView, ServicioDeleteView, PedidoListView, PedidoDetailView, PedidoCreateView, PedidoUpdateView, PedidoDeleteView, SueldoListView, SueldoDetailView, SueldoCreateView, SueldoUpdateView, SueldoDeleteView, TrabajadorListView, TrabajadorDetailView, TrabajadorCreateView, TrabajadorUpdateView, TrabajadorDeleteView
 from gestion_lena.views import DudaListView, DudaDetailView, DudaCreateView, DudaUpdateView, DudaDeleteView
+from django.conf.urls.static import static
+from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from gestion_contacto_lena import settings
 
+admin.autodiscover()
 urlpatterns = patterns('gestion_lena.views',
     url(r'^home/', 'home', name='home'),
     url(r'^contactos/$', ContactoListView.as_view(), name='contacto_list'),
@@ -71,4 +76,5 @@ urlpatterns = patterns('gestion_lena.views',
     url(r'^reporte/cuenta/(?P<fecha_inicial>[-\d]+)/(?P<fecha_final>[-\d]+)/$', 'cuenta_t', name='cuenta_t'),
     url(r'^reporte/filtrar/$', 'form_cuenta_t', name='form_cuenta_t'),
     url(r'^reporte/cuenta/$', 'reporte_cuenta', name='reporte_cuenta'),
-)
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += staticfiles_urlpatterns()

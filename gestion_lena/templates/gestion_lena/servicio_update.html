@@ -8,7 +8,7 @@
 
 <div class="col-md-8 col-md-offset-2">
 <div class="well">
-   <form method="post" >
+    <form action="" method="post" enctype="multipart/form-data" data-ajax="false">
     {% csrf_token %}
     {% bootstrap_form form %}
     {% buttons %}

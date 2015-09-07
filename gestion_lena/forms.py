@@ -5,6 +5,7 @@ from gestion_lena.models import Contacto, Pedido, Gasto, TipoGasto, Servicio, Su
 
 
 
+
 class ContactoForm(forms.ModelForm):
     class Meta:
         model = Contacto
@@ -94,6 +95,20 @@ class ServicioForm(forms.ModelForm):
             
         }
 
+    def __init__(self, *args, **kwargs):
+        super(ServicioForm, self).__init__(*args, **kwargs)
+        imagen_pr = forms.ImageField(widget=forms.FileInput())
+
+    def upload(request):
+        if request.method == 'POST':
+            form = MealForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render_to_response('servicio_create.html', {'form': form})
+        else:
+            form = MealForm()
+            return render_to_response('servicio_create.html', {'form': form}, context_instance=RequestContext(request)
+        )
 class DudaForm(forms.ModelForm):
     class Meta:
         model = Duda

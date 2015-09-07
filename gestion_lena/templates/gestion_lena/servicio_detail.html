@@ -13,9 +13,11 @@
 <div class="well text-center">
     <h2> <span class="text text-info">Publicado en Página Web:  </span> {{ servicio.publicar }} </h2>
     <h2> <span class="text text-info">Nombre de Tipo de Servicio:  </span> {{ servicio.nombre }} </h2>
-    <h2> <span class="text text-info">Costo de Servicio:  </span> {{ servicio.costo_de_servicio }} </h2>
+    <h2> <span class="text text-info">Costo de Servicio:  </span> ${{ servicio.costo_de_servicio|intcomma }} </h2>
     <h1> <span class="text text-info"> Precio de Venta: </span> <span class="label label-info">  $ {{ servicio.precio_de_venta|intcomma }} </span></h1>
-    <h2> <span class="text text-info">imagen  </span> {{ servicio.imagen_pr }} </h2>
+    {% if servicio.imagen_pr %}
+     <img src="{{servicio.imagen_pr.url }}" height="200" width="250" border="1"/>
+     {% endif %}
     <h3> Detalles del Tipo de Servicio: </span> 
 <blockquote>
     <p> {{ servicio.detalles_del_servicio|default:"Sin comentarios" }} </p>

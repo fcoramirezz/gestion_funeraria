@@ -6,6 +6,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
 from django.utils import timezone
 from datetime import datetime, date, time, timedelta
+from django.core.files import File
 
 
 
@@ -146,11 +147,12 @@ class Servicio(models.Model):
     costo_de_servicio = models.PositiveIntegerField()
     detalles_del_servicio = models.TextField(null=True, blank=True)
     publicar = models.CharField(max_length=100, choices=PUBLICAR, default="Si")
-    imagen_pr = models.ImageField(upload_to='media',null=True,blank=True)
-    imagen_sec1 = models.FileField(upload_to='media',null=True,blank=True)
-    imagen_sec2 = models.ImageField(upload_to='media',null=True,blank=True)
-    imagen_sec3 = models.ImageField(upload_to='media',null=True,blank=True)
+    imagen_pr = models.ImageField(upload_to='media/servicios',null=True,blank=True, default=None)
+    imagen_sec1 = models.FileField(upload_to='media/servicios',null=True,blank=True)
+    imagen_sec2 = models.ImageField(upload_to='media/servicios',null=True,blank=True)
+    imagen_sec3 = models.ImageField(upload_to='media/servicios',null=True,blank=True)
     creado_en = models.DateTimeField(auto_now_add=True,null=True)
+  
 
    
    
@@ -163,7 +165,7 @@ class Servicio(models.Model):
         ordering =  ['precio_de_venta']
         
     def __unicode__(self):
-        return u"%s %s" % (self.nombre, self.precio_de_venta)
+        return u"%s %s" % (self.nombre,self.precio_de_venta)
 
     
     def obtener_ganancia_de_venta(self):
