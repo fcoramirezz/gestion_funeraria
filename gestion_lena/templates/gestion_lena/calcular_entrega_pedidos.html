@@ -100,10 +100,10 @@
     </blockquote>
 
     <table id="tabla_adapted" class="table table-bordered table-striped">
-        <caption> <p id="cantidad_seleccionados" class="label label-danger"> 0 servicios seleccionados de {{ pedidos|length }}  </p> </caption>
+         </p> </caption>
         <thead>
         <tr>
-            <th> # </th>
+     
             <th> Número  Pedido </th>
             <th> Contacto </th>
             <th> Tipo de Servicio </th>
@@ -115,7 +115,7 @@
         <tbody>
         {% for x in pedidos %}
             <tr>
-                <td>  <input type="checkbox" class="checkbox" value="{{ x.region }} {{ x.provincia }} {{ x.comuna }},  {{ x.direccion_destino }}"> </td>
+             
                 <td> <span class="label label-info"> {{ forloop.revcounter }} </span> </td>
                 <td> {{ x.contacto }} </td>
                 <td> <span class="label label-info">  {{ x.tipo_de_servicio}} </span></td>
@@ -129,45 +129,7 @@
 
   
 
-    <br>
 
-
-    <div class="container">
-  <h2>Large Modal</h2>
-  <!-- Trigger the modal with a button -->
-  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Large Modal</button>
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
-        </div>
-        <div class="modal-body">
-            <div class="page-header">
-            
-        <h1> Ruta </h1> <button onclick="calcRoute()"> Generar Ruta </button>
-
-    </div>
-
-    <div class="row" style="margin-bottom: 2em;">
-        <div class="col-md-6">
-            <div id="map-canvas" style="width: 100%; height: 400px;"></div>
-        </div>
-        <div class="col-md-6" style="height: 400px; overflow-y: auto;">
-            <div id="directions_panel" style="width: 100%; margin-left: 1em; height: 400px;"></div>
-        </div>
-    </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
    
 
