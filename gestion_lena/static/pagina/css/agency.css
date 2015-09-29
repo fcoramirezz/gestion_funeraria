@@ -379,7 +379,7 @@ section h3.section-subheading {
     width: 100%;
     height: 100%;
     opacity: 0;
-    background: rgba(254,209,54,.9);
+    background: rgba(128, 178, 255,.7);
     -webkit-transition: all ease .5s;
     -moz-transition: all ease .5s;
     transition: all ease .5s;
@@ -783,7 +783,7 @@ ul.social-buttons li a:active {
 .portfolio-modal .modal-content {
     padding: 100px 0;
     min-height: 100%;
-    border: 0;
+    border: 30;
     border-radius: 0;
     text-align: center;
     background-clip: border-box;

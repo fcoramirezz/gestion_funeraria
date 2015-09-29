@@ -4,92 +4,6 @@
 
 
 
-
-{% block google_maps %}
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
-
-    <script>
-        var directionsDisplay;
-        var directionsService = new google.maps.DirectionsService();
-        var map;
-
-        function initialize() {
-            directionsDisplay = new google.maps.DirectionsRenderer();
-            var mapOptions = {
-                zoom: 10,
-                center: new google.maps.LatLng(-38.7537189, -72.6097421)
-            };
-            var map = new google.maps.Map(document.getElementById('map-canvas'),
-                    mapOptions);
-            directionsDisplay.setMap(map);
-            directionsDisplay.setPanel(document.getElementById('directions_panel'));
-        }
-
-        function calcRoute() {
-            selections = document.getElementsByClassName("checkbox");
-            var index;
-            var waypts = [];
-            var start = 'Chillan, Chile';
-            var end = 0;
-            for (index = 0; index < selections.length; ++index) {
-                if (selections[index].checked){
-                    waypts.push({location: selections[index].value, stopover:true})
-                }
-            }
-            //
-            if (waypts.length > 0){
-                end = waypts.pop().location;
-            }
-
-            if (waypts.length > 0){
-                var request = {
-                    origin: start,
-                    destination: end,
-                    waypoints: waypts,
-                    optimizeWaypoints: true,
-                    travelMode: google.maps.TravelMode.DRIVING
-                };
-
-                directionsService.route(request, function(response, status) {
-                    if (status == google.maps.DirectionsStatus.OK) {
-                        $('#id_kilometro').val(calTotalDistance(response).toFixed(2));
-                        directionsDisplay.setDirections(response);
-                    }
-                });
-            }else if(isNaN(end)){ // inicio fin
-                var request = {
-                    origin: start,
-                    destination: end,
-                    travelMode: google.maps.TravelMode.DRIVING
-                };
-                directionsService.route(request, function(response, status) {
-                    if (status == google.maps.DirectionsStatus.OK) {
-                        $('#id_kilometro').val(calTotalDistance(response).toFixed(2));
-                        directionsDisplay.setDirections(response);
-                    }
-                });
-            }
-            else{
-                alert("Seleccione algunos pedidos!")
-            }
-
-        }
-
-        function calTotalDistance(response){
-            var totalDistance = 0;
-            var legs = response.routes[0].legs;
-            for(var i=0; i<legs.length; ++i) {
-                totalDistance += legs[i].distance.value;
-            }
-            return totalDistance/1000;
-        }
-
-        google.maps.event.addDomListener(window, 'load', initialize);
-
-    </script>
-
-{% endblock %}
-
 {% block content %}
 
     <div class="page-header">
@@ -114,6 +28,11 @@
         </thead>
         <tbody>
         {% for x in pedidos %}
+
+            <script type="text/javascript">
+$('#mimodal .modal-title').html(micontenidodinamico);
+$('#mimodal .modal-body').html(x);
+</script>
             <tr>
              
                 <td> <span class="label label-info"> {{ forloop.revcounter }} </span> </td>
@@ -121,17 +40,36 @@
                 <td> <span class="label label-info">  {{ x.tipo_de_servicio}} </span></td>
                 <td> {{ x.region }} {{ x.provincia }} {{ x.comuna }},  {{ x.direccion_destino }}</td>
                 <td> {{ x.creado_en }} </td>
-                <td> <a href="{% url 'pedido_cambiar_estado' x.id %}?next={{ request.path }}" class="btn btn-warning"> <span class="glyphicon glyphicon-ok-sign"> Marcar </span> </a>     </td>
+                <td>   <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#mimodal">Open Large Modal</button>    </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-  
+
+ <!--<a href="{% url 'pedido_cambiar_estado' x.id %}?next={{ request.path }}" class="btn btn-warning"> <span class="glyphicon glyphicon-ok-sign"> Marcar </span> </a> -->
 
 
 
-   
+<div class="modal fade" id="mimodal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p><a href="{% url 'pedido_cambiar_estado' x.id %}?next={{ request.path }}" class="btn btn-warning"> <span class="glyphicon glyphicon-ok-sign"> Marcar </span> </a></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
 
    
 {% endblock %}
