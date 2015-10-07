@@ -62,11 +62,19 @@ h6 {
 
 .servicios{
     background-image: url(../img/header-bg2.jpg);
-    background-position: center center;
+      background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+
 }
 .dudas{
     background-image: url(../img/header-bg222.jpg);
-    background-position: center center;
+       background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+
 }
 .bg-light-gray {
     background-color: #f7f7f7;
@@ -283,12 +291,11 @@ header {
     color: #fff;
     background-attachment: scroll;
     background-image: url(../img/header-bg.jpg);
-    background-position: center center;
-    background-repeat: none;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    background-size: cover;
-    -o-background-size: cover;
+   background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    
 }
 
 header .intro-text {
