@@ -874,6 +874,11 @@ ul.social-buttons li a:active {
     display: none;
     opacity: 0;
 }
+#owl-demo .item img{
+    display: block;
+    width: 100%;
+    height: auto;
+}
 
 ::-moz-selection {
     text-shadow: none;
