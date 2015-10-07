@@ -139,6 +139,12 @@ PUBLICAR = (
     ('No', 'No'),
     )
 
+FLORES = (
+    ('Chico', 'Chico'),
+    ('Mediano', 'Mediano'),
+    ('Grande', 'Grande'),
+    )
+
 
 
 class Servicio(models.Model):
@@ -146,6 +152,12 @@ class Servicio(models.Model):
     precio_de_venta = models.PositiveIntegerField()
     costo_de_servicio = models.PositiveIntegerField()
     detalles_del_servicio = models.TextField(null=True, blank=True)
+
+    tipo_urna = models.CharField(max_length=255,null=True, blank=True)
+    arreglo_floral = models.CharField(max_length=100, choices=FLORES, null=True, blank=True)
+    carroza_flores = models.CharField(max_length=100, choices=PUBLICAR, default="No")
+    aviso_prensa = models.CharField(max_length=100, choices=PUBLICAR, default="No")
+
     publicar = models.CharField(max_length=100, choices=PUBLICAR, default="Si")
     imagen_pr = models.ImageField(upload_to='media/servicios',null=True,blank=True, default=None)
     imagen_sec1 = models.FileField(upload_to='media/servicios',null=True,blank=True)

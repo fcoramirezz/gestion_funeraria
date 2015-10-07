@@ -825,6 +825,14 @@ ul.social-buttons li a:active {
     margin-bottom: 30px;
 }
 
+.portfolio-modal .modal-content ul {
+    margin-top: 0;
+    margin-bottom: 30px;
+    line-height: 26px;
+    font-size: 13px;
+
+}
+
 .portfolio-modal .modal-content img {
     margin-bottom: 30px;
 }

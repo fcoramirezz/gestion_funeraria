@@ -377,12 +377,9 @@
             <div class="row wow fadeInLeft">
             {% for x in servicios %}
 
-             <script type="text/javascript">
-                $('#mimodal .modal-title').html(micontenidodinamico);
-                $('#mimodal .modal-body').html(x);
-            </script>
          
-                <div class="col-md-4 col-sm-6 portfolio-item">
+         
+                <div class="col-md-3 col-sm-6 portfolio-item">
                     <a href="#mimodal{{x.id}}" class="portfolio-link" data-toggle="modal">
                         <div class="portfolio-hover">
                             <div class="portfolio-hover-content">
@@ -390,7 +387,7 @@
                             </div>
                         </div>
                         {% if x.imagen_pr %}
-                        <img src="{{x.imagen_pr.url}}" class="img-responsive" style="width:360px;height:300px" alt="">
+                        <img src="{{x.imagen_pr.url}}" class="img-responsive" style="width:auto;height:auto" alt="">
                              {% endif %}
 
                     </a>
@@ -433,21 +430,52 @@
             </div>
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
+                    <div class="col-lg-12">
+
                         <div class="modal-body">
-                            <!-- Project Details Go Here -->
-                            <h2>{{x.nombre}}</h2>
+                        <h2>{{x.nombre}}</h2>
                             <p class="item-intro text-muted">Precio de Venta: ${{ x.precio_de_venta|intcomma }}.</p>
-                            <img class="img-responsive img-centered" src="{{x.imagen_pr.url}}" style="width:460px;height:400px"  alt="">
+
+                        <div class="col-lg-6">
+                            <!-- Project Details Go Here -->
+                            
+                            <img class="img-responsive img-centered" src="{{x.imagen_pr.url}}" style="width:auto;height:auto"  alt="">
+                             </div>
+                              <div class="col-lg-6">
                             <p>{{x.detalles_del_servicio}}</p>
-                            <p>
-                                <strong>Want these icons in this portfolio item sample?</strong>You can download 60 of them for free, courtesy of <a href="https://getdpd.com/cart/hoplink/18076?referrer=bvbo4kax5k8ogc">RoundIcons.com</a>, or you can purchase the 1500 icon set <a href="https://getdpd.com/cart/hoplink/18076?referrer=bvbo4kax5k8ogc">here</a>.</p>
-                            <ul class="list-inline">
-                                <li>Date: July 2014</li>
-                                <li>Client: Round Icons</li>
-                                <li>Category: Graphic Design</li>
+                        
+                
+                              <ul>
+                                <li ALIGN=left> <strong>Urna:</strong> {{x.tipo_urna}}</li>
+                                <li ALIGN=left> <strong>Arreglo Floral:</strong> {{x.arreglo_floral}}</li>
+                                
+                                
+
+                                
                             </ul>
+
+
+                            <ul>
+                                <li ALIGN=left>Carroza fúnebre moderna con personal uniformado.</li>
+                                <li ALIGN=left>Vehículo amplio y moderno de acompañamiento</li>
+                                <li ALIGN=left> Aviso en la prensa: {{x.aviso_prensa}}</li>
+
+
+                                <li ALIGN=left>Carro funerario para el retiro de la persona fallecida y posterior traslado al lugar de velación que la familia indique.</li>
+                                <li ALIGN=left> Carroza para traslado de Flores: {{x.carroza_flores}}</li>
+                                <li ALIGN=left>Capilla en madera barnizada.</li>
+                                <li ALIGN=left>Cirios de larga duración o ampolletas, según preferencia.</li>
+                                <li ALIGN=left>Tarjetero de madera en velatorio y misa.</li>
+                                <li ALIGN=left>Disposición de libro de condolencias en velatorio y misa.</li>
+                                <li ALIGN=left>Trámites de inscripción de defunción.</li>
+                                <li ALIGN=left>Obtención de certificados de defunción para la familia.</li>
+                                <li ALIGN=left>Tarjetas de condolencias.</li>
+                                <li ALIGN=left>Asesoría en la tramitación.</li>
+                            </ul>
+                            </div>
+                            <div class="col-lg-12">
                             <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar Descripción</button>
+                            </div>
                         </div>
                     </div>
                 </div>
