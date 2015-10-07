@@ -156,7 +156,7 @@ class Servicio(models.Model):
     tipo_urna = models.CharField(max_length=255,null=True, blank=True)
     arreglo_floral = models.CharField(max_length=100, choices=FLORES, null=True, blank=True)
     carroza_flores = models.CharField(max_length=100, choices=PUBLICAR, default="No")
-    aviso_prensa = models.CharField(max_length=100, choices=PUBLICAR, default="No")
+    aviso_de_prensa = models.CharField(max_length=100, choices=PUBLICAR, default="No")
 
     publicar = models.CharField(max_length=100, choices=PUBLICAR, default="Si")
     imagen_pr = models.ImageField(upload_to='media/servicios',null=True,blank=True, default=None)

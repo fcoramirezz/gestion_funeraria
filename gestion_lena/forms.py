@@ -89,7 +89,7 @@ class ServicioForm(forms.ModelForm):
 
         labels = {
         
-            'aviso_prensa': ('Poner aviso en la prensa'),
+            'aviso_de_prensa': ('Poner aviso en la prensa'),
             'carroza_flores': ('Carroza para Traslado de Flores'),
             'publicar': ('Publicar en Página Web'),
             'imagen_pr': ('Imagen Principal'),
