@@ -838,6 +838,12 @@ ul.social-buttons li a:active {
     background-color: transparent;
     cursor: pointer;
 }
+#map-canvas {
+    width: 100%; 
+    height: 300px;
+    margin: 0;
+    padding: 15px;
+}
 
 .portfolio-modal .close-modal:hover {
     opacity: .3;
