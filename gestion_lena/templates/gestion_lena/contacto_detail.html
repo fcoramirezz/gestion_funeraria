@@ -11,7 +11,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-6 col-md-6 col-lg-6">
+        <div class="col-lg-6">
             <table class="table table-striped table-bordered">
                 <caption> Información de  <strong> {{contacto}} </strong> </caption>
                 <thead>
@@ -58,7 +58,7 @@
 
             </table>
         </div>
-        <div class="col-xs-6 col-md-6 col-lg-6">
+        <div class="col-lg-6">
             <div class="page-header">
                 <h4> Resumen Servicios de <small> ( {{contacto}} )</small>  </h4>
             </div>
@@ -152,9 +152,33 @@
 
     <!-- Text input-->
     <div class="form-group">
-        <label class="col-md-4 control-label text-info" for="dirreccion">Dirección Despacho</label>
+        <label class="col-md-4 control-label text-info" for="direccion">Dirección de fallecimiento</label>
         <div class="col-md-7">
             <input id="id_direccion_destino" name="direccion_destino" type="text" placeholder="" class="form-control" required="" value="{{contacto.direccion}}">
+
+        </div>
+    </div>
+
+      <div class="form-group">
+        <label class="col-md-4 control-label text-info" for="direccion_de_velorio">Dirección de velorio</label>
+        <div class="col-md-7">
+            <input id="id_direccion_de_velorio" name="direccion_de_velorio" type="text" placeholder="" class="form-control" required="" value="{{contacto.direccion_de_velorio}}">
+
+        </div>
+    </div>
+
+     <div class="form-group">
+        <label class="col-md-4 control-label text-info" for="direccion_de_ceremonia">Direccion de ceremonia</label>
+        <div class="col-md-7">
+            <input id="id_direccion_de_ceremonia" name="direccion_de_ceremonia" type="text" placeholder="" class="form-control" required="" value="{{contacto.direccion_de_ceremonia}}">
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-4 control-label text-info" for="direccion_de_sepultacion">Direccion de sepultacion</label>
+        <div class="col-md-7">
+            <input id="id_direccion_de_sepultacion" name="direccion_de_sepultacion" type="text" placeholder="" class="form-control" required="" value="{{contacto.direccion_de_sepultacion}}">
 
         </div>
     </div>

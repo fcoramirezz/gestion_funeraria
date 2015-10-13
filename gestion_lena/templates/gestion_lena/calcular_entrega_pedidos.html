@@ -1,6 +1,6 @@
 {% extends 'gestion_lena/base.html' %}
 {% load bootstrap3 %}
-
+{% load staticfiles %}
 
 
 
@@ -29,10 +29,6 @@
         <tbody>
         {% for x in pedidos %}
 
-            <script type="text/javascript">
-$('#mimodal .modal-title').html(micontenidodinamico);
-$('#mimodal .modal-body').html(x);
-</script>
             <tr>
              
                 <td> <span class="label label-info"> {{ forloop.revcounter }} </span> </td>
@@ -40,35 +36,38 @@ $('#mimodal .modal-body').html(x);
                 <td> <span class="label label-info">  {{ x.tipo_de_servicio}} </span></td>
                 <td> {{ x.region }} {{ x.provincia }} {{ x.comuna }},  {{ x.direccion_destino }}</td>
                 <td> {{ x.creado_en }} </td>
-                <td>   <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#mimodal">Open Large Modal</button>    </td>
+                <td>   <a href="#mimodal{{x.id}}" class="btn btn-warning" data-toggle="modal">
+<span class="glyphicon glyphicon-ok-sign"> Marcar </span>  </a>  </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
 
- <!--<a href="{% url 'pedido_cambiar_estado' x.id %}?next={{ request.path }}" class="btn btn-warning"> <span class="glyphicon glyphicon-ok-sign"> Marcar </span> </a> -->
 
-
-
-<div class="modal fade" id="mimodal" role="dialog">
-    <div class="modal-dialog modal-lg">
+{% for x in pedidos %}
+      <div class="modal fade" id="mimodal{{x.id}}" role="dialog">
+    <div class="modal-dialog modal-responsive">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
+           <div align="center"> <img class="img-responsive" src="{% static 'gestion_lena/img/warning.png' %}"alt=""> </div>
+          <h4 class="modal-title text-center">Confirmación de Pago! </h4>
         </div>
         <div class="modal-body">
-          <p><a href="{% url 'pedido_cambiar_estado' x.id %}?next={{ request.path }}" class="btn btn-warning"> <span class="glyphicon glyphicon-ok-sign"> Marcar </span> </a></p>
+
+           <h2>¿Está seguro de marcar como pagado el servicio <strong>{{x.tipo_de_servicio}}</strong> de: <strong>{{x.contacto}}</strong></h2>
+           <div align="center"> <a href="{% url 'pedido_cambiar_estado' x.id %}?next={{ request.path }}" class="btn btn-warning"> <span class="glyphicon glyphicon-ok-sign"> Confirmar </span> </a> </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-
+ {% endfor %}
     
 
    

@@ -21,31 +21,31 @@
 
 <div class="well">
 <div class="row">
-<div class="col-xs-6 col-md-6 col-lg-6">
+<div class="col-lg-6">
 <table class="table table-bordered table-striped">
-	<thead>
-		<tr>
-			<th> Atributo </th>
-			<th> Dato </th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td> <b> Contacto </b>  </td>
-			<td> <a href="{% url 'contacto_detail' pedido.contacto.id %}">  {{ pedido.contacto }} </a> </td>
-		</tr>
-		<tr>
-			<td> <b> Tipo de Servicio Fúnebre </b>  </td>
-			<td> {{ pedido.tipo_de_servicio.nombre }} </td>
-		</tr>
+    <thead>
+        <tr>
+            <th> Atributo </th>
+            <th> Dato </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td> <b> Contacto </b>  </td>
+            <td> <a href="{% url 'contacto_detail' pedido.contacto.id %}">  {{ pedido.contacto }} </a> </td>
+        </tr>
+        <tr>
+            <td> <b> Tipo de Servicio Fúnebre </b>  </td>
+            <td> {{ pedido.tipo_de_servicio.nombre }} </td>
+        </tr>
         <tr>
             <td> <b> Comuna </b>  </td>
             <td> {{ pedido.comuna }} </td>
         </tr>
-		<!-- <tr>
-			<td> <b> Dirección de Fallecimiento </b>  </td>
-			<td> {{ pedido.direccion_destino }} </td>
-		</tr>
+        <!-- <tr>
+            <td> <b> Dirección de Fallecimiento </b>  </td>
+            <td> {{ pedido.direccion_destino }} </td>
+        </tr>
         <tr>
             <td> <b> Dirección de Velorio </b>  </td>
             <td> {{ pedido.direccion_de_velorio }} </td>
@@ -58,29 +58,29 @@
             <td> <b> Dirección de Sepultación </b>  </td>
             <td> {{ pedido.direccion_de_sepultacion }} </td>
         </tr> -->
-		<tr>
-			<td> <b> Precio Servicio </b>  </td>
-			<td> $ {{ pedido.tipo_de_servicio.precio_de_venta|intcomma }} </td>
-		</tr>
-		<tr class="{{pedido.obtener_color_fila}}">
-			<td> <b>  Estado </b>  </td>
-			<td> {{pedido.estado }} </td>
-		</tr>
-		<tr>
-			<td> <b>  Fecha de Pago de Servicio </b>  </td>
-			<td> {{pedido.fecha_entrega|default:"" }} </td>
-		</tr>
-		<tr>
-			<td> <b> Fecha de registro del Servicio </b>  </td>
-			<td> {{ pedido.creado_en }} </td>
-		</tr>
-	</tbody>
+        <tr>
+            <td> <b> Precio Servicio </b>  </td>
+            <td> $ {{ pedido.tipo_de_servicio.precio_de_venta|intcomma }} </td>
+        </tr>
+        <tr class="{{pedido.obtener_color_fila}}">
+            <td> <b>  Estado </b>  </td>
+            <td> {{pedido.estado }} </td>
+        </tr>
+        <tr>
+            <td> <b>  Fecha de Pago de Servicio </b>  </td>
+            <td> {{pedido.fecha_entrega|default:"" }} </td>
+        </tr>
+        <tr>
+            <td> <b> Fecha de registro del Servicio </b>  </td>
+            <td> {{ pedido.creado_en }} </td>
+        </tr>
+    </tbody>
 </table>
 </div>
-<div class="col-xs-6 col-md-6 col-lg-6">
+<div class="col-lg-6">
 
 <div align="center">
-	<h1 class="text text-info"> Total Ingreso: <span class="label label-warning"> $ {{pedido.total|intcomma}} </span>  </h1>
+    <h1 class="text text-info"> Total Ingreso: <span class="label label-warning"> $ {{pedido.total|intcomma}} </span>  </h1>
 </div>
 </div>
 </div>

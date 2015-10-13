@@ -80,7 +80,7 @@
  			<td> {{ c.fecha_entrega }} </td>
  			<td> <a href="{% url 'pedido_detail' c.id %}"> {{ c.contacto }} </a> </td>
  			<td> {{ c.tipo_de_servicio }} </td>
- 			<td> $ {{ c.total|intcomma}} </td>
+ 			<td align=right> $ {{ c.total|intcomma}} </td>
  		</tr>
  		{% empty %}
  		<div class="alert alert-warning"> No se encontraron registros de servicios en este rango de fechas. </div>
@@ -126,23 +126,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="col-xs-12 col-md-12 col-lg-12">
+  <div class="col-lg-12">
                     
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                     
@@ -163,7 +147,7 @@
 
 
 
-<div class="col-xs-6 col-md-6 col-lg-6">
+<div class=" col-lg-6">
 <h1 class="text text-info"><span class="label label-success"> Sueldos Pagados </span></h1>
   <table id="tabla_adapted" class="table table-bordered table-striped">
  	<thead>	
@@ -178,7 +162,7 @@
  		<tr>
  			<td> {{ c.fecha }} </td>
  			<td> <a href="{% url 'sueldo_detail' c.id %}"> {{ c.trabajador }}</a> </td>
- 			<td> $ {{ c.cantidad|intcomma}} </td>
+ 			<td align=right> $ {{ c.cantidad|intcomma}} </td>
  		</tr>
  		{% empty %}
  		<div class="alert alert-warning"> No se encontraron registros de sueldos en este rango de fechas. </div>
@@ -193,7 +177,7 @@
 
 
   <div class="row">
-        <div class="col-xs-6 col-md-6 col-lg-6">
+        <div class=" col-lg-6">
 <h1 class="text text-info"><span class="label label-warning"> Gastos Anexos </span></h1>
 
   <table id="tabla_adapted" class="table table-bordered table-striped">
@@ -209,7 +193,7 @@
  		<tr>
  			<td> {{ c.fecha }} </td>
  		 <td> <a href="{% url 'gasto_detail' c.id %}"> {{ c.tipo_gasto }}</a> </td>
- 			<td> $ {{ c.valor|intcomma}} </td>
+ 			<td align=right> $ {{ c.valor|intcomma}} </td>
  		</tr>
  		{% empty %}
  		<div class="alert alert-warning"> No se encontraron registros de gastos en este rango de fechas. </div>
@@ -237,7 +221,7 @@
  </div>
 
 
- <div class="col-xs-12 col-md-12 col-lg-12">
+ <div class=" col-lg-12">
                     
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                     

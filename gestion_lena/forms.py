@@ -4,7 +4,11 @@ from gestion_lena.models import Contacto, Pedido, Gasto, TipoGasto, Servicio, Su
 
 
 
+class ContactForm(forms.Form):
 
+    from_email = forms.EmailField(required=True)
+    subject = forms.CharField(required=True)
+    message = forms.CharField(widget=forms.Textarea)
 
 class ContactoForm(forms.ModelForm):
     class Meta:

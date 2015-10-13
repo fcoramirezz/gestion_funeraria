@@ -9,6 +9,10 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime, date, time, timedelta
 import calendar
 
+from django.core.mail import send_mail, BadHeaderError
+from django.http import HttpResponse, HttpResponseRedirect
+from gestion_lena.forms import ContactForm
+
 from gestion_lena.models import Servicio, Contacto, Pedido, Configuracion, Region, Provincia, Comuna, Gasto, TipoGasto, Servicio, Sueldo, Trabajador, Duda
     
 from gestion_lena.mixins import LoginRequired, SearchableListMixin
@@ -52,6 +56,30 @@ def pedido_list_segundo(request):
     pedidos = Pedido.objects.filter(estado="No Pagado").order_by('creado_en')
     context['pedidos'] = pedidos
     return render(request, 'gestion_lena/pedido_list_segundo.html', context)
+
+
+
+
+
+
+def email(request):
+    if request.method == 'GET':
+        form = ContactForm()
+    else:
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data['subject']
+            from_email = form.cleaned_data['from_email']
+            message = form.cleaned_data['message']
+            try:
+                send_mail(subject, message, from_email, ['fcoramirezz@gmail.com'])
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
+            return redirect('thanks')
+    return render(request, "pagina.html", {'form': form})
+
+def thanks(request):
+    return HttpResponse('Thank you for your message.')
    
 
 ##########CONTACTO###################################
