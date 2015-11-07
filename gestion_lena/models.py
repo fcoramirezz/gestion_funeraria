@@ -23,9 +23,9 @@ class Configuracion(models.Model):
 
 
 class Duda(models.Model):
-    titulo = models.CharField(max_length=255,null=True)
-    pregunta = models.TextField(null=True, blank=True)
-    respuesta = models.TextField(null=True, blank=True)
+    titulo = models.CharField(max_length=255)
+    pregunta = models.TextField()
+    respuesta = models.TextField()
    
     creado_en = models.DateTimeField(auto_now_add=True,null=True)
 
@@ -151,7 +151,6 @@ class Servicio(models.Model):
     nombre = models.CharField(max_length=255)
     precio_de_venta = models.PositiveIntegerField()
     costo_de_servicio = models.PositiveIntegerField()
-    detalles_del_servicio = models.TextField(null=True, blank=True)
 
     tipo_urna = models.CharField(max_length=255,null=True, blank=True)
     arreglo_floral = models.CharField(max_length=100, choices=FLORES, null=True, blank=True)
@@ -159,10 +158,7 @@ class Servicio(models.Model):
     aviso_de_prensa = models.CharField(max_length=100, choices=PUBLICAR, default="No")
 
     publicar = models.CharField(max_length=100, choices=PUBLICAR, default="Si")
-    imagen_pr = models.ImageField(upload_to='media/servicios',null=True,blank=True, default=None)
-    imagen_sec1 = models.FileField(upload_to='media/servicios',null=True,blank=True)
-    imagen_sec2 = models.ImageField(upload_to='media/servicios',null=True,blank=True)
-    imagen_sec3 = models.ImageField(upload_to='media/servicios',null=True,blank=True)
+    imagen_pr = models.ImageField(upload_to='media/servicios')
     creado_en = models.DateTimeField(auto_now_add=True,null=True)
   
 
@@ -193,14 +189,6 @@ class Servicio(models.Model):
     def get_absolute_url(self):
         return reverse('servicio_detail', kwargs={'pk': self.pk})
 
-class Imagen(models.Model):
-    nombre_foto = models.CharField(max_length=255)
-    imagen = models.ImageField(upload_to='media',null=True)
-    creado_en = models.DateTimeField(auto_now_add=True)
-    class Meta:
-        verbose_name = u"Imagen"
-        verbose_name_plural = u"Imágenes"
-        ordering =  ['creado_en']
 
 class Trabajador(models.Model):
  
