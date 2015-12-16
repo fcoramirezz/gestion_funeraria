@@ -71,7 +71,6 @@ urlpatterns = patterns('gestion_lena.views',
     url(r'^contacto/(?P<id_pedido>\d+)/pedido/delete/$', 'contacto_pedido_delete', name='contacto_pedido_delete'),
     ###############################################################################################################
     url(r'^servicios/entregas/$', 'calcular_entrega_pedidos', name='calcular_entrega_pedidos'),
-    url(r'^mantenedor/$', 'mantenedor', name='mantenedor'),
     url(r'^servicios/ruta/$', 'ruta_servicio', name='ruta_servicio'),
     url(r'^servicios/ruta/$', 'ruta_servicio', name='ruta_servicio'),
     url(r'^serviciosss/entregas/$', 'object_list_servicio', name='object_list_servicio'),

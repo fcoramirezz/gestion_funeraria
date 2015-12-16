@@ -791,7 +791,7 @@
                 
                     <form action= "." method="POST">
                         {% csrf_token %}
-                        {{form.as_p}}
+                        {% bootstrap_form form  %}
                         <div class="clearfix"></div>
                             <div class="col-lg-12 text-center">
                                 <div id="success"></div>
