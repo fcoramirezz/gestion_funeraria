@@ -40,28 +40,8 @@ if created:
 
 @login_required
 def home(request):
-    info_enviado = False
-    email = ""
-    titulo = ""
-    texto = ""
-    if request.method == "POST":
-        formulario = ContactForm(request.POST)
-        if formulario.is_valid():
-            info_enviado = True
-            email = formulario.cleaned_data['Email']
-            titulo = formulario.cleaned_data['Titulo']
-            texto = formulario.cleaned_data['Texto']
-
-            to_admin ='fcoramirezz@gmail.com'
-            html_content = "Hola usted tiene la siguiente consulta de su pagina web"+(texto)
-            msg = EmailMultiAlternatives('Correo de Contacto', html_content, 'from@server.com',[to_admin])
-            msg.attach_alternative(html_content,'text/html')
-            msg.send()
-
-    else:
-        formulario = ContactForm()
-    ctx = {'form': formulario, 'email': email, 'titulo': titulo, 'texto': texto, 'info_enviado': info_enviado}
-    return render_to_response('gestion_lena/base.html',ctx,context_instance=RequestContext(request))
+    pedidos = Pedido.objects.exclude(estado="Entregado").order_by('creado_en')[:4]
+    return render(request, 'gestion_lena/base.html', {'pedidos': pedidos})
 
 
 
@@ -849,29 +829,26 @@ def contacto(request):
 
 
 def iniciar_sesion(request):
-    info_enviado = False
-    email = ""
-    titulo = ""
-    texto = ""
+    context = {}
     if request.method == "POST":
-        formulario = ContactForm(request.POST)
-        if formulario.is_valid():
-            info_enviado = True
-            email = formulario.cleaned_data['Email']
-            titulo = formulario.cleaned_data['Titulo']
-            texto = formulario.cleaned_data['Texto']
-
-            to_admin ='fcoramirezz@gmail.com'
-            html_content = "Hola usted tiene la siguiente consulta de su pagina web"+(texto)
-            msg = EmailMultiAlternatives('Correo de Contacto', html_content, 'from@server.com',[to_admin])
-            msg.attach_alternative(html_content,'text/html')
-            msg.send()
-
+        formulario = AuthenticationForm(request.POST)
+        if formulario.is_valid:
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('gestion_lena.views.home')
+                else:
+                    messages.add_message(request, messages.ERROR, u"Su cuenta se encuentra inactiva, revise su correo para activar su cuenta o escribanos a <correo>.")
+            else:
+                messages.add_message(request, messages.ERROR, u"Error en su contraseña o nombre de usuario. Vuelva a intentarlo.")
     else:
-        formulario = ContactForm()
-    ctx = {'form': formulario, 'email': email, 'titulo': titulo, 'texto': texto, 'info_enviado': info_enviado}
-    return render_to_response('registration/login.html',ctx,context_instance=RequestContext(request))
-
+        #messages.add_message(request, messages.INFO, u"Ingrese con su usuario")
+        formulario = AuthenticationForm()
+    context['formulario'] = formulario
+    return render(request, 'registration/login.html', context)
 
 
 @login_required
