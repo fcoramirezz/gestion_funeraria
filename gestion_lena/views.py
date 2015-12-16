@@ -10,8 +10,17 @@ from datetime import datetime, date, time, timedelta
 import calendar
 
 from django.core.mail import send_mail, BadHeaderError
+from django.core.mail import EmailMultiAlternatives
 from django.http import HttpResponse, HttpResponseRedirect
 from gestion_lena.forms import ContactForm
+
+
+
+
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+
+
 
 from gestion_lena.models import Servicio, Contacto, Pedido, Configuracion, Region, Provincia, Comuna, Gasto, TipoGasto, Servicio, Sueldo, Trabajador, Duda
     
@@ -25,23 +34,38 @@ import datetime
 
 CONF, created = Configuracion.objects.get_or_create(id=1)
 if created:
-    CONF.titulo_pagina = "Gestión de Distribución de Leña"
+    CONF.titulo_pagina = "Gestión"
     CONF.footer = "Francisco Ramirez Cerda &copy; Todos los derechos reservados"
-    CONF.precio_lena = 17000
-    CONF.carga_maxima_dia = 24
     CONF.save()
 
 @login_required
 def home(request):
-    pedidos = Pedido.objects.exclude(estado="Pagado").order_by('creado_en')[:4]
-    return render(request, 'gestion_lena/base.html',{'pedidos': pedidos} )
+    info_enviado = False
+    email = ""
+    titulo = ""
+    texto = ""
+    if request.method == "POST":
+        formulario = ContactForm(request.POST)
+        if formulario.is_valid():
+            info_enviado = True
+            email = formulario.cleaned_data['Email']
+            titulo = formulario.cleaned_data['Titulo']
+            texto = formulario.cleaned_data['Texto']
 
-@login_required
-def mantenedor(request):
-    context = {}
-    dudas = Duda.objects.order_by('creado_en')
-    context['dudas'] = dudas
-    return render(request, 'gestion_lena/mantenedor.html', context)
+            to_admin ='fcoramirezz@gmail.com'
+            html_content = "Hola usted tiene la siguiente consulta de su pagina web"+(texto)
+            msg = EmailMultiAlternatives('Correo de Contacto', html_content, 'from@server.com',[to_admin])
+            msg.attach_alternative(html_content,'text/html')
+            msg.send()
+
+    else:
+        formulario = ContactForm()
+    ctx = {'form': formulario, 'email': email, 'titulo': titulo, 'texto': texto, 'info_enviado': info_enviado}
+    return render_to_response('gestion_lena/base.html',ctx,context_instance=RequestContext(request))
+
+
+
+
 
 @login_required
 def object_list_servicio(request):
@@ -395,22 +419,38 @@ def ruta_servicio(request):
 
 
 def pagina(request):
-    context = {}
+    info_enviado = False
+    nombre = ""
+    telefono = ""
+    email = ""
+    consulta = ""
+
+    if request.method == "POST":
+        formulario = ContactForm(request.POST)
+        if formulario.is_valid():
+            info_enviado = True
+            nombre = formulario.cleaned_data['Nombre']
+            telefono = formulario.cleaned_data['Telefono']
+            email = formulario.cleaned_data['Email']
+            consulta = formulario.cleaned_data['Consulta']
+
+            to_admin ='fcoramirezz@gmail.com'
+            html_content = "<strong>Hola Don Marcelo, usted tiene la siguiente consulta de su pagina web: </strong><br><br>"+(consulta)+"<br><br> <strong>Nombre: </strong>"+(nombre)+"<br><br><strong>Telefono: </strong>"+str(telefono)+"<br><br><strong>Email: </strong>"+(email)
+            msg = EmailMultiAlternatives('Correo de Contacto', html_content, 'from@server.com',[to_admin])
+            msg.attach_alternative(html_content,'text/html')
+            msg.send()
+
+    else:
+        formulario = ContactForm()
+    context = {'form': formulario, 'nombre': nombre, 'telefono': telefono, 'email': email, 'consulta': consulta,'info_enviado': info_enviado}
     tipo_de_servicio = Servicio.objects.filter(publicar="Si").order_by('precio_de_venta')
     context['servicios'] = tipo_de_servicio
-    '''context2 = {}'''
     dudas = Duda.objects.order_by('creado_en')
     context['dudas'] = dudas
-    return render(request, 'gestion_lena/pagina.html', context)
+    
+    
+    return render_to_response('gestion_lena/pagina.html',context,context_instance=RequestContext(request))
 
-'''def resumen_gastos(request):
-    context = {}
-    gastos = Gasto.objects.filter(creado_en=).order_by('creado_en')
-    sueldos = Sueldo.objects.order_by('creado_en')
-    context['gastos_fil'] = gastos
-    context['sueldos_fil'] = sueldos
-
-    return render(request, 'gestion_lena/resumen_gastos.html', context)'''
 
     
 
@@ -782,32 +822,62 @@ def cuenta_t(request, fecha_inicial, fecha_final):
     return render(request, 'gestion_lena/cuenta_t.html', {'cant_ped_treguaco':cant_ped_treguaco,'cant_ped_sannicolas':cant_ped_sannicolas,'cant_ped_sanignacio':cant_ped_sanignacio,'cant_ped_sanfabian':cant_ped_sanfabian,'cant_ped_sancarlos':cant_ped_sancarlos,'cant_ped_ranquil':cant_ped_ranquil,'cant_ped_quirihue':cant_ped_quirihue,'cant_ped_quillon':cant_ped_quillon,'cant_ped_portezuelo':cant_ped_portezuelo,'cant_ped_pinto':cant_ped_pinto,'cant_ped_pemuco':cant_ped_pemuco,'cant_ped_niquen':cant_ped_niquen,'cant_ped_ninhue':cant_ped_ninhue,'cant_ped_elcarmen':cant_ped_elcarmen,'cant_ped_coihueco':cant_ped_coihueco,'cant_ped_coelemu':cant_ped_coelemu,'cant_ped_cobquecura':cant_ped_cobquecura,'cant_ped_chillan_viejo':cant_ped_chillan_viejo,'cant_ped_chillan':cant_ped_chillan, 'total_egresos_diciembre':total_egresos_diciembre,'total_egresos_noviembre':total_egresos_noviembre,'total_egresos_octubre':total_egresos_octubre,'total_egresos_septiembre':total_egresos_septiembre,'total_egresos_julio':total_egresos_julio,'total_egresos_junio':total_egresos_junio,'total_egresos_mayo':total_egresos_mayo,'total_egresos_abril':total_egresos_abril,'total_egresos_marzo':total_egresos_marzo,'total_egresos_febrero':total_egresos_febrero,'total_egresos_enero':total_egresos_enero,'total_egresos_agosto':total_egresos_agosto,'total_ingreso_diciembre':total_ingreso_diciembre,'total_ingreso_noviembre':total_ingreso_noviembre,'total_ingreso_octubre':total_ingreso_octubre,'total_ingreso_septiembre':total_ingreso_septiembre,'total_ingreso_julio':total_ingreso_julio,'total_ingreso_junio':total_ingreso_junio,'total_ingreso_mayo':total_ingreso_mayo,'total_ingreso_abril':total_ingreso_abril,'total_ingreso_marzo':total_ingreso_marzo,'total_ingreso_febrero':total_ingreso_febrero,'total_ingreso_enero':total_ingreso_enero,'total_ingreso_agosto':total_ingreso_agosto,'cuentas':cuentas,'sueldos':sueldos,'pedidos':pedidos,'gastos':gastos, 'fecha_inicial': f_i,'total_ingresos': total_ingresos, 'total_egresos': total_egresos,'fecha_final': f_f, 'total': total})
 
 ############################################################################
+def contacto(request):
+    info_enviado = False
+    email = ""
+    titulo = ""
+    texto = ""
+    if request.method == "POST":
+        formulario = ContactForm(request.POST)
+        if formulario.is_valid():
+            info_enviado = True
+            email = formulario.cleaned_data['Email']
+            titulo = formulario.cleaned_data['Titulo']
+            texto = formulario.cleaned_data['Texto']
+
+            to_admin ='fcoramirezz@gmail.com'
+            html_content = "Hola usted tiene la siguiente consulta de su pagina web"+(texto)
+            msg = EmailMultiAlternatives('Correo de Contacto', html_content, 'from@server.com',[to_admin])
+            msg.attach_alternative(html_content,'text/html')
+            msg.send()
+
+    else:
+        formulario = ContactForm()
+    ctx = {'form': formulario, 'email': email, 'titulo': titulo, 'texto': texto, 'info_enviado': info_enviado}
+    return render_to_response('gestion_lena/contacto.html',ctx,context_instance=RequestContext(request))
+
+
 
 def iniciar_sesion(request):
-    context = {}
+    info_enviado = False
+    email = ""
+    titulo = ""
+    texto = ""
     if request.method == "POST":
-        formulario = AuthenticationForm(request.POST)
-        if formulario.is_valid:
-            username = request.POST['username']
-            password = request.POST['password']
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return redirect('gestion_lena.views.home')
-                else:
-                    messages.add_message(request, messages.ERROR, u"Su cuenta se encuentra inactiva, revise su correo para activar su cuenta o escribanos a <correo>.")
-            else:
-                messages.add_message(request, messages.ERROR, u"Error en su contraseña o nombre de usuario. Vuelva a intentarlo.")
+        formulario = ContactForm(request.POST)
+        if formulario.is_valid():
+            info_enviado = True
+            email = formulario.cleaned_data['Email']
+            titulo = formulario.cleaned_data['Titulo']
+            texto = formulario.cleaned_data['Texto']
+
+            to_admin ='fcoramirezz@gmail.com'
+            html_content = "Hola usted tiene la siguiente consulta de su pagina web"+(texto)
+            msg = EmailMultiAlternatives('Correo de Contacto', html_content, 'from@server.com',[to_admin])
+            msg.attach_alternative(html_content,'text/html')
+            msg.send()
+
     else:
-        #messages.add_message(request, messages.INFO, u"Ingrese con su usuario")
-        formulario = AuthenticationForm()
-    context['formulario'] = formulario
-    return render(request, 'registration/login.html', context)
+        formulario = ContactForm()
+    ctx = {'form': formulario, 'email': email, 'titulo': titulo, 'texto': texto, 'info_enviado': info_enviado}
+    return render_to_response('registration/login.html',ctx,context_instance=RequestContext(request))
+
+
 
 @login_required
 def cerrar_sesion(request):
     logout(request)
     return redirect('gestion_lena.views.pagina')
+
 
 #######################################################################################

@@ -56,7 +56,7 @@
         </div>
         <div class="modal-body">
 
-           <h2>¿Está seguro de marcar como pagado el servicio <strong>{{x.tipo_de_servicio}}</strong> de: <strong>{{x.contacto}}</strong></h2>
+           <h2>¿Está seguro de marcar como pagado el servicio <strong>{{x.tipo_de_servicio}}</strong> de: <strong>{{x.contacto}}</strong> ?</h2>
            <div align="center"> <a href="{% url 'pedido_cambiar_estado' x.id %}?next={{ request.path }}" class="btn btn-warning"> <span class="glyphicon glyphicon-ok-sign"> Confirmar </span> </a> </div>
         </div>
         <div class="modal-footer">

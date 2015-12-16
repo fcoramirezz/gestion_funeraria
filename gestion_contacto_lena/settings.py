@@ -112,6 +112,6 @@ TEMPLATE_DIRS = (
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'gestiondedistribuciondelena@gmail.com'
-EMAIL_HOST_PASSWORD = 'diegoramirez'
+EMAIL_HOST_USER = 'fcoramirezz@gmail.com'
+EMAIL_HOST_PASSWORD ='estratosfera23'
 EMAIL_PORT = 587

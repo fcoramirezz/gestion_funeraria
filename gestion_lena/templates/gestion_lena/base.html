@@ -59,14 +59,14 @@
             <ul class="nav navbar-nav">
 
              
-              <li {% ifactive 'duda_list' %} class="active" {% else %} {% endifactive %} class="dropdown">
+              <li {% ifactive 'duda_list' %} class="active" {% else %} {% endifactive %} {% ifactive 'servicio_list' %} class="active" {% else %} {% endifactive %} class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-tags"></i> Mantenedor Página <b class="caret"></b></a>
                   <ul class="dropdown-menu">
                     <li class="dropdown-header">Opciones</li>
                     <li class="divider"></li>
-                    <li><a href="{% url 'duda_list' %}"> <i class="glyphicon glyphicon-list"></i> Gestionar Dudas </a></li>
+                    <li><a href="{% url 'duda_list' %}"> <i class="glyphicon glyphicon-list"></i> Gestión de Dudas </a></li>
                       <li class="divider"></li>
-                    <li><a href="{% url 'servicio_list' %}"> <i class="glyphicon glyphicon-tag"></i> Tipo de Servicio </a></li>
+                    <li><a href="{% url 'servicio_list' %}"> <i class="glyphicon glyphicon-tag"></i> Gestión Tipos de Servicios </a></li>
                     <li class="divider"></li>
                   
                     
@@ -108,7 +108,7 @@
                     <li><a href="{% url 'pedido_list_segundo' %}"> <i class="glyphicon glyphicon-list"></i> Gestión de Servicios</a></li>
                     <li class="divider"></li>
               
-                    <li><a href="{% url 'servicio_list' %}"> <i class="glyphicon glyphicon-tag"></i> Ingresar Tipo de Servicio </a></li>
+                    <li><a href="{% url 'servicio_list' %}"> <i class="glyphicon glyphicon-tag"></i> Gestión Tipos de Servicios </a></li>
                 
                 </ul>
               </li>
@@ -119,8 +119,8 @@
                   <ul class="dropdown-menu">
                     <li class="dropdown-header">Opciones</li>
                     <li class="divider"></li>
-                    <li><a href="{% url 'gasto_list' %}"> <i class="glyphicon glyphicon-list"></i> Gestionar Gastos Anexos</a></li>
-                    <li><a href="{% url 'tipo_gasto_list' %}"> <i class="glyphicon glyphicon-tag"></i>Ingresar Tipo de Gasto</a></li>
+                    <li><a href="{% url 'gasto_list' %}"> <i class="glyphicon glyphicon-list"></i> Gestión Gastos Anexos</a></li>
+                    <li><a href="{% url 'tipo_gasto_list' %}"> <i class="glyphicon glyphicon-tag"></i>Gestión Tipos de Gastos</a></li>
                     <li class="divider"></li>
                     <li><a href="{% url 'sueldo_list' %}"> <i class="glyphicon glyphicon-tag"></i> Pago de Sueldos</a></li>
                     <li class="divider"></li>
@@ -168,7 +168,7 @@
             <h2> Ultimos Servicios Ingresados</h2>
             <ul class="list-group"> 
                 {% for x in pedidos %}
-                <li class="list-group-item"> {{ x.contacto }} - <strong> {{ x.provincia }} </strong> - {{ x.direccion_destino }} </li>
+                <li class="list-group-item"> {{ x.contacto }} - <strong> {{ x.tipo_de_servicio }} </strong> - {{ x.direccion_destino }} -{{ x.comuna }} </li>
                 {% empty %}
                   <div class="alert alert-warning"> No tiene servicios a realizar. </div> 
                 {% endfor %}
@@ -180,6 +180,8 @@
         
         {% endblock %}
       </div>
+
+   
 
       <div class="footer">
         <div class="container">

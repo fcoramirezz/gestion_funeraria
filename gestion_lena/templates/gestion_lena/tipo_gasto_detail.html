@@ -13,8 +13,7 @@
     <table class="table table-bordered">
         <caption> Gastos Asociados a  <strong> {{ tipogasto }}</strong></caption>
         <thead>
-        <tr>
-            <th> Id </th>
+        <tr
             <th> Monto </th>
             <th> Fecha </th>
             <th> Comentario </th>
@@ -23,7 +22,7 @@
         <tbody>
         {% for x in tipogasto.gasto_set.all %}
             <tr>
-                <td> {{ x.id }} </td>
+               
                 <td> $ {{ x.valor|intcomma }} </td>
                 <td> {{ x.fecha }} </td>
                 <td> {{ x.comentario }} </td>

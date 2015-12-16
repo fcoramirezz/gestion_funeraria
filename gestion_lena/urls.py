@@ -10,6 +10,7 @@ from gestion_contacto_lena import settings
 
 admin.autodiscover()
 urlpatterns = patterns('gestion_lena.views',
+
     url(r'^home/', 'home', name='home'),
     url(r'^contactos/$', ContactoListView.as_view(), name='contacto_list'),
     url(r'^contacto/(?P<pk>\d+)/$', ContactoDetailView.as_view(), name='contacto_detail'),
@@ -41,6 +42,7 @@ urlpatterns = patterns('gestion_lena.views',
     url(r'^sueldo/nuevo/$', SueldoCreateView.as_view(), name='sueldo_create'),
     url(r'^sueldo/(?P<pk>\d+)/actualizar/$', SueldoUpdateView.as_view(), name='sueldo_update'),
     url(r'^sueldo/(?P<pk>\d+)/eliminar/$', SueldoDeleteView.as_view(), name='sueldo_delete'),
+
 
 
 
@@ -76,5 +78,9 @@ urlpatterns = patterns('gestion_lena.views',
     url(r'^reporte/cuenta/(?P<fecha_inicial>[-\d]+)/(?P<fecha_final>[-\d]+)/$', 'cuenta_t', name='cuenta_t'),
     url(r'^reporte/filtrar/$', 'form_cuenta_t', name='form_cuenta_t'),
     url(r'^reporte/cuenta/$', 'reporte_cuenta', name='reporte_cuenta'),
+    #url(r'^cont/$', 'contacto_view', name= 'vista_contacto'),
+
+
+
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()
